@@ -12,3 +12,14 @@ Options -Indexes
 <FilesMatch "\.(ps1|md)$">
     Require all denied
 </FilesMatch>
+
+# Block VCS metadata and dotfiles in case this folder (which is now a git repo)
+# is ever uploaded to a live host with hidden files included — .git/config,
+# .git/HEAD, etc. would otherwise be directly fetchable and let an attacker
+# reconstruct the full source tree, even with directory listing off.
+<IfModule mod_alias.c>
+    RedirectMatch 404 /\.git(/|$)
+</IfModule>
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>

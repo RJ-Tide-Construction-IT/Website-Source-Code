@@ -1,0 +1,5 @@
+# Everything in /includes/ is only ever require()'d by the top-level pages —
+# it's never a valid direct request from a visitor, so block direct access
+# outright as defense-in-depth (on top of PHP already executing rather than
+# leaking these as plain text).
+Require all denied
