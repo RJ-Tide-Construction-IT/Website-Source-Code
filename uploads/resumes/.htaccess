@@ -1,0 +1,8 @@
+# Uploaded resumes must never be executable and should not be directly browsable.
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+<FilesMatch "\.(php|php\d|phtml|pl|py|cgi|sh)$">
+    Require all denied
+</FilesMatch>
+Options -Indexes

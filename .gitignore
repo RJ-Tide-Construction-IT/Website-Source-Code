@@ -1,0 +1,10 @@
+# Scratch data pulled from the old WordPress site during migration — not part of the site itself.
+_extract/
+
+# User-submitted resumes and the local backup log — not source code, and may contain PII.
+uploads/resumes/*
+!uploads/resumes/.htaccess
+uploads/applications.csv
+
+# Real API keys — copy includes/secrets.example.php to includes/secrets.php and fill in.
+includes/secrets.php
