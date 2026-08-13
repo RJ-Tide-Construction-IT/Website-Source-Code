@@ -343,6 +343,13 @@ section { padding: 64px 0; }
   cursor: pointer;
 }
 .slideshow__dot.is-active { background: var(--color-white); }
+.slideshow__caption {
+  text-align: center;
+  margin-top: 10px;
+  font-weight: 600;
+  color: var(--color-navy);
+  font-size: 0.9rem;
+}
 
 .lightbox-overlay {
   position: fixed;

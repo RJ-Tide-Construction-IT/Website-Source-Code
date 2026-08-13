@@ -1,8 +1,10 @@
 <?php
 $pageTitle = 'Concrete Projects';
-$pageDescription = 'Photos of RJ Tide Construction concrete work — flatwork, foundations, commercial, residential, and wastewater treatment concrete.';
+$pageDescription = 'Photos of RJ Tide Construction concrete work — flatwork, foundations, site concrete, industrial/structural, specialty, and decorative concrete.';
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
+// Section labels match the sub-service categories on
+// services/concrete-services.php so the two pages stay in sync.
 // 'location' is left blank until real per-photo job-site locations are
 // available; the gallery already renders it when a photo has one.
 $sections = [
@@ -21,26 +23,31 @@ $sections = [
         ],
     ],
     [
-        'label'  => 'Commercial',
+        'label'  => 'Site Concrete',
         'note'   => '',
         'photos' => [
-            ['img' => 'concrete/web/concrete-hero.jpg', 'caption' => 'Placing and finishing a large concrete slab pour', 'location' => ''],
-            ['img' => 'concrete/web/industrial.jpg', 'caption' => 'Finishing an industrial concrete slab', 'location' => ''],
             ['img' => 'concrete/web/site-concrete.jpg', 'caption' => 'Pouring site concrete paving', 'location' => ''],
         ],
     ],
     [
-        'label'  => 'Residential',
-        'note'   => 'Photos for this section are coming soon.',
+        'label'  => 'Structural',
+        'note'   => '',
         'photos' => [
-            ['img' => 'concrete/web/residential-placeholder.jpg', 'caption' => 'Residential', 'location' => ''],
+            ['img' => 'concrete/web/industrial.jpg', 'caption' => 'Finishing an industrial concrete slab', 'location' => ''],
         ],
     ],
     [
-        'label'  => 'Wastewater Treatment (WWTP)',
-        'note'   => 'Photos for this section are coming soon.',
+        'label'  => 'Specialty Concrete',
+        'note'   => '',
         'photos' => [
-            ['img' => 'concrete/web/wwtp-placeholder.jpg', 'caption' => 'Wastewater Treatment (WWTP)', 'location' => ''],
+            ['img' => 'special-projects/web/chapel-facade.jpg', 'caption' => 'Stone-veneer chapel facade with decorative concrete detailing', 'location' => 'Trinity Heights'],
+        ],
+    ],
+    [
+        'label'  => 'Decorative Concrete',
+        'note'   => '',
+        'photos' => [
+            ['img' => 'special-projects/web/relief-panel.jpg', 'caption' => 'Bronze relief memorial panel set in a decorative concrete monument', 'location' => 'Trinity Heights'],
         ],
     ],
 ];

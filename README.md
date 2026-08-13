@@ -116,21 +116,3 @@ it loads. If a name contains an apostrophe, put a backslash before it, like
 `'Farmer\'s Co-op'`. This file is hand-maintained now; if someone later
 imports a fresh Acumatica export, that will overwrite any manual edits made
 here in the meantime.
-
-## Email setup
-
-The contact form and job application form send email through a service
-called Brevo, using an API key that is **not stored in this repository**
-(so it can't be seen by anyone browsing the code on GitHub). To set it up on
-a new machine or host:
-
-1. Create a new file at `includes/secrets.php`.
-2. Put your Brevo API key in it like this:
-
-   ```php
-   <?php
-   define('BREVO_API_KEY', 'your-real-api-key-here');
-   ```
-
-Without this file, the forms will fail to send and an error will be logged
-instead (this is intentional — it's what keeps the real key out of GitHub).

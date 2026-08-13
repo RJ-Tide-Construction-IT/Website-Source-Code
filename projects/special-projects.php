@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Special Projects';
+$pageTitle = 'Specialty Concrete';
 $pageDescription = 'Photos of RJ Tide Construction decorative and specialty concrete work.';
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
@@ -12,7 +12,7 @@ $photos = [
 ?>
 
 <section class="page-hero">
-    <div class="container"><h1>Special Projects</h1></div>
+    <div class="container"><h1>Specialty Concrete</h1></div>
 </section>
 
 <section>

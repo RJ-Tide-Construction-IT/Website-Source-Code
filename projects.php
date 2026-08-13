@@ -2,11 +2,6 @@
 $pageTitle = 'Projects';
 $pageDescription = 'RJ Tide Construction project history since 2018 — concrete, millwright, and agricultural/industrial work across the Midwest.';
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
-require $_SERVER['DOCUMENT_ROOT'] . '/includes/projects-data.php';
-
-// Only the aggregate headline count is shown here — no per-category
-// breakdown, percentages, or individual project/client names.
-$totalProjects = count($GLOBALS['PROJECT_RECORDS']);
 
 $markets = [
     [
@@ -22,7 +17,7 @@ $markets = [
         'url'   => '/projects/agricultural.php',
     ],
     [
-        'label' => 'Special Projects',
+        'label' => 'Specialty Concrete',
         'blurb' => 'Decorative and specialty concrete work, built to a different standard.',
         'img'   => 'special-projects/web/chapel-facade.jpg',
         'url'   => '/projects/special-projects.php',
@@ -34,7 +29,7 @@ $markets = [
     <div class="container">
         <h1>Project History</h1>
         <p style="color:var(--color-peach);margin-top:0.75rem;">
-            <?= number_format($totalProjects) ?> projects completed since 2018
+            Building Siouxland since 2010
         </p>
     </div>
 </section>
