@@ -13,9 +13,8 @@
             <h4>Services</h4>
             <ul>
                 <li><a href="<?= BASE_URL ?>/services/concrete-services.php">Full-Service Concrete</a></li>
-                <li><a href="<?= BASE_URL ?>/services/millwright-services.php">Millwright Services</a></li>
                 <li><a href="<?= BASE_URL ?>/services/agricultural-services.php">Agricultural Services</a></li>
-                <li><a href="<?= BASE_URL ?>/services/ag-industrial-maintenance.php">Industrial Maintenance</a></li>
+                <li><a href="<?= BASE_URL ?>/services/ag-industrial-maintenance.php">Industrial &amp; Millwright Maintenance</a></li>
             </ul>
         </div>
 

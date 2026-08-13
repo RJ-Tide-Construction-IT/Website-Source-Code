@@ -92,6 +92,7 @@ ul { padding-left: 1.25em; }
   padding-top: 16px;
   padding-bottom: 16px;
 }
+.site-header__brand { display: flex; align-items: center; gap: 20px; flex-shrink: 0; }
 .site-header__logo { display: flex; align-items: center; flex-shrink: 0; }
 .site-header__logo img { max-height: 64px; width: auto; }
 .site-header__logo-text { font-family: var(--font-heading); font-weight: 700; font-size: 1.25rem; color: var(--color-navy); }

@@ -52,7 +52,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 <section class="section--muted">
     <div class="container">
         <ul class="service-links">
-            <li><a href="<?= BASE_URL ?>/services/millwright-services.php">Millwright Services</a></li>
+            <li><a href="<?= BASE_URL ?>/services/ag-industrial-maintenance.php#millwright">Millwright Services</a></li>
         </ul>
     </div>
 </section>

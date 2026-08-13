@@ -6,7 +6,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
 <section class="hero hero--photo" style="background-image:url('<?= BASE_URL ?>/assets/img/index/web/hero-crew.jpg');">
     <div class="container">
-        <h1>Your Contractor Of Choice For<br>Full-Service Concrete,<br>Millwright Services, &amp;<br>Ag/Industrial Maintenance</h1>
+        <h1>Your Contractor Of Choice For<br>Full-Service Concrete,<br>Millwright Services, &amp;<br>Industrial Maintenance</h1>
     </div>
 </section>
 
@@ -15,8 +15,8 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
         <h2 class="section-title">What type of project can RJ Tide help you with today?</h2>
         <ul class="service-links">
             <li><a href="<?= BASE_URL ?>/services/concrete-services.php">Full-Service Concrete</a></li>
-            <li><a href="<?= BASE_URL ?>/services/millwright-services.php">Millwright Services</a></li>
-            <li><a href="<?= BASE_URL ?>/services/ag-industrial-maintenance.php">Ag/Industrial Maintenance</a></li>
+            <li><a href="<?= BASE_URL ?>/services/agricultural-services.php">Agricultural Services</a></li>
+            <li><a href="<?= BASE_URL ?>/services/ag-industrial-maintenance.php">Ag/Industrial &amp; Millwright Maintenance</a></li>
         </ul>
     </div>
 </section>

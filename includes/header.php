@@ -27,14 +27,16 @@ if (!isset($pageDescription)) { $pageDescription = 'Full-service concrete, millw
 
 <header class="site-header">
     <div class="container site-header__inner">
-        <a href="<?= BASE_URL ?>/index.php" class="site-header__logo">
-            <img src="<?= BASE_URL ?>/assets/img/logo.png" alt="<?= htmlspecialchars(SITE_NAME) ?>">
-        </a>
+        <div class="site-header__brand">
+            <a href="<?= BASE_URL ?>/index.php" class="site-header__logo">
+                <img src="<?= BASE_URL ?>/assets/img/logo.png" alt="<?= htmlspecialchars(SITE_NAME) ?>">
+            </a>
 
-        <a href="https://maps.google.com/?q=<?= urlencode(SITE_ADDRESS) ?>" class="site-header__address" target="_blank" rel="noopener noreferrer">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C7.86 2 4.5 5.36 4.5 9.5c0 5.5 6.5 11.5 7 12 .5-.5 7-6.5 7-12C18.5 5.36 15.14 2 12 2zm0 10.25a2.75 2.75 0 1 1 0-5.5 2.75 2.75 0 0 1 0 5.5z"/></svg>
-            <?= htmlspecialchars(SITE_ADDRESS) ?>
-        </a>
+            <a href="https://maps.google.com/?q=<?= urlencode(SITE_ADDRESS) ?>" class="site-header__address" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C7.86 2 4.5 5.36 4.5 9.5c0 5.5 6.5 11.5 7 12 .5-.5 7-6.5 7-12C18.5 5.36 15.14 2 12 2zm0 10.25a2.75 2.75 0 1 1 0-5.5 2.75 2.75 0 0 1 0 5.5z"/></svg>
+                <?= htmlspecialchars(SITE_ADDRESS) ?>
+            </a>
+        </div>
 
         <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mainNav">
             <span></span><span></span><span></span>

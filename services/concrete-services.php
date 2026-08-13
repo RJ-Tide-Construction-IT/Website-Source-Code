@@ -3,11 +3,12 @@ $pageTitle = 'Full-Service Concrete';
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
 $subServices = [
-    'Flatwork'                              => '#flatwork',
-    'Foundations'                           => '#foundations',
-    'Site Concrete'                         => '#site-concrete',
-    'Industrial / Structural'               => '#industrial-structural',
-    'Special Projects / Decorative Concrete' => '#special-projects',
+    'Flatwork'                 => '#flatwork',
+    'Foundations'              => '#foundations',
+    'Site Concrete'            => '#site-concrete',
+    'Industrial / Structural'  => '#industrial-structural',
+    'Specialty Concrete'       => '#specialty-concrete',
+    'Decorative Concrete'      => '#decorative-concrete',
 ];
 ?>
 
@@ -87,19 +88,24 @@ $subServices = [
             <img src="<?= BASE_URL ?>/assets/img/concrete/web/industrial.jpg" alt="RJ Tide crew finishing an industrial concrete slab" loading="lazy">
         </div>
 
-        <h3 id="special-projects">Special Projects / Decorative Concrete</h3>
+        <h3 id="specialty-concrete">Specialty Concrete</h3>
         <p>RJ Tide has a habit of taking on unique projects that, frankly, a lot of other concrete
            contractors don't want to touch. Do you have a special project? Doing something unique with
            concrete? Talk to our experts to help form your idea into a reality. No matter the size of the
            project, our qualified staff can form your special project into something worth showing off.</p>
 
-        <div class="slideshow">
-            <img class="slideshow__slide is-active" src="<?= BASE_URL ?>/assets/img/special-projects/web/relief-panel.jpg" alt="Bronze relief memorial panel set in a decorative concrete monument">
-            <img class="slideshow__slide" src="<?= BASE_URL ?>/assets/img/special-projects/web/chapel-facade.jpg" alt="Stone-veneer chapel facade with decorative concrete detailing">
-            <div class="slideshow__dots">
-                <button class="slideshow__dot is-active" aria-label="Show slide 1"></button>
-                <button class="slideshow__dot" aria-label="Show slide 2"></button>
-            </div>
+        <div class="subsection-photo">
+            <img src="<?= BASE_URL ?>/assets/img/special-projects/web/chapel-facade.jpg" alt="Stone-veneer chapel facade with decorative concrete detailing" loading="lazy">
+        </div>
+
+        <h3 id="decorative-concrete">Decorative Concrete</h3>
+        <p>Beyond structural work, our crews bring the same attention to detail to decorative and
+           architectural concrete, finishes and details meant to be seen, not just walked or driven on.
+           From custom relief work to finishing touches on a monument or memorial, we treat decorative
+           concrete as a craft in its own right.</p>
+
+        <div class="subsection-photo">
+            <img src="<?= BASE_URL ?>/assets/img/special-projects/web/relief-panel.jpg" alt="Bronze relief memorial panel set in a decorative concrete monument" loading="lazy">
         </div>
     </div>
 </section>

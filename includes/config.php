@@ -24,7 +24,7 @@ $GLOBALS['ASSOCIATIONS'] = [
     ['name' => 'The ESOP Association',                    'img' => 'esop-logo.webp', 'url' => 'https://www.esopassociation.org'],
 ];
 
-// Vendor logos, shared by the Millwright, Design Build, and Ag/Industrial pages.
+// Vendor logos, shared by the Agricultural and Ag/Industrial Maintenance pages.
 $GLOBALS['VENDORS'] = [
     ['name' => 'Sukup Manufacturing',   'img' => 'SUKUP-Logo.webp',           'url' => 'https://www.sukup.com'],
     ['name' => 'GSI (Grain Systems)',   'img' => 'GSI-Logo.webp',             'url' => 'https://www.grainsystems.com'],
@@ -42,12 +42,9 @@ $GLOBALS['VENDORS'] = [
 
 // Primary navigation, shared by header.php on every page.
 $GLOBALS['MAIN_NAV'] = [
-    'Home'         => '/index.php',
     'About'        => '/about.php',
     'Concrete'     => '/services/concrete-services.php',
-    'Millwright'   => '/services/millwright-services.php',
     'Agricultural' => '/services/agricultural-services.php',
     'Industrial'   => '/services/ag-industrial-maintenance.php',
     'Projects'     => '/projects.php',
-    'Careers'      => '/careers.php',
 ];
