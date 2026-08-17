@@ -8,16 +8,16 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 $sections = [
     [
         'label'  => 'Agricultural',
-        'note'   => '',
+        'note'   => 'Photos for this section are coming soon.',
         'photos' => [
-            ['img' => 'agriculture/web/jobsite-1.jpg', 'caption' => 'Crew truck and trailer on-site at a grain storage project', 'location' => ''],
-            ['img' => 'agriculture/web/jobsite-2.jpg', 'caption' => 'Grain storage silos with crew working the overhead leg structure', 'location' => ''],
-            ['img' => 'agriculture/web/design-build-concept.jpg', 'caption' => '3D design concept of a grain handling and storage facility', 'location' => ''],
-            ['img' => 'agriculture/web/design-build-drawing-1.jpg', 'caption' => 'Engineering elevation drawing of a grain leg and distributor structure', 'location' => ''],
-            ['img' => 'agriculture/web/design-build-drawing-2.jpg', 'caption' => '2D engineering drawing of the grain storage facility', 'location' => ''],
-            ['img' => 'agriculture/web/design-build-render-a.jpg', 'caption' => '3D design render of a grain storage silo and conveyor structure', 'location' => ''],
-            ['img' => 'agriculture/web/design-build-render-b.jpg', 'caption' => '3D design render of the grain storage facility, alternate angle', 'location' => ''],
-            ['img' => 'agriculture/web/design-build-reality.jpg', 'caption' => 'Completed grain storage facility matching the original design', 'location' => ''],
+            ['img' => 'agriculture/web/placeholder.svg', 'caption' => 'Crew truck and trailer on-site at a grain storage project', 'location' => ''],
+            ['img' => 'agriculture/web/placeholder.svg', 'caption' => 'Grain storage silos with crew working the overhead leg structure', 'location' => ''],
+            ['img' => 'agriculture/web/placeholder.svg', 'caption' => '3D design concept of a grain handling and storage facility', 'location' => ''],
+            ['img' => 'agriculture/web/placeholder.svg', 'caption' => 'Engineering elevation drawing of a grain leg and distributor structure', 'location' => ''],
+            ['img' => 'agriculture/web/placeholder.svg', 'caption' => '2D engineering drawing of the grain storage facility', 'location' => ''],
+            ['img' => 'agriculture/web/placeholder.svg', 'caption' => '3D design render of a grain storage silo and conveyor structure', 'location' => ''],
+            ['img' => 'agriculture/web/placeholder.svg', 'caption' => '3D design render of the grain storage facility, alternate angle', 'location' => ''],
+            ['img' => 'agriculture/web/placeholder.svg', 'caption' => 'Completed grain storage facility matching the original design', 'location' => ''],
         ],
     ],
     [
