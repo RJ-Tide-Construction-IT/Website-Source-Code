@@ -1,6 +1,6 @@
 <?php
 $pageTitle = 'Concrete Projects';
-$pageDescription = 'Photos of RJ Tide Construction concrete work — flatwork, foundations, site concrete, industrial/structural, specialty, and decorative concrete.';
+$pageDescription = 'Photos of RJ Tide Construction concrete work — flatwork, foundations, site concrete, structural, and cast-in-place concrete.';
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
 // Section labels match the sub-service categories on
@@ -37,18 +37,9 @@ $sections = [
         ],
     ],
     [
-        'label'  => 'Specialty Concrete',
-        'note'   => '',
-        'photos' => [
-            ['img' => 'special-projects/web/chapel-facade.jpg', 'caption' => 'Stone-veneer chapel facade with decorative concrete detailing', 'location' => 'Trinity Heights'],
-        ],
-    ],
-    [
-        'label'  => 'Decorative Concrete',
-        'note'   => '',
-        'photos' => [
-            ['img' => 'special-projects/web/relief-panel.jpg', 'caption' => 'Bronze relief memorial panel set in a decorative concrete monument', 'location' => 'Trinity Heights'],
-        ],
+        'label'  => 'Cast In Place',
+        'note'   => 'Photos for this section are coming soon.',
+        'photos' => [],
     ],
 ];
 ?>
