@@ -10,7 +10,7 @@ $subServices = [
 ?>
 
 <section class="page-hero">
-    <div class="container"><h1>Ag / Industrial Maintenance</h1></div>
+    <div class="container"><h1>Industrial</h1></div>
 </section>
 
 <section class="section--muted">
