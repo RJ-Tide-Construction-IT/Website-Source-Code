@@ -9,7 +9,7 @@ $subServices = [
 ];
 ?>
 
-<section class="page-hero">
+<section class="page-hero page-hero--photo" style="background-image:url('<?= BASE_URL ?>/assets/img/industrial-maintenance/20260423_121052.jpg');">
     <div class="container"><h1>Industrial</h1></div>
 </section>
 

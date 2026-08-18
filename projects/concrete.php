@@ -44,7 +44,7 @@ $sections = [
 ];
 ?>
 
-<section class="page-hero">
+<section class="page-hero page-hero--photo" style="background-image:url('<?= BASE_URL ?>/assets/img/concrete/web/concrete-hero.jpg');">
     <div class="container"><h1>Concrete</h1></div>
 </section>
 

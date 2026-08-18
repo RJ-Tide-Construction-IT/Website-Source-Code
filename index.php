@@ -16,7 +16,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
         <ul class="service-links">
             <li><a href="<?= BASE_URL ?>/services/concrete-services.php">Full-Service Concrete</a></li>
             <li><a href="<?= BASE_URL ?>/services/agricultural-services.php">Agricultural Services</a></li>
-            <li><a href="<?= BASE_URL ?>/services/ag-industrial-maintenance.php">Ag/Industrial &amp; Millwright Maintenance</a></li>
+            <li><a href="<?= BASE_URL ?>/services/ag-industrial-maintenance.php">Industrial &amp; Millwright Maintenance</a></li>
         </ul>
     </div>
 </section>
