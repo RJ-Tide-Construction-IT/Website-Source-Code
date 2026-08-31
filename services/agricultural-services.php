@@ -17,7 +17,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
            surprises and ensure smooth, efficient progress from planning through harvest.</p>
 
         <div class="photo-block">
-            <img src="<?= BASE_URL ?>/assets/img/agriculture/web/jobsite-1.jpg" alt="RJ Tide crew truck and trailer on-site at a grain storage project" loading="lazy">
+            <img src="<?= BASE_URL ?>/assets/img/industrial-maintenance/20240803_114332.jpg" alt="Completed grain elevator and storage facility with silos" loading="lazy">
         </div>
 
         <h3>Design Build</h3>

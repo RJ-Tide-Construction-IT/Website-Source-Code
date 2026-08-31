@@ -9,7 +9,7 @@ $subServices = [
 ];
 ?>
 
-<section class="page-hero page-hero--photo" style="background-image:url('<?= BASE_URL ?>/assets/img/industrial-maintenance/20260423_121052.jpg');">
+<section class="page-hero page-hero--photo" style="background-image:url('<?= BASE_URL ?>/assets/img/industrial-maintenance/20250108_163555.jpg');">
     <div class="container"><h1>Industrial</h1></div>
 </section>
 
@@ -32,6 +32,17 @@ $subServices = [
            maintenance services designed to cover all your operational needs. From preventative care to
            emergency repairs, we work with our clients to ensure equipment, facilities, and systems stay
            operating at peak performance&mdash;so there are no surprises holding your business back.</p>
+
+        <div class="showcase-grid">
+            <figure>
+                <img src="<?= BASE_URL ?>/assets/img/industrial-maintenance/20230516_145434.jpg" alt="Grain leg headhouse and catwalk structure" loading="lazy">
+                <figcaption>Headhouse &amp; Catwalk</figcaption>
+            </figure>
+            <figure>
+                <img src="<?= BASE_URL ?>/assets/img/industrial-maintenance/20230516_150046.jpg" alt="Grain leg boot and distributor mechanism" loading="lazy">
+                <figcaption>Leg Boot &amp; Distributor</figcaption>
+            </figure>
+        </div>
 
         <h3 id="millwright">Millwright</h3>
         <div class="subsection-photo">
