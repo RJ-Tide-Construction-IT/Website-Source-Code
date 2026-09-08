@@ -48,6 +48,17 @@ $subServices = [
             </figure>
         </div>
 
+        <p><strong>Preventative Care:</strong> Scheduled inspections and upkeep that catch small issues
+           before they turn into costly downtime.</p>
+        <p><strong>Scheduled Maintenance:</strong> Planned service work that keeps equipment and facilities
+           running at peak performance year-round.</p>
+        <p><strong>Equipment &amp; Facility Repairs:</strong> Skilled repair work across mechanical,
+           structural, and facility systems to keep operations moving.</p>
+        <p><strong>Downtime Reduction:</strong> Fast response and clear communication to get your facility
+           back up and running with minimal disruption.</p>
+        <p>Trust RJ Tide Construction to keep your agricultural and industrial operations running smoothly,
+           season after season.</p>
+
         <h3 id="millwright">Millwright</h3>
         <div class="subsection-photo">
             <video src="<?= BASE_URL ?>/assets/img/millwright/web/lincolnway-timelapse.mp4"

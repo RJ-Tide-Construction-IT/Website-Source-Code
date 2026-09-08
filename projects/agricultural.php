@@ -22,11 +22,16 @@ $sections = [
     ],
     [
         'label'  => 'Industrial Maintenance',
-        'note'   => 'Photos for this section are coming soon.',
+        'note'   => '',
+        'layout' => 'carousel',
         'photos' => [
-            ['img' => 'industrial-maintenance/web/placeholder-1.jpg', 'caption' => 'Preventative Care', 'location' => ''],
-            ['img' => 'industrial-maintenance/web/placeholder-2.jpg', 'caption' => 'Emergency Repairs', 'location' => ''],
-            ['img' => 'industrial-maintenance/web/placeholder-3.jpg', 'caption' => 'Scheduled Maintenance', 'location' => ''],
+            ['img' => 'industrial-maintenance/20230516_145434.jpg', 'caption' => 'Grain leg headhouse and catwalk structure', 'location' => ''],
+            ['img' => 'industrial-maintenance/20230516_150046.jpg', 'caption' => 'Grain leg boot and distributor mechanism', 'location' => ''],
+            ['img' => 'IMG_2071.JPG', 'caption' => 'Crane setting a grain bin section into place', 'location' => ''],
+            ['img' => 'LPTL9279.JPG', 'caption' => 'Tandem crane lift setting a grain bin section into place', 'location' => ''],
+            ['img' => 'industrial-maintenance/20240803_114332.jpg', 'caption' => 'Completed grain elevator and storage facility with silos', 'location' => ''],
+            ['img' => 'industrial-maintenance/20240803_074735.jpg', 'caption' => 'Crane and boom lift erecting a grain storage facility', 'location' => ''],
+            ['img' => 'industrial-maintenance/20260423_121052.jpg', 'caption' => 'Crew erecting a new steel structure at a grain facility', 'location' => ''],
         ],
     ],
     [
@@ -54,6 +59,21 @@ $sections = [
         <?php if ($section['note']): ?>
         <p style="text-align:center;color:var(--color-text-muted);margin-top:-1.25rem;"><?= htmlspecialchars($section['note']) ?></p>
         <?php endif; ?>
+        <?php if (($section['layout'] ?? '') === 'carousel'): ?>
+        <div class="slideshow">
+            <?php foreach ($section['photos'] as $idx => $p): ?>
+            <img class="slideshow__slide<?= $idx === 0 ? ' is-active' : '' ?>" data-caption="<?= htmlspecialchars($p['caption']) ?>" src="<?= BASE_URL ?>/assets/img/<?= $p['img'] ?>" alt="<?= htmlspecialchars($p['caption']) ?>" loading="lazy">
+            <?php endforeach; ?>
+            <button type="button" class="slideshow__arrow slideshow__arrow--prev" aria-label="Previous photo">&lsaquo;</button>
+            <button type="button" class="slideshow__arrow slideshow__arrow--next" aria-label="Next photo">&rsaquo;</button>
+            <div class="slideshow__dots">
+                <?php foreach ($section['photos'] as $idx => $p): ?>
+                <button type="button" class="slideshow__dot<?= $idx === 0 ? ' is-active' : '' ?>" aria-label="Show slide <?= $idx + 1 ?>"></button>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <p class="slideshow__caption"><?= htmlspecialchars($section['photos'][0]['caption']) ?></p>
+        <?php else: ?>
         <div class="showcase-grid">
             <?php foreach ($section['photos'] as $p): ?>
             <figure>
@@ -67,6 +87,7 @@ $sections = [
             </figure>
             <?php endforeach; ?>
         </div>
+        <?php endif; ?>
         <?php endforeach; ?>
     </div>
 </section>

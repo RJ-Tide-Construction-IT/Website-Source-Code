@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('.slideshow').forEach(function (el) {
     var slides = el.querySelectorAll('.slideshow__slide');
     var dots = el.querySelectorAll('.slideshow__dot');
+    var prevBtn = el.querySelector('.slideshow__arrow--prev');
+    var nextBtn = el.querySelector('.slideshow__arrow--next');
     var caption = el.nextElementSibling && el.nextElementSibling.classList.contains('slideshow__caption')
       ? el.nextElementSibling
       : null;
@@ -41,6 +43,9 @@ document.addEventListener('DOMContentLoaded', function () {
         restartTimer();
       });
     });
+
+    if (prevBtn) prevBtn.addEventListener('click', function () { show(current - 1); restartTimer(); });
+    if (nextBtn) nextBtn.addEventListener('click', function () { show(current + 1); restartTimer(); });
 
     restartTimer();
   });
