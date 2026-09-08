@@ -494,7 +494,7 @@ section { padding: 64px 0; }
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 110px;
+  height: 90px;
   background: var(--color-white);
   border: 1px solid #d8d8d8;
   border-radius: var(--radius);

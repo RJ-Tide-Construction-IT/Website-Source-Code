@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Ag / Industrial Maintenance';
+$pageTitle = 'Industrial';
 $pageDescription = 'Industrial and agricultural maintenance, plus millwright installation and repair services from RJ Tide Construction.';
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
@@ -36,11 +36,15 @@ $subServices = [
         <div class="showcase-grid">
             <figure>
                 <img src="<?= BASE_URL ?>/assets/img/industrial-maintenance/20230516_145434.jpg" alt="Grain leg headhouse and catwalk structure" loading="lazy">
-                <figcaption>Headhouse &amp; Catwalk</figcaption>
             </figure>
             <figure>
                 <img src="<?= BASE_URL ?>/assets/img/industrial-maintenance/20230516_150046.jpg" alt="Grain leg boot and distributor mechanism" loading="lazy">
-                <figcaption>Leg Boot &amp; Distributor</figcaption>
+            </figure>
+            <figure>
+                <img src="<?= BASE_URL ?>/assets/img/IMG_2071.JPG" alt="Crane setting a grain bin section into place" loading="lazy">
+            </figure>
+            <figure>
+                <img src="<?= BASE_URL ?>/assets/img/LPTL9279.JPG" alt="Tandem crane lift setting a grain bin section into place" loading="lazy">
             </figure>
         </div>
 
@@ -52,13 +56,16 @@ $subServices = [
             </video>
         </div>
         <p>At RJ Tide Construction, our Millwright Services are designed to ensure the seamless
-           installation, maintenance, and repair of industrial machinery and equipment. Our team of skilled
-           millwrights brings precision and expertise to every project, ensuring optimal performance and
-           longevity of your machinery.</p>
+           installation, maintenance, and repair of industrial machinery and equipment. Our team prides
+           itself on detailed proposals and designs for your service needs, supporting our millwright crew
+           through every phase of the project. Our team of skilled millwrights brings precision and
+           expertise to every project, ensuring optimal performance and longevity of your machinery.</p>
         <p><strong>Installation &amp; Alignment:</strong> Expert installation and precise alignment of
            machinery to enhance operational efficiency.</p>
         <p><strong>Maintenance &amp; Repair:</strong> Comprehensive maintenance and repair services to
            minimize downtime and extend equipment life.</p>
+        <p><strong>Emergency Repairs:</strong> We respond quickly to breakdowns, often on site within
+           hours, when immediate action is needed to get your facility back up and running.</p>
         <p><strong>Custom Solutions:</strong> Tailored solutions to meet the unique needs of your industrial
            operations.</p>
         <p><strong>Safety &amp; Compliance:</strong> Adherence to the highest safety standards and

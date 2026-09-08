@@ -9,7 +9,7 @@
 // unseen, instead of visibly jumping back to slide 1.
 $vendorCount = count($GLOBALS['VENDORS']);
 ?>
-<section class="section--muted">
+<section class="section--muted" style="padding:40px 0;">
     <div class="container">
         <h2 class="section-title">Our Vendors</h2>
         <div class="vendor-carousel" data-interval="5000">
