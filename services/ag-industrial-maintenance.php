@@ -9,7 +9,7 @@ $subServices = [
 ];
 ?>
 
-<section class="page-hero page-hero--photo" style="background-image:url('<?= BASE_URL ?>/assets/img/industrial-maintenance/20250108_163555.jpg');">
+<section class="page-hero page-hero--photo" style="background-image:url('<?= BASE_URL ?>/assets/img/industrial-maintenance/web/20250108_163555.jpg');">
     <div class="container"><h1>Industrial</h1></div>
 </section>
 
@@ -35,16 +35,16 @@ $subServices = [
 
         <div class="showcase-grid">
             <figure>
-                <img src="<?= BASE_URL ?>/assets/img/industrial-maintenance/20230516_145434.jpg" alt="Grain leg headhouse and catwalk structure" loading="lazy">
+                <img src="<?= BASE_URL ?>/assets/img/industrial-maintenance/web/20230516_145434.jpg" alt="Grain leg headhouse and catwalk structure" loading="lazy">
             </figure>
             <figure>
-                <img src="<?= BASE_URL ?>/assets/img/industrial-maintenance/20230516_150046.jpg" alt="Grain leg boot and distributor mechanism" loading="lazy">
+                <img src="<?= BASE_URL ?>/assets/img/industrial-maintenance/web/20230516_150046.jpg" alt="Grain leg boot and distributor mechanism" loading="lazy">
             </figure>
             <figure>
-                <img src="<?= BASE_URL ?>/assets/img/IMG_2071.JPG" alt="Crane setting a grain bin section into place" loading="lazy">
+                <img src="<?= BASE_URL ?>/assets/img/industrial-maintenance/web/img-2071.jpg" alt="Crane setting a grain bin section into place" loading="lazy">
             </figure>
             <figure>
-                <img src="<?= BASE_URL ?>/assets/img/LPTL9279.JPG" alt="Tandem crane lift setting a grain bin section into place" loading="lazy">
+                <img src="<?= BASE_URL ?>/assets/img/industrial-maintenance/web/lptl9279.jpg" alt="Tandem crane lift setting a grain bin section into place" loading="lazy">
             </figure>
         </div>
 
