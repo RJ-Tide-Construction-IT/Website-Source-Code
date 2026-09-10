@@ -9,6 +9,7 @@ $sections = [
     [
         'label'  => 'Agricultural',
         'note'   => 'Photos for this section are coming soon.',
+        'layout' => 'carousel',
         'photos' => [
             ['img' => 'agriculture/web/placeholder.svg', 'caption' => 'Crew truck and trailer on-site at a grain storage project', 'location' => ''],
             ['img' => 'agriculture/web/placeholder.svg', 'caption' => 'Grain storage silos with crew working the overhead leg structure', 'location' => ''],
@@ -37,6 +38,7 @@ $sections = [
     [
         'label'  => 'Millwright',
         'note'   => 'Photos for this section are coming soon.',
+        'layout' => 'carousel',
         'photos' => [
             ['img' => 'millwright/web/placeholder-1.jpg', 'caption' => 'Installation & Alignment', 'location' => ''],
             ['img' => 'millwright/web/placeholder-2.jpg', 'caption' => 'Maintenance & Repair', 'location' => ''],
@@ -54,41 +56,7 @@ $sections = [
     <div class="container">
         <a href="<?= BASE_URL ?>/projects.php" class="back-link">&larr; Back to Projects</a>
 
-        <?php foreach ($sections as $i => $section): ?>
-        <h2 class="section-title" style="<?= $i === 0 ? 'margin-top:2rem;' : 'margin-top:3.5rem;' ?>"><?= htmlspecialchars($section['label']) ?></h2>
-        <?php if ($section['note']): ?>
-        <p style="text-align:center;color:var(--color-text-muted);margin-top:-1.25rem;"><?= htmlspecialchars($section['note']) ?></p>
-        <?php endif; ?>
-        <?php if (($section['layout'] ?? '') === 'carousel'): ?>
-        <div class="slideshow">
-            <?php foreach ($section['photos'] as $idx => $p): ?>
-            <img class="slideshow__slide<?= $idx === 0 ? ' is-active' : '' ?>" data-caption="<?= htmlspecialchars($p['caption']) ?>" src="<?= BASE_URL ?>/assets/img/<?= $p['img'] ?>" alt="<?= htmlspecialchars($p['caption']) ?>" loading="lazy">
-            <?php endforeach; ?>
-            <button type="button" class="slideshow__arrow slideshow__arrow--prev" aria-label="Previous photo">&lsaquo;</button>
-            <button type="button" class="slideshow__arrow slideshow__arrow--next" aria-label="Next photo">&rsaquo;</button>
-            <div class="slideshow__dots">
-                <?php foreach ($section['photos'] as $idx => $p): ?>
-                <button type="button" class="slideshow__dot<?= $idx === 0 ? ' is-active' : '' ?>" aria-label="Show slide <?= $idx + 1 ?>"></button>
-                <?php endforeach; ?>
-            </div>
-        </div>
-        <p class="slideshow__caption"><?= htmlspecialchars($section['photos'][0]['caption']) ?></p>
-        <?php else: ?>
-        <div class="showcase-grid">
-            <?php foreach ($section['photos'] as $p): ?>
-            <figure>
-                <img src="<?= BASE_URL ?>/assets/img/<?= $p['img'] ?>" alt="<?= htmlspecialchars($p['caption']) ?>" loading="lazy">
-                <figcaption>
-                    <?= htmlspecialchars($p['caption']) ?>
-                    <?php if (!empty($p['location'])): ?>
-                        <br><span style="font-weight:400;color:var(--color-text-muted);"><?= htmlspecialchars($p['location']) ?></span>
-                    <?php endif; ?>
-                </figcaption>
-            </figure>
-            <?php endforeach; ?>
-        </div>
-        <?php endif; ?>
-        <?php endforeach; ?>
+        <?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/photo-sections.php'; ?>
     </div>
 </section>
 

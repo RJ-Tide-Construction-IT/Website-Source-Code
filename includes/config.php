@@ -48,3 +48,8 @@ $GLOBALS['MAIN_NAV'] = [
     'Industrial'   => '/services/ag-industrial-maintenance.php',
     'Projects'     => '/projects.php',
 ];
+
+// "I'm interested in" checkboxes on the Contact form. contact-handler.php
+// checks submissions against this same list so only these values can ever
+// end up in the notification email, no matter what's POSTed.
+$GLOBALS['CONTACT_INTERESTS'] = ['Concrete', 'Agricultural', 'Ag / Industrial Maintenance', 'Other'];

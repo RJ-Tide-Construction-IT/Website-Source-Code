@@ -11,6 +11,7 @@ $sections = [
     [
         'label'  => 'Flatwork',
         'note'   => '',
+        'layout' => 'carousel',
         'photos' => [
             ['img' => 'concrete/web/flatwork.jpg', 'caption' => 'Finishing an interior concrete flatwork pour', 'location' => ''],
         ],
@@ -18,6 +19,7 @@ $sections = [
     [
         'label'  => 'Foundations',
         'note'   => '',
+        'layout' => 'carousel',
         'photos' => [
             ['img' => 'concrete/web/foundation.jpg', 'caption' => 'Forming a concrete foundation on-site', 'location' => ''],
         ],
@@ -25,6 +27,7 @@ $sections = [
     [
         'label'  => 'Site Concrete',
         'note'   => '',
+        'layout' => 'carousel',
         'photos' => [
             ['img' => 'concrete/web/site-concrete.jpg', 'caption' => 'Pouring site concrete paving', 'location' => ''],
         ],
@@ -32,6 +35,7 @@ $sections = [
     [
         'label'  => 'Structural',
         'note'   => '',
+        'layout' => 'carousel',
         'photos' => [
             ['img' => 'concrete/web/industrial.jpg', 'caption' => 'Finishing an industrial concrete slab', 'location' => ''],
         ],
@@ -39,6 +43,7 @@ $sections = [
     [
         'label'  => 'Cast In Place',
         'note'   => 'Photos for this section are coming soon.',
+        'layout' => 'carousel',
         'photos' => [],
     ],
 ];
@@ -52,25 +57,7 @@ $sections = [
     <div class="container">
         <a href="<?= BASE_URL ?>/projects.php" class="back-link">&larr; Back to Projects</a>
 
-        <?php foreach ($sections as $i => $section): ?>
-        <h2 class="section-title" style="<?= $i === 0 ? 'margin-top:2rem;' : 'margin-top:3.5rem;' ?>"><?= htmlspecialchars($section['label']) ?></h2>
-        <?php if ($section['note']): ?>
-        <p style="text-align:center;color:var(--color-text-muted);margin-top:-1.25rem;"><?= htmlspecialchars($section['note']) ?></p>
-        <?php endif; ?>
-        <div class="showcase-grid">
-            <?php foreach ($section['photos'] as $p): ?>
-            <figure>
-                <img src="<?= BASE_URL ?>/assets/img/<?= $p['img'] ?>" alt="<?= htmlspecialchars($p['caption']) ?>" loading="lazy">
-                <figcaption>
-                    <?= htmlspecialchars($p['caption']) ?>
-                    <?php if (!empty($p['location'])): ?>
-                        <br><span style="font-weight:400;color:var(--color-text-muted);"><?= htmlspecialchars($p['location']) ?></span>
-                    <?php endif; ?>
-                </figcaption>
-            </figure>
-            <?php endforeach; ?>
-        </div>
-        <?php endforeach; ?>
+        <?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/photo-sections.php'; ?>
     </div>
 </section>
 

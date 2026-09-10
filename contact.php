@@ -34,39 +34,50 @@ $submitError = isset($_GET['error']);
             <div class="form-note form-note--error">Something went wrong sending your message. Please try again or call us directly.</div>
         <?php endif; ?>
 
-        <form action="<?= BASE_URL ?>/contact-handler.php" method="post" style="max-width:640px;">
-            <div class="form-field">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" required>
+        <div class="contact-layout">
+            <form action="<?= BASE_URL ?>/contact-handler.php" method="post">
+                <div class="form-field">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-field">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-field">
+                    <label for="phone">Phone</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+                <div class="form-field">
+                    <label>I'm interested in</label>
+                    <div class="checkbox-group">
+                        <?php foreach ($GLOBALS['CONTACT_INTERESTS'] as $interest): ?>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="interest[]" value="<?= htmlspecialchars($interest) ?>">
+                            <?= htmlspecialchars($interest) ?>
+                        </label>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+                <!-- honeypot field: real users never fill this in -->
+                <div style="position:absolute;left:-9999px;" aria-hidden="true">
+                    <label for="website">Leave blank</label>
+                    <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                </div>
+                <button type="submit" class="btn">Send Message</button>
+            </form>
+
+            <div class="map-embed">
+                <iframe src="https://maps.google.com/maps?q=<?= urlencode(SITE_ADDRESS) ?>&output=embed"
+                        loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                        title="Map showing <?= htmlspecialchars(SITE_NAME) ?>'s location">
+                </iframe>
             </div>
-            <div class="form-field">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-field">
-                <label for="phone">Phone</label>
-                <input type="tel" id="phone" name="phone">
-            </div>
-            <div class="form-field">
-                <label for="interest">I'm interested in</label>
-                <select id="interest" name="interest">
-                    <option value="Concrete">Concrete</option>
-                    <option value="Agricultural">Agricultural</option>
-                    <option value="Ag / Industrial Maintenance">Ag / Industrial Maintenance</option>
-                    <option value="Other">Other</option>
-                </select>
-            </div>
-            <div class="form-field">
-                <label for="message">Message</label>
-                <textarea id="message" name="message" required></textarea>
-            </div>
-            <!-- honeypot field: real users never fill this in -->
-            <div style="position:absolute;left:-9999px;" aria-hidden="true">
-                <label for="website">Leave blank</label>
-                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
-            </div>
-            <button type="submit" class="btn">Send Message</button>
-        </form>
+        </div>
     </div>
 </section>
 

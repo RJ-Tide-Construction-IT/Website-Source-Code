@@ -8,12 +8,14 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 $sections = [
     [
         'label'  => 'Specialty Concrete',
+        'layout' => 'carousel',
         'photos' => [
             ['img' => 'special-projects/web/chapel-facade.jpg', 'caption' => 'Stone-veneer Chapel Facade with Decorative Concrete Detailing', 'location' => 'Trinity Heights'],
         ],
     ],
     [
         'label'  => 'Decorative Concrete',
+        'layout' => 'carousel',
         'photos' => [
             ['img' => 'special-projects/web/relief-panel.jpg', 'caption' => 'Custom Statue of Saint Joseph', 'location' => 'Trinity Heights'],
         ],
@@ -29,22 +31,7 @@ $sections = [
     <div class="container">
         <a href="<?= BASE_URL ?>/projects.php" class="back-link">&larr; Back to Projects</a>
 
-        <?php foreach ($sections as $i => $section): ?>
-        <h2 class="section-title" style="<?= $i === 0 ? 'margin-top:2rem;' : 'margin-top:3.5rem;' ?>"><?= htmlspecialchars($section['label']) ?></h2>
-        <div class="showcase-grid">
-            <?php foreach ($section['photos'] as $p): ?>
-            <figure>
-                <img src="<?= BASE_URL ?>/assets/img/<?= $p['img'] ?>" alt="<?= htmlspecialchars($p['caption']) ?>" loading="lazy">
-                <figcaption>
-                    <?= htmlspecialchars($p['caption']) ?>
-                    <?php if (!empty($p['location'])): ?>
-                        <br><span style="font-weight:400;color:var(--color-text-muted);"><?= htmlspecialchars($p['location']) ?></span>
-                    <?php endif; ?>
-                </figcaption>
-            </figure>
-            <?php endforeach; ?>
-        </div>
-        <?php endforeach; ?>
+        <?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/photo-sections.php'; ?>
     </div>
 </section>
 

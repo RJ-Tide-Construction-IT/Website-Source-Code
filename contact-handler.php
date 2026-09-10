@@ -16,8 +16,13 @@ if (!empty($_POST['website'])) {
 $name    = trim($_POST['name'] ?? '');
 $email   = trim($_POST['email'] ?? '');
 $phone   = trim($_POST['phone'] ?? '');
-$interest = trim($_POST['interest'] ?? '');
 $message = trim($_POST['message'] ?? '');
+
+// "I'm interested in" is a checkbox group now (0 or more). Only keep values
+// that match the known list — whatever's actually POSTed is user-controlled,
+// so this can't be used to inject arbitrary text into the notification email.
+$interests = array_values(array_intersect((array) ($_POST['interest'] ?? []), $GLOBALS['CONTACT_INTERESTS']));
+$interest  = $interests ? implode(', ', $interests) : 'Not specified';
 
 if ($name === '' || $email === '' || $message === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     header('Location: ' . BASE_URL . '/contact.php?error=1');

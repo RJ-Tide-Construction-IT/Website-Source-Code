@@ -29,7 +29,7 @@ $subServices = [
 
 <section class="section--muted">
     <div class="container">
-        <ul class="service-links">
+        <ul class="service-links service-links--compact">
             <?php foreach ($subServices as $label => $href): ?>
             <li><a href="<?= $href ?>"><?= htmlspecialchars($label) ?></a></li>
             <?php endforeach; ?>
