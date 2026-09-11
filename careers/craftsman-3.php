@@ -1,22 +1,11 @@
 <?php
 $pageTitle = 'Craftsman 3';
-require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
+$jobMeta = [
+    'Salary Range' => 'Starting at $26.00',
+    'Reports to'   => 'Superintendent / Foreman',
+];
+require $_SERVER['DOCUMENT_ROOT'] . '/includes/job-posting-header.php';
 ?>
-
-<section class="page-hero">
-    <div class="container"><h1>Craftsman 3</h1></div>
-</section>
-
-<section>
-    <div class="container" style="max-width:800px;">
-        <a href="<?= BASE_URL ?>/careers.php" class="back-link">&larr; Go back</a>
-        <a href="<?= BASE_URL ?>/employment.php" class="btn" style="float:right;">Apply Now</a>
-        <div style="clear:both;"></div>
-
-        <div class="job-meta">
-            <div><strong>Salary Range</strong>Starting at $26.00</div>
-            <div><strong>Reports to</strong>Superintendent / Foreman</div>
-        </div>
 
         <h3>Summary / Objective</h3>
         <p>Craftsman 3 demonstrates high proficiency on a variety of carpenter and/or concrete finisher
@@ -127,8 +116,4 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
            activities, duties, or responsibilities that are required of the employee for this job. Duties,
            responsibilities, and activities may change at any time with or without notice.</p>
 
-        <a href="<?= BASE_URL ?>/employment.php" class="btn">Apply Now</a>
-    </div>
-</section>
-
-<?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>
+<?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/job-posting-footer.php'; ?>

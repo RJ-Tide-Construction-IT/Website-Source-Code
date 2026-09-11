@@ -1,23 +1,12 @@
 <?php
 $pageTitle = 'Concrete Foreman';
-require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
+$jobMeta = [
+    'Salary Range'   => 'Starting at $31.00',
+    'Classification' => 'Non-Exempt',
+    'Reports to'     => 'Superintendent',
+];
+require $_SERVER['DOCUMENT_ROOT'] . '/includes/job-posting-header.php';
 ?>
-
-<section class="page-hero">
-    <div class="container"><h1>Concrete Foreman</h1></div>
-</section>
-
-<section>
-    <div class="container" style="max-width:800px;">
-        <a href="<?= BASE_URL ?>/careers.php" class="back-link">&larr; Go back</a>
-        <a href="<?= BASE_URL ?>/employment.php" class="btn" style="float:right;">Apply Now</a>
-        <div style="clear:both;"></div>
-
-        <div class="job-meta">
-            <div><strong>Salary Range</strong>Starting at $31.00</div>
-            <div><strong>Classification</strong>Non-Exempt</div>
-            <div><strong>Reports to</strong>Superintendent</div>
-        </div>
 
         <h3>Summary / Objective</h3>
         <p>RJ Tide&rsquo;s Foremen provide the knowledge, skills and experience required to lead the
@@ -129,8 +118,4 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
            activities, duties or responsibilities that are required of the employee for this job. Duties,
            responsibilities and activities may change at any time with or without notice.</p>
 
-        <a href="<?= BASE_URL ?>/employment.php" class="btn">Apply Now</a>
-    </div>
-</section>
-
-<?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>
+<?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/job-posting-footer.php'; ?>

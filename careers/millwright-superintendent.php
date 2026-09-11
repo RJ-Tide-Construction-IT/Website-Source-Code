@@ -1,21 +1,10 @@
 <?php
 $pageTitle = 'Millwright Superintendent';
-require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
+$jobMeta = [
+    'Salary' => '$100K Starting / Negotiable depending on experience',
+];
+require $_SERVER['DOCUMENT_ROOT'] . '/includes/job-posting-header.php';
 ?>
-
-<section class="page-hero">
-    <div class="container"><h1>Millwright Superintendent</h1></div>
-</section>
-
-<section>
-    <div class="container" style="max-width:800px;">
-        <a href="<?= BASE_URL ?>/careers.php" class="back-link">&larr; Go back</a>
-        <a href="<?= BASE_URL ?>/employment.php" class="btn" style="float:right;">Apply Now</a>
-        <div style="clear:both;"></div>
-
-        <div class="job-meta">
-            <div><strong>Salary</strong>$100K Starting / Negotiable depending on experience</div>
-        </div>
 
         <h3>Job Summary</h3>
         <p>RJ Tide Construction is looking for an experienced and motivated individual to lead an Ag
@@ -90,8 +79,4 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
             <li>Employee Discounts</li>
         </ul>
 
-        <a href="<?= BASE_URL ?>/employment.php" class="btn">Apply Now</a>
-    </div>
-</section>
-
-<?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>
+<?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/job-posting-footer.php'; ?>

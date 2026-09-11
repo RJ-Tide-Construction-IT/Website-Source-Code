@@ -1,22 +1,11 @@
 <?php
 $pageTitle = 'Millwright 2';
-require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
+$jobMeta = [
+    'Salary Range' => 'Starting at $27.00',
+    'Reports to'   => 'Superintendent / Foreman',
+];
+require $_SERVER['DOCUMENT_ROOT'] . '/includes/job-posting-header.php';
 ?>
-
-<section class="page-hero">
-    <div class="container"><h1>Millwright 2</h1></div>
-</section>
-
-<section>
-    <div class="container" style="max-width:800px;">
-        <a href="<?= BASE_URL ?>/careers.php" class="back-link">&larr; Go back</a>
-        <a href="<?= BASE_URL ?>/employment.php" class="btn" style="float:right;">Apply Now</a>
-        <div style="clear:both;"></div>
-
-        <div class="job-meta">
-            <div><strong>Salary Range</strong>Starting at $27.00</div>
-            <div><strong>Reports to</strong>Superintendent / Foreman</div>
-        </div>
 
         <h3>Summary / Objective</h3>
         <p>The Millwright Level 2 is responsible for installing, maintaining, troubleshooting, and
@@ -76,8 +65,4 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
             <li>Overtime or travel may be required depending on project needs.</li>
         </ul>
 
-        <a href="<?= BASE_URL ?>/employment.php" class="btn">Apply Now</a>
-    </div>
-</section>
-
-<?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>
+<?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/job-posting-footer.php'; ?>

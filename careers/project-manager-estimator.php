@@ -1,17 +1,7 @@
 <?php
 $pageTitle = 'Project Manager / Estimator';
-require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/includes/job-posting-header.php';
 ?>
-
-<section class="page-hero">
-    <div class="container"><h1>Project Manager / Estimator</h1></div>
-</section>
-
-<section>
-    <div class="container" style="max-width:800px;">
-        <a href="<?= BASE_URL ?>/careers.php" class="back-link">&larr; Go back</a>
-        <a href="<?= BASE_URL ?>/employment.php" class="btn" style="float:right;">Apply Now</a>
-        <div style="clear:both;"></div>
 
         <h3>Essential Characteristics</h3>
         <ul>
@@ -90,8 +80,4 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
             <li>Payment collections</li>
         </ul>
 
-        <a href="<?= BASE_URL ?>/employment.php" class="btn">Apply Now</a>
-    </div>
-</section>
-
-<?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>
+<?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/job-posting-footer.php'; ?>

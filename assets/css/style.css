@@ -94,7 +94,6 @@ ul { padding-left: 1.25em; }
 .site-header__brand { display: flex; align-items: center; gap: 20px; flex-shrink: 0; }
 .site-header__logo { display: flex; align-items: center; flex-shrink: 0; }
 .site-header__logo img { max-height: 64px; width: auto; }
-.site-header__logo-text { font-family: var(--font-heading); font-weight: 700; font-size: 1.25rem; color: var(--color-navy); }
 .site-header__address {
   display: inline-flex;
   align-items: center;
@@ -273,21 +272,6 @@ section { padding: 64px 0; }
   transform: translateY(-4px);
   box-shadow: 0 8px 20px rgba(20, 6, 9, 0.14);
 }
-
-.page-photos {
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  margin: 1.5rem 0 2.5rem;
-}
-.page-photos img,
-.photo-block img {
-  width: 100%;
-  display: block;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-}
-.photo-block { margin: 1.5rem 0 2.5rem; }
 
 /* One photo per subsection, all cropped to the same box so they read as a
    uniform set even when the source photos have different aspect ratios. */
