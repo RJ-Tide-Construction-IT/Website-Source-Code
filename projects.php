@@ -43,7 +43,7 @@ $markets = [
         <div class="market-grid">
             <?php foreach ($markets as $m): ?>
             <a class="market-card" href="<?= BASE_URL . $m['url'] ?>">
-                <img src="<?= BASE_URL ?>/assets/img/<?= $m['img'] ?>" alt="<?= htmlspecialchars($m['label']) ?>" loading="lazy">
+                <img src="<?= BASE_URL ?>/assets/img/<?= htmlspecialchars($m['img']) ?>" alt="<?= htmlspecialchars($m['label']) ?>" loading="lazy">
                 <div class="market-card__body">
                     <h3><?= htmlspecialchars($m['label']) ?></h3>
                     <p><?= htmlspecialchars($m['blurb']) ?></p>

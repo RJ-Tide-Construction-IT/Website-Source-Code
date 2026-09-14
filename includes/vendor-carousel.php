@@ -19,14 +19,14 @@ $vendorCount = count($GLOBALS['VENDORS']);
                     <?php foreach ($GLOBALS['VENDORS'] as $vendor): ?>
                     <li class="vendor-carousel__slide">
                         <a class="vendor-carousel__box" href="<?= htmlspecialchars($vendor['url']) ?>" target="_blank" rel="noopener noreferrer" title="<?= htmlspecialchars($vendor['name']) ?>">
-                            <img src="<?= BASE_URL ?>/assets/img/vendors/<?= $vendor['img'] ?>" alt="<?= htmlspecialchars($vendor['name']) ?>" loading="lazy">
+                            <img src="<?= BASE_URL ?>/assets/img/vendors/<?= htmlspecialchars($vendor['img']) ?>" alt="<?= htmlspecialchars($vendor['name']) ?>" loading="lazy">
                         </a>
                     </li>
                     <?php endforeach; ?>
                     <?php foreach ($GLOBALS['VENDORS'] as $vendor): ?>
                     <li class="vendor-carousel__slide" aria-hidden="true">
                         <a class="vendor-carousel__box" href="<?= htmlspecialchars($vendor['url']) ?>" tabindex="-1" title="<?= htmlspecialchars($vendor['name']) ?>">
-                            <img src="<?= BASE_URL ?>/assets/img/vendors/<?= $vendor['img'] ?>" alt="" loading="lazy">
+                            <img src="<?= BASE_URL ?>/assets/img/vendors/<?= htmlspecialchars($vendor['img']) ?>" alt="" loading="lazy">
                         </a>
                     </li>
                     <?php endforeach; ?>

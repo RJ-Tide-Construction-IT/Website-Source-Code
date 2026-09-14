@@ -55,7 +55,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
         <div class="logo-strip">
             <?php foreach ($GLOBALS['ASSOCIATIONS'] as $assoc): ?>
             <a href="<?= htmlspecialchars($assoc['url']) ?>" target="_blank" rel="noopener noreferrer" title="<?= htmlspecialchars($assoc['name']) ?>">
-                <img src="<?= BASE_URL ?>/assets/img/<?= $assoc['img'] ?>" alt="<?= htmlspecialchars($assoc['name']) ?>" loading="lazy">
+                <img src="<?= BASE_URL ?>/assets/img/<?= htmlspecialchars($assoc['img']) ?>" alt="<?= htmlspecialchars($assoc['name']) ?>" loading="lazy">
             </a>
             <?php endforeach; ?>
         </div>

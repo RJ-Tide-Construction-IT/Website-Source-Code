@@ -74,7 +74,7 @@ includes/              shared pieces every page uses
   footer.php              bottom of the page (contact info, socials)
   config.php              phone/email/address + menu links, edited in one place
   mailer.php               sends emails for the contact/application forms
-  secrets.php              API key for the email service (not in this repo ,
+  secrets.php              API key for the email service (not in this repo,
                             see "Email setup" below)
   photo-sections.php       shared renderer for the photo galleries on the
                             Projects sub-pages, see "Editing the project

@@ -25,7 +25,7 @@ foreach ($sections as $i => $section):
     ?>
     <div class="slideshow">
         <?php foreach ($section['photos'] as $idx => $p): ?>
-        <img class="slideshow__slide<?= $idx === 0 ? ' is-active' : '' ?>" data-caption="<?= htmlspecialchars($captionFor($p)) ?>" src="<?= BASE_URL ?>/assets/img/<?= $p['img'] ?>" alt="<?= htmlspecialchars($p['caption']) ?>" loading="lazy">
+        <img class="slideshow__slide<?= $idx === 0 ? ' is-active' : '' ?>" data-caption="<?= htmlspecialchars($captionFor($p)) ?>" src="<?= BASE_URL ?>/assets/img/<?= htmlspecialchars($p['img']) ?>" alt="<?= htmlspecialchars($p['caption']) ?>" loading="lazy">
         <?php endforeach; ?>
         <?php if ($isMultiSlide): ?>
         <button type="button" class="slideshow__arrow slideshow__arrow--prev" aria-label="Previous photo">&lsaquo;</button>
@@ -42,7 +42,7 @@ foreach ($sections as $i => $section):
     <div class="showcase-grid">
         <?php foreach ($section['photos'] as $p): ?>
         <figure>
-            <img src="<?= BASE_URL ?>/assets/img/<?= $p['img'] ?>" alt="<?= htmlspecialchars($p['caption']) ?>" loading="lazy">
+            <img src="<?= BASE_URL ?>/assets/img/<?= htmlspecialchars($p['img']) ?>" alt="<?= htmlspecialchars($p['caption']) ?>" loading="lazy">
             <figcaption>
                 <?= htmlspecialchars($p['caption']) ?>
                 <?php if (!empty($p['location'])): ?>
