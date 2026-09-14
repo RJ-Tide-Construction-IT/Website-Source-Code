@@ -2,7 +2,7 @@
 // Renders a series of labeled photo sections for a project gallery page.
 // Expects $sections, each: ['label', 'note', 'photos' => [...], 'layout' => 'carousel' (optional)].
 //
-// A section only becomes an actual carousel when it has 2+ photos — with
+// A section only becomes an actual carousel when it has 2+ photos, with
 // just one photo there'd be nothing to navigate to, so it renders as a
 // single enlarged photo instead (same box size, no dead arrow/dot buttons).
 // A section with no photos yet renders just its note, no photo box.
@@ -20,7 +20,7 @@ foreach ($sections as $i => $section):
     // A photo's location (when set) is folded into its caption text, since
     // the slideshow caption is a single line, not a figure/figcaption pair.
     $captionFor = function ($p) {
-        return $p['caption'] . (!empty($p['location']) ? ' — ' . $p['location'] : '');
+        return $p['caption'] . (!empty($p['location']) ? ', ' . $p['location'] : '');
     };
     ?>
     <div class="slideshow">

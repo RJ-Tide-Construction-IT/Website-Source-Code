@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
       index += 1;
       apply();
       // With reduced motion the track has no CSS transition, so
-      // transitionend below never fires — reset synchronously instead.
+      // transitionend below never fires, reset synchronously instead.
       if (reduceMotion && index >= realCount) jump(index - realCount);
     }
 

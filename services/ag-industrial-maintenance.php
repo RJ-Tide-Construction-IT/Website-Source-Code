@@ -10,7 +10,7 @@ $subServices = [
 ?>
 
 <section class="page-hero page-hero--photo" style="background-image:url('<?= BASE_URL ?>/assets/img/industrial-maintenance/web/20250108_163555.jpg');">
-    <div class="container"><h1>Industrial</h1></div>
+    <div class="container"><h1>Industrial Maintenance</h1></div>
 </section>
 
 <section class="section--muted">
@@ -26,12 +26,9 @@ $subServices = [
 <section>
     <div class="container" style="max-width:800px;">
         <h3 id="industrial-maintenance">Industrial Maintenance</h3>
-        <p>At RJ Tide, we understand how challenging it can be to keep your agricultural and industrial
-           operations running smoothly. The last thing you need is unexpected downtime or gaps in
-           maintenance that slow down production. That&rsquo;s why we provide reliable, full-scope
-           maintenance services designed to cover all your operational needs. From preventative care to
-           emergency repairs, we work with our clients to ensure equipment, facilities, and systems stay
-           operating at peak performance&mdash;so there are no surprises holding your business back.</p>
+        <p>At RJ Tide, we know how costly unexpected downtime can be. That&rsquo;s why we provide reliable,
+           full-scope maintenance for your agricultural and industrial operations, from routine upkeep to
+           on-call repairs, so your equipment, facilities, and systems keep running at peak performance.</p>
 
         <div class="showcase-grid">
             <figure>
@@ -48,17 +45,16 @@ $subServices = [
             </figure>
         </div>
 
-        <p><strong>Preventative Care:</strong> Scheduled inspections and upkeep that catch small issues
-           before they turn into costly downtime. <strong>Scheduled Maintenance:</strong> Planned service
-           work that keeps equipment and facilities running at peak performance year-round.
-           <strong>Equipment &amp; Facility Repairs:</strong> Skilled repair work across mechanical,
-           structural, and facility systems to keep operations moving. <strong>Downtime Reduction:</strong>
-           Fast response and clear communication to get your facility back up and running with minimal
-           disruption.</p>
+        <p>Our maintenance work covers the full range, from preventative care and scheduled inspections
+           that catch small issues before they turn into costly downtime, to planned service work that
+           keeps equipment and facilities running at peak performance year-round. When something does
+           break, our team steps in with skilled repair work across mechanical, structural, and facility
+           systems, responding quickly and communicating clearly so your facility is back up and running
+           with minimal disruption.</p>
         <p>Trust RJ Tide Construction to keep your agricultural and industrial operations running smoothly,
            season after season.</p>
 
-        <h3 id="millwright">Millwright</h3>
+        <h3 id="millwright" style="margin-top:3rem;">Millwright</h3>
         <p>RJ Tide knows that keeping your production running is most important. Our service crew of
            experts will do right by you and help keep you running smoothly.</p>
         <div class="subsection-photo">
@@ -67,19 +63,17 @@ $subServices = [
                    controls autoplay muted playsinline>
             </video>
         </div>
-        <p>At RJ Tide Construction, our Millwright Services are designed to ensure the seamless
-           installation, maintenance, and repair of industrial machinery and equipment. Our team prides
-           itself on detailed proposals and designs for your service needs, supporting our millwright crew
-           through every phase of the project. Our team of skilled millwrights brings precision and
-           expertise to every project, ensuring optimal performance and longevity of your machinery.</p>
-        <p><strong>Installation &amp; Alignment:</strong> Expert installation and precise alignment of
-           machinery to enhance operational efficiency. <strong>Maintenance &amp; Repair:</strong>
-           Comprehensive maintenance and repair services to minimize downtime and extend equipment life.
-           <strong>Emergency Repairs:</strong> We respond quickly to breakdowns, often on site within hours,
-           when immediate action is needed to get your facility back up and running.
-           <strong>Custom Solutions:</strong> Tailored solutions to meet the unique needs of your industrial
-           operations. <strong>Safety &amp; Compliance:</strong> Adherence to the highest safety standards
-           and regulatory compliance to protect your workforce and assets.</p>
+        <p>Our millwright services cover the seamless installation, maintenance, and repair of agricultural
+           and industrial machinery, from grain elevators and feed mills to industrial plants. Our in-house
+           design-build team supports the crew through every phase of the project, so no job is too big or
+           too small, whether it&rsquo;s a full facility build or a single breakdown.</p>
+        <p>On site, our millwrights handle the rigging and crane coordination to set grain bins, legs, and
+           structural components into place, then install and align the grain legs, distributors, and
+           conveyor systems that keep material moving, bringing that same precision to every piece of
+           machinery and drive component along the way. Our in-house welding and fabrication shop builds
+           and repairs components to spec, and when harvest can&rsquo;t wait, we&rsquo;re ready with fast,
+           reliable repairs. Once new equipment is in place, we stay on site through commissioning to make
+           sure it runs right from day one.</p>
         <p>Trust RJ Tide Construction for reliable and efficient millwright services that keep your
            operations running smoothly.</p>
         <p>Reach out to our experts today by calling <a href="tel:<?= SITE_PHONE_TEL ?>"><?= SITE_PHONE ?></a>.</p>

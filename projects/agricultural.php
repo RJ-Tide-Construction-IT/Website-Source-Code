@@ -1,6 +1,6 @@
 <?php
 $pageTitle = 'Agricultural Projects';
-$pageDescription = 'Photos of RJ Tide Construction agricultural work — grain storage and handling, industrial maintenance, and millwright services.';
+$pageDescription = 'Photos of RJ Tide Construction agricultural work, grain storage and handling, industrial maintenance, and millwright services.';
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
 // 'location' is left blank until real per-photo job-site locations are

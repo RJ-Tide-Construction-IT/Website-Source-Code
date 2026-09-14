@@ -78,7 +78,7 @@ $logLine = implode(',', array_map($csvSafe, [date('c'), $name, $email, $phone, $
 file_put_contents($uploadDir . '../applications.csv', $logLine . "\n", FILE_APPEND | LOCK_EX);
 
 // --- Email HR ---
-$subject = 'New job application: ' . header_safe($position) . ' — ' . header_safe($name);
+$subject = 'New job application: ' . header_safe($position) . ', ' . header_safe($name);
 $body    = "Name: $name\n"
          . "Email: $email\n"
          . "Phone: $phone\n"

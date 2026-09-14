@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// Honeypot — bots fill every field, humans never see this one.
+// Honeypot, bots fill every field, humans never see this one.
 if (!empty($_POST['website'])) {
     header('Location: ' . BASE_URL . '/contact.php?sent=1');
     exit;
@@ -19,7 +19,7 @@ $phone   = trim($_POST['phone'] ?? '');
 $message = trim($_POST['message'] ?? '');
 
 // "I'm interested in" is a checkbox group now (0 or more). Only keep values
-// that match the known list — whatever's actually POSTed is user-controlled,
+// that match the known list, whatever's actually POSTed is user-controlled,
 // so this can't be used to inject arbitrary text into the notification email.
 $interests = array_values(array_intersect((array) ($_POST['interest'] ?? []), $GLOBALS['CONTACT_INTERESTS']));
 $interest  = $interests ? implode(', ', $interests) : 'Not specified';

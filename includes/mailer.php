@@ -44,11 +44,11 @@ function send_email(string $toEmail, string $subject, string $textBody, ?string 
     curl_close($ch);
 
     if ($curlErr) {
-        error_log('send_email: cURL error — ' . $curlErr);
+        error_log('send_email: cURL error, ' . $curlErr);
         return false;
     }
     if ($status < 200 || $status >= 300) {
-        error_log('send_email: Brevo returned HTTP ' . $status . ' — ' . $response);
+        error_log('send_email: Brevo returned HTTP ' . $status . ', ' . $response);
         return false;
     }
     return true;

@@ -1,6 +1,6 @@
 <?php
 $pageTitle = 'Contact Us';
-$pageDescription = 'Get in touch with RJ Tide Construction Company, Inc. — Lawton, Iowa.';
+$pageDescription = 'Get in touch with RJ Tide Construction Company, Inc., Lawton, Iowa.';
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
 $submitted = isset($_GET['sent']);
@@ -29,7 +29,7 @@ $submitError = isset($_GET['error']);
         </div>
 
         <?php if ($submitted): ?>
-            <div class="form-note form-note--success">Thanks — your message has been sent. We'll be in touch soon.</div>
+            <div class="form-note form-note--success">Thanks, your message has been sent. We'll be in touch soon.</div>
         <?php elseif ($submitError): ?>
             <div class="form-note form-note--error">Something went wrong sending your message. Please try again or call us directly.</div>
         <?php endif; ?>

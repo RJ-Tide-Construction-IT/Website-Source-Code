@@ -3,7 +3,7 @@
 // page that lists $GLOBALS['VENDORS'] so the markup/behavior lives in one
 // place instead of being duplicated per service page.
 //
-// The vendor list is rendered twice — the second pass is a hidden clone
+// The vendor list is rendered twice, the second pass is a hidden clone
 // appended after the real slides, purely so the JS can scroll past the end
 // of the real list onto visually-identical clone slides and snap back
 // unseen, instead of visibly jumping back to slide 1.

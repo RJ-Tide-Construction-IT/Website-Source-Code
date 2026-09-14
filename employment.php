@@ -28,7 +28,7 @@ $errorMessages = [
 <section>
     <div class="container">
         <?php if ($submitted): ?>
-            <div class="form-note form-note--success">Thanks for applying — we've received your application and will be in touch.</div>
+            <div class="form-note form-note--success">Thanks for applying, we've received your application and will be in touch.</div>
         <?php elseif ($submitError): ?>
             <div class="form-note form-note--error"><?= htmlspecialchars($errorMessages[$submitError] ?? 'Something went wrong. Please try again.') ?></div>
         <?php endif; ?>

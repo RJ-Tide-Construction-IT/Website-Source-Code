@@ -1,6 +1,6 @@
 <?php
 $pageTitle = 'Concrete Projects';
-$pageDescription = 'Photos of RJ Tide Construction concrete work — flatwork, foundations, site concrete, structural, and cast-in-place concrete.';
+$pageDescription = 'Photos of RJ Tide Construction concrete work, flatwork, foundations, site concrete, structural, and cast-in-place concrete.';
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
 // Section labels match the sub-service categories on

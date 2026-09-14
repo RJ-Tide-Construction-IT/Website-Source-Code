@@ -1,5 +1,5 @@
 /* ============================================================
-   RJ Tide Construction — base stylesheet
+   RJ Tide Construction, base stylesheet
    ============================================================ */
 
 :root {
@@ -624,7 +624,7 @@ section { padding: 64px 0; }
 .site-footer__bottom { padding: 20px 24px; font-size: 0.85rem; color: rgba(255,255,255,0.75); }
 
 /* ---------- Responsive ---------- */
-/* Nine nav items + phone number don't fit in one row below ~1050px — switch to
+/* Nine nav items + phone number don't fit in one row below ~1050px, switch to
    the hamburger menu there instead of letting the row wrap mid-line. */
 @media (max-width: 1050px) {
   .site-header__address { display: none; }

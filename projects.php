@@ -1,6 +1,6 @@
 <?php
 $pageTitle = 'Projects';
-$pageDescription = 'RJ Tide Construction project history since 2018 — concrete, millwright, and agricultural/industrial work across the Midwest.';
+$pageDescription = 'RJ Tide Construction project history since 2018, concrete, millwright, and agricultural/industrial work across the Midwest.';
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
 $markets = [

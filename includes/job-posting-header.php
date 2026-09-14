@@ -1,15 +1,15 @@
 <?php
-// Shared opening markup for career posting pages (careers/*.php) — every
+// Shared opening markup for career posting pages (careers/*.php), every
 // posting repeats the same hero, back-link/Apply-Now row, and job-meta box,
 // so it lives here once instead of copy-pasted into all nine files.
 //
 // Expects, set by the calling page before requiring this file:
-//   $pageTitle (required) — used for both the browser title (via header.php)
+//   $pageTitle (required), used for both the browser title (via header.php)
 //               and the <h1>, since every posting's hero heading is just its
 //               job title.
-//   $jobMeta   (optional) — ordered ['Label' => 'Value', ...] shown as the
+//   $jobMeta   (optional), ordered ['Label' => 'Value', ...] shown as the
 //               salary/reports-to row under the Apply Now button. Omit it
-//               (or leave it empty) to skip that row entirely — the Project
+//               (or leave it empty) to skip that row entirely, the Project
 //               Manager / Estimator posting has none.
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 ?>
