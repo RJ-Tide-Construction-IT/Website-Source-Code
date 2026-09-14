@@ -1,12 +1,12 @@
 <?php
 $pageTitle = 'Home';
-$pageDescription = 'RJ Tide Construction Company, Inc., full-service concrete, millwright services, and Ag/Industrial maintenance contractor based in Lawton, Iowa.';
+$pageDescription = 'RJ Tide Construction Company, Inc., full-service concrete, agricultural, and industrial/millwright contractor based in Lawton, Iowa.';
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 ?>
 
 <section class="hero hero--photo" style="background-image:url('<?= BASE_URL ?>/assets/img/index/web/hero-crew.jpg');">
     <div class="container">
-        <h1>Your Contractor Of Choice For<br>Full-Service Concrete,<br>Millwright Services, &amp;<br>Industrial Maintenance</h1>
+        <h1>Your Contractor Of Choice For<br>Full-Service Concrete,<br>Agricultural, &amp;<br>Industrial Construction</h1>
     </div>
 </section>
 
