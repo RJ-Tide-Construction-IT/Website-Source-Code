@@ -3,31 +3,44 @@ $pageTitle = 'Careers';
 $pageDescription = 'Join the RJ Tide family. Actively accepting applications for craftsman, millwright, and leadership positions.';
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
+// To stop showing a position (not currently hiring for it), change its
+// 'open' value below from true to false, its posting page still works at
+// the same address in case anyone has the link saved, it just won't be
+// listed here. Set it back to true whenever you're hiring for it again.
 $jobs = [
-    'Craftsman 1'                => '/careers/craftsman-1.php',
-    'Craftsman 2'                => '/careers/craftsman-2.php',
-    'Craftsman 3'                => '/careers/craftsman-3.php',
-    'Concrete Foreman'           => '/careers/foreman.php',
-    'Concrete Superintendent'    => '/careers/concrete-superintendent.php',
-    'Millwright Superintendent'  => '/careers/millwright-superintendent.php',
-    'Project Manager / Estimator'=> '/careers/project-manager-estimator.php',
-    'Millwright 1'               => '/careers/millwright-1.php',
-    'Millwright 2'               => '/careers/millwright-2.php',
+    ['title' => 'Craftsman 1',                 'href' => '/careers/craftsman-1.php',               'open' => true],
+    ['title' => 'Craftsman 2',                 'href' => '/careers/craftsman-2.php',               'open' => true],
+    ['title' => 'Craftsman 3',                 'href' => '/careers/craftsman-3.php',               'open' => true],
+    ['title' => 'Concrete Foreman',            'href' => '/careers/foreman.php',                   'open' => false],
+    ['title' => 'Concrete Superintendent',     'href' => '/careers/concrete-superintendent.php',    'open' => false],
+    ['title' => 'Millwright Superintendent',   'href' => '/careers/millwright-superintendent.php',  'open' => false],
+    ['title' => 'Millwright Foreman',          'href' => '/careers/millwright-foreman.php',         'open' => false],
+    ['title' => 'Project Manager / Estimator', 'href' => '/careers/project-manager-estimator.php',  'open' => false],
+    ['title' => 'Project Engineer',            'href' => '/careers/project-engineer.php',           'open' => false],
+    ['title' => 'Millwright 1',                'href' => '/careers/millwright-1.php',               'open' => true],
+    ['title' => 'Millwright 2',                'href' => '/careers/millwright-2.php',               'open' => true],
 ];
 ?>
 
-<section class="page-hero">
+<section class="page-hero page-hero--photo" style="background-image:url('<?= BASE_URL ?>/assets/img/index/web/hero-crew.jpg');">
     <div class="container"><h1>Be a part of the RJ Tide family!</h1></div>
 </section>
 
 <section>
     <div class="container">
         <h2 class="section-title">Actively accepting applications for these positions!</h2>
+        <?php $openJobs = array_filter($jobs, fn($job) => $job['open']); ?>
+        <?php if ($openJobs): ?>
         <ul class="job-list">
-            <?php foreach ($jobs as $title => $href): ?>
-            <li><a href="<?= BASE_URL . $href ?>"><?= htmlspecialchars($title) ?> <span>&rarr;</span></a></li>
+            <?php foreach ($openJobs as $job): ?>
+            <li><a href="<?= BASE_URL . $job['href'] ?>"><?= htmlspecialchars($job['title']) ?> <span>&rarr;</span></a></li>
             <?php endforeach; ?>
         </ul>
+        <?php else: ?>
+        <p style="text-align:center;color:var(--color-text-muted);">We don&rsquo;t have any open positions listed right now, but
+           we&rsquo;re always interested in hearing from skilled tradespeople. Check back soon, or
+           <a href="<?= BASE_URL ?>/employment.php">reach out anyway</a>.</p>
+        <?php endif; ?>
     </div>
 </section>
 
@@ -44,7 +57,7 @@ $jobs = [
             <li>Safety First &ndash; Incentives and programs to ensure everyone makes it home safe.</li>
             <li>Employee Referral Bonuses &ndash; Rewarding team members for bringing in top talent.</li>
         </ul>
-        <p style="text-align:center;">RJ Tide is an Equal Opportunity Employer. Women and Minorities are encouraged to apply.</p>
+        <p style="text-align:center;margin-top:2.5rem;"><strong>RJ Tide is an Equal Opportunity Employer. Women and Minorities are encouraged to apply.</strong></p>
         <div style="text-align:center;">
             <a href="<?= BASE_URL ?>/employment.php" class="btn">Apply Here</a>
         </div>

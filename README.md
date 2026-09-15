@@ -16,7 +16,8 @@ exactly which file to open for common edits.
 | Change the text/wording on the homepage | [index.php](index.php) |
 | Change the About page text | [about.php](about.php) |
 | Change a service page (Concrete, Agricultural, Industrial Maintenance) | the matching file in [services/](services/) |
-| Add/edit/remove a job posting | the matching file in [careers/](careers/), and the list on [careers.php](careers.php) |
+| Add/edit a job posting | the matching file in [careers/](careers/), and the list on [careers.php](careers.php) |
+| Stop listing a position you're not hiring for right now | [careers.php](careers.php) — find the job and change its `'open' => true` to `'open' => false` |
 | Add, remove, or edit a photo on the Projects page | the `$sections` array at the top of the matching file in [projects/](projects/), see below |
 | Change colors, fonts, or overall look | [assets/css/style.css](assets/css/style.css) |
 | Change the mobile menu, slideshow, or image lightbox behavior | [assets/js/main.js](assets/js/main.js) |
