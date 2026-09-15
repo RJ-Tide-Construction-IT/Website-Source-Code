@@ -80,11 +80,15 @@ includes/              shared pieces every page uses
   photo-sections.php       shared renderer for the photo galleries on the
                             Projects sub-pages, see "Editing the project
                             galleries" below
+  job-posting-header.php    shared hero + back-link/Apply-Now/job-meta markup
+  job-posting-footer.php    for every page in careers/, see below
 
 services/              one file per service page (Concrete, Agricultural,
                         Ag/Industrial Maintenance)
 
-careers/                one file per job posting
+careers/                one file per job posting. To stop listing one without
+                        deleting it, use the 'open' flag in careers.php's
+                        $jobs array (see the quick-lookup table above)
 
 projects/               supporting pages for the Projects section
                         (agricultural.php, concrete.php, special-projects.php)
