@@ -7,6 +7,13 @@ define('SITE_PHONE_TEL', '+17122550175');
 define('SITE_EMAIL', 'info@rjtide.com');
 define('SITE_ADDRESS', '1821 US Highway 20, Lawton, IA 51030');
 
+// Where form submissions actually get delivered, separate from SITE_EMAIL
+// (the address shown publicly on the site) so the two can change independently.
+define('CAREERS_EMAIL', 'tanderson@rjtide.com');            // every job application
+define('CONTACT_EMAIL_DEFAULT', 'mcross@rjtide.com');       // contact form: no specific-department match
+define('CONTACT_EMAIL_AGRICULTURAL', 'shodgson@rjtide.com'); // contact form: "Agricultural" checked
+define('CONTACT_EMAIL_CONCRETE', 'khodgson@rjtide.com');     // contact form: "Concrete" checked
+
 // Root-relative base path. Leave as '' when the site is hosted at the domain root
 // (e.g. https://rjtide.com/). Set to '/subfolder' if it's hosted in a subfolder.
 define('BASE_URL', '');
@@ -52,4 +59,4 @@ $GLOBALS['MAIN_NAV'] = [
 // "I'm interested in" checkboxes on the Contact form. contact-handler.php
 // checks submissions against this same list so only these values can ever
 // end up in the notification email, no matter what's POSTed.
-$GLOBALS['CONTACT_INTERESTS'] = ['Concrete', 'Agricultural', 'Ag / Industrial Maintenance', 'Other'];
+$GLOBALS['CONTACT_INTERESTS'] = ['Concrete', 'Agricultural', 'Industrial', 'Other'];

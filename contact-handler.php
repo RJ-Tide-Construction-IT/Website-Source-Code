@@ -36,7 +36,24 @@ $body    = "Name: $name\n"
          . "Interested in: $interest\n\n"
          . "Message:\n$message\n";
 
-$sent = send_email(SITE_EMAIL, $subject, $body, $email, $name);
+// Route by checked interest — Agricultural and Concrete go straight to
+// their department; anything else (Ag/Industrial Maintenance, Other, or no
+// box checked) falls back to the default inbox. If someone checks more than
+// one routed interest, every matching department gets a copy rather than
+// picking just one and risking a lead going to the wrong person.
+$routeTo = [
+    'Agricultural' => CONTACT_EMAIL_AGRICULTURAL,
+    'Concrete'     => CONTACT_EMAIL_CONCRETE,
+];
+$recipients = array_values(array_unique(array_intersect_key($routeTo, array_flip($interests))));
+if (!$recipients) {
+    $recipients = [CONTACT_EMAIL_DEFAULT];
+}
+
+$sent = true;
+foreach ($recipients as $recipient) {
+    $sent = send_email($recipient, $subject, $body, $email, $name) && $sent;
+}
 
 header('Location: ' . BASE_URL . '/contact.php?' . ($sent ? 'sent=1' : 'error=1'));
 exit;

@@ -86,6 +86,6 @@ $body    = "Name: $name\n"
          . "Message:\n$message\n\n"
          . "Resume saved on server as: uploads/resumes/$safeName\n";
 
-send_email(SITE_EMAIL, $subject, $body, $email, $name);
+send_email(CAREERS_EMAIL, $subject, $body, $email, $name);
 
 redirect_with(['sent' => 1]);
