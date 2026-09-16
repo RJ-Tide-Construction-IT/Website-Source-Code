@@ -37,7 +37,7 @@ $markets = [
 <section>
     <div class="container" style="max-width:1100px;">
         <p style="text-align:center;color:var(--color-text-muted);max-width:640px;margin:0 auto 1rem;">
-            A look at the concrete, agricultural, and industrial work we do across the Midwest.
+            A look at our Concrete, Agricultural, and Specialty Concrete work across the Midwest.
         </p>
         <div class="market-grid">
             <?php foreach ($markets as $m): ?>

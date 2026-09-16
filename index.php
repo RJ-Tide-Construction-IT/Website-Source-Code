@@ -24,10 +24,10 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 <section class="section--dark section--photo" style="background-image:url('<?= BASE_URL ?>/assets/img/index/web/safety-section.jpg');">
     <div class="container">
         <h2 class="section-title">Building With Safety, Quality, and Care</h2>
-        <p style="max-width:760px;margin:0 auto 1.5rem;text-align:center;">
-            At RJ Tide Construction, we&rsquo;re committed to creating structures that are built to last.
-            We prioritize the safety of our team, our clients, and the communities we serve while using
-            sustainable practices that respect the environment and future generations.
+        <p style="max-width:760px;margin:0 auto 1.5rem;text-align:center;font-size:1.15rem;">
+            Every job starts with a safety-first mindset. Our crews follow rigorous training and site
+            protocols to protect our team, our clients, and the communities where we build, using
+            sustainable practices that respect the environment for generations to come.
         </p>
         <div style="text-align:center;">
             <a href="<?= BASE_URL ?>/contact.php" class="btn btn--outline">Get In Touch</a>
@@ -38,13 +38,14 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 <section class="section--muted">
     <div class="container">
         <h3 class="section-title">We Build the Right Way</h3>
-        <p style="max-width:760px;margin:0 auto 2rem;text-align:center;">At RJ Tide Construction, every project reflects our commitment to quality, safety, and reliability.
-           By combining proven building methods with modern innovation, we deliver results our clients can trust.</p>
+        <p style="max-width:760px;margin:0 auto 2rem;text-align:center;font-size:1.15rem;">From the first shovel of dirt to the final walkthrough, our crews bring decades of hands-on
+           experience to every project. We pair proven construction methods with the latest equipment and
+           technology to keep your project on schedule and within budget.</p>
         <div class="feature-grid">
             <div class="card"><h4>Quality Craftsmanship</h4></div>
             <div class="card"><h4>Reliable Timelines</h4></div>
             <div class="card"><h4>Modern Technology</h4></div>
-            <div class="card"><h4>Modern Methods</h4></div>
+            <div class="card"><h4>Experienced Crews</h4></div>
         </div>
     </div>
 </section>
