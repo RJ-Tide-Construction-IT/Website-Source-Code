@@ -7,22 +7,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 // available; the gallery already renders it when a photo has one.
 $sections = [
     [
-        'label'  => 'Agricultural',
-        'note'   => 'Photos for this section are coming soon.',
-        'layout' => 'carousel',
-        'photos' => [
-            ['img' => 'agriculture/web/placeholder.svg', 'caption' => 'Crew truck and trailer on-site at a grain storage project', 'location' => ''],
-            ['img' => 'agriculture/web/placeholder.svg', 'caption' => 'Grain storage silos with crew working the overhead leg structure', 'location' => ''],
-            ['img' => 'agriculture/web/placeholder.svg', 'caption' => '3D design concept of a grain handling and storage facility', 'location' => ''],
-            ['img' => 'agriculture/web/placeholder.svg', 'caption' => 'Engineering elevation drawing of a grain leg and distributor structure', 'location' => ''],
-            ['img' => 'agriculture/web/placeholder.svg', 'caption' => '2D engineering drawing of the grain storage facility', 'location' => ''],
-            ['img' => 'agriculture/web/placeholder.svg', 'caption' => '3D design render of a grain storage silo and conveyor structure', 'location' => ''],
-            ['img' => 'agriculture/web/placeholder.svg', 'caption' => '3D design render of the grain storage facility, alternate angle', 'location' => ''],
-            ['img' => 'agriculture/web/placeholder.svg', 'caption' => 'Completed grain storage facility matching the original design', 'location' => ''],
-        ],
-    ],
-    [
-        'label'  => 'Industrial Maintenance',
+        'label'  => 'Agricultural / Industrial',
         'note'   => '',
         'layout' => 'carousel',
         'photos' => [
@@ -33,16 +18,6 @@ $sections = [
             ['img' => 'industrial-maintenance/web/20240803_114332.jpg', 'caption' => 'Completed grain elevator and storage facility with silos', 'location' => ''],
             ['img' => 'industrial-maintenance/web/20240803_074735.jpg', 'caption' => 'Crane and boom lift erecting a grain storage facility', 'location' => ''],
             ['img' => 'industrial-maintenance/web/20260423_121052.jpg', 'caption' => 'Crew erecting a new steel structure at a grain facility', 'location' => ''],
-        ],
-    ],
-    [
-        'label'  => 'Millwright',
-        'note'   => 'Photos for this section are coming soon.',
-        'layout' => 'carousel',
-        'photos' => [
-            ['img' => 'millwright/web/placeholder-1.jpg', 'caption' => 'Installation & Alignment', 'location' => ''],
-            ['img' => 'millwright/web/placeholder-2.jpg', 'caption' => 'Maintenance & Repair', 'location' => ''],
-            ['img' => 'millwright/web/placeholder-3.jpg', 'caption' => 'Custom Solutions', 'location' => ''],
         ],
     ],
 ];

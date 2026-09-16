@@ -16,16 +16,9 @@ foreach ($sections as $i => $section):
 <p style="text-align:center;color:var(--color-text-muted);margin-top:-1.25rem;"><?= htmlspecialchars($section['note']) ?></p>
 <?php endif; ?>
 <?php if ($isCarousel): ?>
-    <?php
-    // A photo's location (when set) is folded into its caption text, since
-    // the slideshow caption is a single line, not a figure/figcaption pair.
-    $captionFor = function ($p) {
-        return $p['caption'] . (!empty($p['location']) ? ', ' . $p['location'] : '');
-    };
-    ?>
     <div class="slideshow">
         <?php foreach ($section['photos'] as $idx => $p): ?>
-        <img class="slideshow__slide<?= $idx === 0 ? ' is-active' : '' ?>" data-caption="<?= htmlspecialchars($captionFor($p)) ?>" src="<?= BASE_URL ?>/assets/img/<?= htmlspecialchars($p['img']) ?>" alt="<?= htmlspecialchars($p['caption']) ?>" loading="lazy">
+        <img class="slideshow__slide<?= $idx === 0 ? ' is-active' : '' ?>" src="<?= BASE_URL ?>/assets/img/<?= htmlspecialchars($p['img']) ?>" alt="<?= htmlspecialchars($p['caption']) ?>" loading="lazy">
         <?php endforeach; ?>
         <?php if ($isMultiSlide): ?>
         <button type="button" class="slideshow__arrow slideshow__arrow--prev" aria-label="Previous photo">&lsaquo;</button>
@@ -37,18 +30,11 @@ foreach ($sections as $i => $section):
         </div>
         <?php endif; ?>
     </div>
-    <p class="slideshow__caption"><?= htmlspecialchars($captionFor($section['photos'][0])) ?></p>
 <?php elseif ($photoCount > 0): ?>
     <div class="showcase-grid">
         <?php foreach ($section['photos'] as $p): ?>
         <figure>
             <img src="<?= BASE_URL ?>/assets/img/<?= htmlspecialchars($p['img']) ?>" alt="<?= htmlspecialchars($p['caption']) ?>" loading="lazy">
-            <figcaption>
-                <?= htmlspecialchars($p['caption']) ?>
-                <?php if (!empty($p['location'])): ?>
-                    <br><span style="font-weight:400;color:var(--color-text-muted);"><?= htmlspecialchars($p['location']) ?></span>
-                <?php endif; ?>
-            </figcaption>
         </figure>
         <?php endforeach; ?>
     </div>
