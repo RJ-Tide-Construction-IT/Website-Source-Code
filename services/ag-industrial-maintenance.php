@@ -32,12 +32,6 @@ $subServices = [
 
         <div class="showcase-grid">
             <figure>
-                <img src="<?= BASE_URL ?>/assets/img/industrial-maintenance/web/20230516_145434.jpg" alt="Grain leg headhouse and catwalk structure" loading="lazy">
-            </figure>
-            <figure>
-                <img src="<?= BASE_URL ?>/assets/img/industrial-maintenance/web/20230516_150046.jpg" alt="Grain leg boot and distributor mechanism" loading="lazy">
-            </figure>
-            <figure>
                 <img src="<?= BASE_URL ?>/assets/img/industrial-maintenance/web/img-2071.jpg" alt="Crane setting a grain bin section into place" loading="lazy">
             </figure>
             <figure>
