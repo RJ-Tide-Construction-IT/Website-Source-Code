@@ -76,6 +76,7 @@ ul { padding-left: 1.25em; }
 .btn--outline { background: transparent; border: 2px solid var(--color-white); color: var(--color-white); }
 .btn--outline:hover { background: var(--color-red); border-color: var(--color-red); color: var(--color-white); }
 .btn--nav-cta { padding: 0.5em 1.25em; font-size: 0.95rem; white-space: nowrap; flex-shrink: 0; }
+.main-nav .btn--nav-cta:hover { color: var(--color-white); }
 
 /* ---------- Header ---------- */
 .site-header {
@@ -351,13 +352,6 @@ section { padding: 64px 0; }
 .slideshow__arrow:hover { background: rgba(15,23,42,0.8); }
 .slideshow__arrow--prev { left: 14px; }
 .slideshow__arrow--next { right: 14px; }
-.slideshow__caption {
-  text-align: center;
-  margin-top: 10px;
-  font-weight: 600;
-  color: var(--color-navy);
-  font-size: 0.9rem;
-}
 
 .lightbox-overlay {
   position: fixed;
@@ -391,6 +385,29 @@ section { padding: 64px 0; }
   cursor: pointer;
   padding: 8px;
 }
+.lightbox-overlay__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.12);
+  color: var(--color-white);
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: background 0.15s ease;
+}
+.lightbox-overlay__arrow:hover { background: rgba(255,255,255,0.25); }
+.lightbox-overlay__arrow--prev { left: 20px; }
+.lightbox-overlay__arrow--next { right: 20px; }
+.lightbox-overlay__arrow[hidden] { display: none; }
 
 .showcase-grid {
   display: grid;
@@ -568,6 +585,11 @@ section { padding: 64px 0; }
   cursor: pointer;
 }
 .checkbox-option input { width: auto; }
+.form-row { display: flex; flex-wrap: wrap; gap: 0 20px; }
+.form-row .form-field { flex: 1; min-width: 160px; }
+.form-section-title { margin: 2.5rem 0 1rem; padding-bottom: 8px; border-bottom: 2px solid var(--color-navy); }
+.form-section-title:first-of-type { margin-top: 0; }
+.form-field-hint { font-size: 0.85rem; color: var(--color-text-muted); margin-top: -4px; margin-bottom: 8px; }
 .form-note { padding: 14px 18px; border-radius: var(--radius); margin-bottom: 20px; }
 .form-note--success { background: #e6f6ec; color: #1a7a3d; }
 .form-note--error { background: #fde8ea; color: var(--color-red-dark); }

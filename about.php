@@ -54,13 +54,14 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 <section>
     <div class="container">
         <h3 class="section-title">We Build the Right Way</h3>
-        <p style="max-width:760px;margin:0 auto 2rem;text-align:center;">At RJ Tide Construction, every project reflects our commitment to quality, safety, and reliability.
-           By combining proven building methods with modern innovation, we deliver results our clients can trust.</p>
+        <p style="max-width:760px;margin:0 auto 2rem;text-align:center;font-size:1.15rem;">From the first shovel of dirt to the final walkthrough, our crews bring decades of hands-on
+           experience to every project. We pair proven construction methods with the latest equipment and
+           technology to keep your project on schedule and within budget.</p>
         <div class="feature-grid">
             <div class="card"><h4>Quality Craftsmanship</h4></div>
             <div class="card"><h4>Reliable Timelines</h4></div>
             <div class="card"><h4>Modern Technology</h4></div>
-            <div class="card"><h4>Modern Methods</h4></div>
+            <div class="card"><h4>Experienced Crews</h4></div>
         </div>
     </div>
 </section>

@@ -113,6 +113,7 @@ $subServices = [
 <section class="section--muted">
     <div class="container">
         <a href="<?= BASE_URL ?>/index.php" class="back-link">&larr; Go back to main menu</a>
+        <a href="<?= BASE_URL ?>/projects.php" class="back-link" style="margin-left:24px;">View our Projects &rarr;</a>
     </div>
 </section>
 

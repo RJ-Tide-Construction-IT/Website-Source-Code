@@ -55,11 +55,29 @@ document.addEventListener('DOMContentLoaded', function () {
   var overlay = document.getElementById('lightboxOverlay');
   var overlayImg = document.getElementById('lightboxImage');
   var closeBtn = document.getElementById('lightboxClose');
+  var prevBtn = document.getElementById('lightboxPrev');
+  var nextBtn = document.getElementById('lightboxNext');
   if (!overlay || !overlayImg || !closeBtn) return;
 
-  function openLightbox(src, alt) {
-    overlayImg.src = src;
-    overlayImg.alt = alt || '';
+  // Every clickable photo belongs to a "gallery" (the carousel/grid/photo
+  // box it lives in), so the lightbox arrows can step through the same set
+  // of photos the visitor was already browsing, not just close and reopen.
+  var currentGroup = [];
+  var currentIndex = 0;
+
+  function render() {
+    var img = currentGroup[currentIndex];
+    overlayImg.src = img.src;
+    overlayImg.alt = img.alt || '';
+    var multi = currentGroup.length > 1;
+    if (prevBtn) prevBtn.hidden = !multi;
+    if (nextBtn) nextBtn.hidden = !multi;
+  }
+
+  function openLightbox(group, index) {
+    currentGroup = group;
+    currentIndex = index;
+    render();
     overlay.classList.add('is-open');
   }
 
@@ -68,19 +86,39 @@ document.addEventListener('DOMContentLoaded', function () {
     overlayImg.src = '';
   }
 
-  document.querySelectorAll('.slideshow__slide, .showcase-grid img').forEach(function (img) {
+  function showNext() {
+    if (currentGroup.length < 2) return;
+    currentIndex = (currentIndex + 1) % currentGroup.length;
+    render();
+  }
+
+  function showPrev() {
+    if (currentGroup.length < 2) return;
+    currentIndex = (currentIndex - 1 + currentGroup.length) % currentGroup.length;
+    render();
+  }
+
+  var galleryContainers = ['.slideshow', '.showcase-grid', '.subsection-photo'];
+  document.querySelectorAll('.slideshow__slide, .showcase-grid img, .subsection-photo img').forEach(function (img) {
+    var container = img.closest(galleryContainers.join(', '));
+    var group = container ? Array.prototype.slice.call(container.querySelectorAll('img')) : [img];
     img.style.cursor = 'pointer';
     img.addEventListener('click', function () {
-      openLightbox(img.src, img.alt);
+      openLightbox(group, group.indexOf(img));
     });
   });
 
   closeBtn.addEventListener('click', closeLightbox);
+  if (prevBtn) prevBtn.addEventListener('click', showPrev);
+  if (nextBtn) nextBtn.addEventListener('click', showNext);
   overlay.addEventListener('click', function (e) {
     if (e.target === overlay) closeLightbox();
   });
   document.addEventListener('keydown', function (e) {
+    if (!overlay.classList.contains('is-open')) return;
     if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') showNext();
+    if (e.key === 'ArrowLeft') showPrev();
   });
 });
 

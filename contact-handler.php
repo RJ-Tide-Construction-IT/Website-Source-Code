@@ -36,7 +36,7 @@ $body    = "Name: $name\n"
          . "Interested in: $interest\n\n"
          . "Message:\n$message\n";
 
-// Route by checked interest — Agricultural and Concrete go straight to
+// Route by checked interest, Agricultural and Concrete go straight to
 // their department; anything else (Ag/Industrial Maintenance, Other, or no
 // box checked) falls back to the default inbox. If someone checks more than
 // one routed interest, every matching department gets a copy rather than

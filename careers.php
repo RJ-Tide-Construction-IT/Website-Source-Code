@@ -3,23 +3,10 @@ $pageTitle = 'Careers';
 $pageDescription = 'Join the RJ Tide family. Actively accepting applications for craftsman, millwright, and leadership positions.';
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
-// To stop showing a position (not currently hiring for it), change its
-// 'open' value below from true to false, its posting page still works at
-// the same address in case anyone has the link saved, it just won't be
-// listed here. Set it back to true whenever you're hiring for it again.
-$jobs = [
-    ['title' => 'Craftsman 1',                 'href' => '/careers/craftsman-1.php',               'open' => true],
-    ['title' => 'Craftsman 2',                 'href' => '/careers/craftsman-2.php',               'open' => true],
-    ['title' => 'Craftsman 3',                 'href' => '/careers/craftsman-3.php',               'open' => true],
-    ['title' => 'Concrete Foreman',            'href' => '/careers/foreman.php',                   'open' => false],
-    ['title' => 'Concrete Superintendent',     'href' => '/careers/concrete-superintendent.php',    'open' => false],
-    ['title' => 'Millwright Superintendent',   'href' => '/careers/millwright-superintendent.php',  'open' => false],
-    ['title' => 'Millwright Foreman',          'href' => '/careers/millwright-foreman.php',         'open' => false],
-    ['title' => 'Project Manager / Estimator', 'href' => '/careers/project-manager-estimator.php',  'open' => false],
-    ['title' => 'Project Engineer',            'href' => '/careers/project-engineer.php',           'open' => false],
-    ['title' => 'Millwright 1',                'href' => '/careers/millwright-1.php',               'open' => true],
-    ['title' => 'Millwright 2',                'href' => '/careers/millwright-2.php',               'open' => true],
-];
+// The full job list (with 'open' flags) lives in includes/config.php as
+// $GLOBALS['JOBS'], shared with employment.php's Position dropdown so the
+// two can't drift out of sync. To stop showing a position, edit it there.
+$jobs = $GLOBALS['JOBS'];
 ?>
 
 <section class="page-hero page-hero--photo" style="background-image:url('<?= BASE_URL ?>/assets/img/index/web/hero-crew.jpg');">

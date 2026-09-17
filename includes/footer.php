@@ -36,7 +36,9 @@
 
 <div class="lightbox-overlay" id="lightboxOverlay">
     <button class="lightbox-overlay__close" id="lightboxClose" aria-label="Close">&times;</button>
+    <button type="button" class="lightbox-overlay__arrow lightbox-overlay__arrow--prev" id="lightboxPrev" aria-label="Previous photo">&lsaquo;</button>
     <img id="lightboxImage" src="" alt="">
+    <button type="button" class="lightbox-overlay__arrow lightbox-overlay__arrow--next" id="lightboxNext" aria-label="Next photo">&rsaquo;</button>
 </div>
 
 <script src="<?= BASE_URL ?>/assets/js/main.js"></script>

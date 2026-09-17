@@ -53,10 +53,31 @@ $GLOBALS['MAIN_NAV'] = [
     'Concrete'     => '/services/concrete-services.php',
     'Agricultural' => '/services/agricultural-services.php',
     'Industrial'   => '/services/ag-industrial-maintenance.php',
-    'Projects'     => '/projects.php',
+    'Careers'      => '/careers.php',
 ];
 
 // "I'm interested in" checkboxes on the Contact form. contact-handler.php
 // checks submissions against this same list so only these values can ever
 // end up in the notification email, no matter what's POSTed.
 $GLOBALS['CONTACT_INTERESTS'] = ['Concrete', 'Agricultural', 'Industrial', 'Other'];
+
+// Every job posting. Shared by careers.php (which also uses 'open' to decide
+// what's listed, see the README) and employment.php's Position dropdown, so
+// the two can't drift out of sync with each other.
+// To stop showing a position (not currently hiring for it), change its
+// 'open' value below from true to false, its posting page still works at
+// the same address in case anyone has the link saved, it just won't be
+// listed on careers.php. Set it back to true whenever you're hiring for it again.
+$GLOBALS['JOBS'] = [
+    ['title' => 'Craftsman 1',                 'href' => '/careers/craftsman-1.php',               'open' => true],
+    ['title' => 'Craftsman 2',                 'href' => '/careers/craftsman-2.php',               'open' => true],
+    ['title' => 'Craftsman 3',                 'href' => '/careers/craftsman-3.php',               'open' => true],
+    ['title' => 'Concrete Foreman',            'href' => '/careers/foreman.php',                   'open' => false],
+    ['title' => 'Concrete Superintendent',     'href' => '/careers/concrete-superintendent.php',    'open' => false],
+    ['title' => 'Millwright Superintendent',   'href' => '/careers/millwright-superintendent.php',  'open' => false],
+    ['title' => 'Millwright Foreman',          'href' => '/careers/millwright-foreman.php',         'open' => false],
+    ['title' => 'Project Manager / Estimator', 'href' => '/careers/project-manager-estimator.php',  'open' => false],
+    ['title' => 'Project Engineer',            'href' => '/careers/project-engineer.php',           'open' => false],
+    ['title' => 'Millwright 1',                'href' => '/careers/millwright-1.php',               'open' => true],
+    ['title' => 'Millwright 2',                'href' => '/careers/millwright-2.php',               'open' => true],
+];

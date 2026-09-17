@@ -5,8 +5,8 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
 $subServices = [
     'Design Build'          => '#design-build',
+    'Millwright Support'    => '#millwright-support',
     'Concrete Support'      => '#concrete-support',
-    'Millwright Services'   => BASE_URL . '/services/ag-industrial-maintenance.php#millwright',
 ];
 ?>
 
@@ -55,6 +55,12 @@ $subServices = [
             </figure>
         </div>
 
+        <h3 id="millwright-support" style="margin-top:3rem;">Millwright Support</h3>
+        <p>Our <a href="<?= BASE_URL ?>/services/ag-industrial-maintenance.php#millwright">millwright team</a>
+           keeps your grain handling and storage equipment running, from installing and aligning legs,
+           distributors, and conveyor systems to fast, reliable repairs when harvest can&rsquo;t wait.
+           Whether it&rsquo;s routine maintenance or an emergency breakdown, we bring the same precision and
+           reliability to every job.</p>
         <h3 id="concrete-support" style="margin-top:3rem;">Concrete Support for Ag Facilities</h3>
         <p>Working closely with our agricultural team, our <a href="<?= BASE_URL ?>/services/concrete-services.php">concrete division</a>
            delivers comprehensive solutions for your projects. Whether you need repairs, replacements, or
@@ -62,6 +68,7 @@ $subServices = [
         <p>Reach out to our experts today by calling <a href="tel:<?= SITE_PHONE_TEL ?>"><?= SITE_PHONE ?></a>.</p>
 
         <a href="<?= BASE_URL ?>/index.php" class="back-link">&larr; Go back to main menu</a>
+        <a href="<?= BASE_URL ?>/projects.php" class="back-link" style="margin-left:24px;">View our Projects &rarr;</a>
     </div>
 </section>
 
