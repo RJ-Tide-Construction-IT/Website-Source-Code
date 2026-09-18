@@ -1,5 +1,6 @@
 <?php
 $pageTitle = 'Full-Service Concrete';
+$pageDescription = 'Flatwork, foundations, site concrete, industrial/structural, and decorative concrete services from RJ Tide Construction.';
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
 $subServices = [

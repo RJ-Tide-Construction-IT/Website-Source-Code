@@ -11,6 +11,12 @@
 //               salary/reports-to row under the Apply Now button. Omit it
 //               (or leave it empty) to skip that row entirely, the Project
 //               Manager / Estimator posting has none.
+//   $pageDescription (optional), a per-posting meta description. Omit it to
+//               get a sensible generated default instead of every posting
+//               falling back to the generic site-wide description.
+if (!isset($pageDescription)) {
+    $pageDescription = "Apply for the $pageTitle position at RJ Tide Construction Company, Inc. in Lawton, Iowa.";
+}
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 ?>
 

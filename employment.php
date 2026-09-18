@@ -50,12 +50,12 @@ $errorMessages = [
 <section>
     <div class="container">
         <?php if ($submitted): ?>
-            <div class="form-note form-note--success">Thanks for applying, we've received your application and will be in touch.</div>
+            <div class="form-note form-note--success" style="max-width:720px;margin:0 auto 20px;">Thanks for applying, we've received your application and will be in touch.</div>
         <?php elseif ($submitError): ?>
-            <div class="form-note form-note--error"><?= htmlspecialchars($errorMessages[$submitError] ?? 'Something went wrong. Please try again.') ?></div>
+            <div class="form-note form-note--error" style="max-width:720px;margin:0 auto 20px;"><?= htmlspecialchars($errorMessages[$submitError] ?? 'Something went wrong. Please try again.') ?></div>
         <?php endif; ?>
 
-        <form action="<?= BASE_URL ?>/apply-handler.php" method="post" enctype="multipart/form-data" style="max-width:720px;">
+        <form action="<?= BASE_URL ?>/apply-handler.php" method="post" enctype="multipart/form-data" style="max-width:720px;margin:0 auto;">
 
             <h2 class="form-section-title">Personal Information</h2>
             <div class="form-field">
