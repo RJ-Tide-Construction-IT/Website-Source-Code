@@ -11,6 +11,13 @@ $sections = [
         'note'   => '',
         'layout' => 'carousel',
         'photos' => [
+            ['img' => 'agriculture/web/scale-house-aerial.jpg', 'caption' => 'Aerial view of a completed grain facility scale house and truck scale', 'location' => ''],
+            ['img' => 'agriculture/web/craig-facility.jpg', 'caption' => 'Completed grain elevator and receiving facility', 'location' => ''],
+            ['img' => 'agriculture/web/headhouse-dusk.jpg', 'caption' => 'Grain leg headhouse and catwalks at dusk', 'location' => ''],
+            ['img' => 'agriculture/web/distributor-golden-hour.jpg', 'caption' => 'Distributor and spouting atop grain storage bins', 'location' => ''],
+            ['img' => 'agriculture/web/bin-fill-deck.jpg', 'caption' => 'Bin fill deck and distributor equipment atop a grain facility', 'location' => ''],
+            ['img' => 'agriculture/web/crew-sukup-leg.jpg', 'caption' => 'Millwright servicing a Sukup grain leg', 'location' => ''],
+            ['img' => 'agriculture/web/bagging-line-install.jpg', 'caption' => 'Robotic bagging and palletizing line installation', 'location' => ''],
             ['img' => 'industrial-maintenance/web/20230516_145434.jpg', 'caption' => 'Grain leg headhouse and catwalk structure', 'location' => ''],
             ['img' => 'industrial-maintenance/web/20230516_150046.jpg', 'caption' => 'Grain leg boot and distributor mechanism', 'location' => ''],
             ['img' => 'industrial-maintenance/web/img-2071.jpg', 'caption' => 'Crane setting a grain bin section into place', 'location' => ''],

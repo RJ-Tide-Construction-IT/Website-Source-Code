@@ -46,7 +46,7 @@ $subServices = [
                 <figcaption>Engineering Drawing</figcaption>
             </figure>
             <figure>
-                <img src="<?= BASE_URL ?>/assets/img/agriculture/web/placeholder.svg" alt="3D design concept of a grain handling and storage facility" loading="lazy" style="aspect-ratio:3/2;height:auto;">
+                <img src="<?= BASE_URL ?>/assets/img/agriculture/web/design-build-3d-render.jpg" alt="3D design concept of a grain handling and storage facility" loading="lazy" style="aspect-ratio:3/2;height:auto;">
                 <figcaption>3D Concept</figcaption>
             </figure>
             <figure>

@@ -4,7 +4,7 @@ $pageDescription = 'RJ Tide Construction Company, Inc., full-service concrete, a
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 ?>
 
-<section class="hero hero--photo" style="background-image:url('<?= BASE_URL ?>/assets/img/index/web/hero-crew.jpg');">
+<section class="hero hero--photo" style="background-image:url('<?= BASE_URL ?>/assets/img/agriculture/web/sunrise-headhouse.jpg');">
     <div class="container">
         <h1>Your Contractor Of Choice For<br>Full-Service Concrete,<br>Agricultural, &amp;<br>Industrial Construction</h1>
     </div>
