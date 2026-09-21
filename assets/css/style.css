@@ -716,6 +716,7 @@ section { padding: 64px 0; }
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
+.cookie-banner[hidden] { display: none; }
 .cookie-banner p { margin: 0; flex: 1 1 260px; font-size: 0.9rem; color: var(--color-white); }
 .cookie-banner a { color: var(--color-peach); }
 .cookie-banner a:hover { color: var(--color-white); }
