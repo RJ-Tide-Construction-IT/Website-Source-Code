@@ -45,12 +45,10 @@ function send_email(string $toEmail, string $subject, string $textBody, ?string 
 
     if ($curlErr) {
         error_log('send_email: cURL error, ' . $curlErr);
-        file_put_contents(__DIR__ . '/mail-debug.txt', "cURL error: $curlErr\n");
         return false;
     }
     if ($status < 200 || $status >= 300) {
         error_log('send_email: Brevo returned HTTP ' . $status . ', ' . $response);
-        file_put_contents(__DIR__ . '/mail-debug.txt', "HTTP status: $status\nResponse: $response\n");
         return false;
     }
     return true;

@@ -1,0 +1,33 @@
+name: Deploy to production
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    name: FTP deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy over FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          # Switch to ftps once PowerDNN/HostPapa renews the FTP TLS
+          # certificate (see the "signed using an insecure algorithm" error
+          # from earlier setup) — plain ftp sends credentials/files
+          # unencrypted, ftps is the goal once that's fixed.
+          protocol: ftp
+          local-dir: ./
+          server-dir: ./
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            includes/secrets.php
+            uploads/**
