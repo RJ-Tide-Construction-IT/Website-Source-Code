@@ -211,3 +211,18 @@ document.addEventListener('DOMContentLoaded', function () {
     restart();
   });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+  var banner = document.getElementById('cookieBanner');
+  var dismissBtn = document.getElementById('cookieBannerDismiss');
+  if (!banner || !dismissBtn) return;
+
+  var seen = false;
+  try { seen = localStorage.getItem('cookieNoticeSeen') === '1'; } catch (e) {}
+  if (!seen) banner.hidden = false;
+
+  dismissBtn.addEventListener('click', function () {
+    banner.hidden = true;
+    try { localStorage.setItem('cookieNoticeSeen', '1'); } catch (e) {}
+  });
+});

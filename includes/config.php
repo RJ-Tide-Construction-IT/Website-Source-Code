@@ -23,6 +23,14 @@ define('CONTACT_EMAIL_CONCRETE', 'khodgson@rjtide.com');     // contact form: "C
 // (e.g. https://rjtide.com/). Set to '/subfolder' if it's hosted in a subfolder.
 define('BASE_URL', '');
 
+// Analytics tracking IDs, both public identifiers (they're visible in every
+// page's HTML source), not secrets, safe to keep here rather than in
+// secrets.php. Leave either one blank to skip loading that script.
+// GA4: Google Analytics admin > Data Streams > your web stream > "Measurement ID" (starts with "G-").
+define('GA4_MEASUREMENT_ID', 'G-E8E5BGQ1C5');
+// Clarity: clarity.microsoft.com > Settings > Setup > "Project ID".
+define('CLARITY_PROJECT_ID', 'ylxgkwutz5');
+
 // Strips CR/LF from a value before it's used in an email header (Subject, Reply-To)
 // so form input can't inject extra headers into an outgoing email.
 function header_safe(string $value): string {

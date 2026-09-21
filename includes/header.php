@@ -22,6 +22,24 @@ if (!isset($pageDescription)) { $pageDescription = 'Full-service concrete, millw
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
+<?php if (GA4_MEASUREMENT_ID !== ''): ?>
+<script async src="https://www.googletagmanager.com/gtag/js?id=<?= htmlspecialchars(GA4_MEASUREMENT_ID) ?>"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '<?= htmlspecialchars(GA4_MEASUREMENT_ID) ?>');
+</script>
+<?php endif; ?>
+<?php if (CLARITY_PROJECT_ID !== ''): ?>
+<script>
+  (function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "<?= htmlspecialchars(CLARITY_PROJECT_ID) ?>");
+</script>
+<?php endif; ?>
 </head>
 <body>
 

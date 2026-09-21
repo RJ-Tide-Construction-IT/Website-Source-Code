@@ -41,6 +41,11 @@
     <button type="button" class="lightbox-overlay__arrow lightbox-overlay__arrow--next" id="lightboxNext" aria-label="Next photo">&rsaquo;</button>
 </div>
 
+<div class="cookie-banner" id="cookieBanner" hidden>
+    <p>We use cookies to understand how visitors use this site, so we can improve it. <a href="mailto:<?= SITE_EMAIL ?>">Contact us</a> with questions.</p>
+    <button type="button" class="btn btn--sm" id="cookieBannerDismiss">Got it</button>
+</div>
+
 <script src="<?= BASE_URL ?>/assets/js/main.js"></script>
 </body>
 </html>
