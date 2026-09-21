@@ -65,7 +65,7 @@ $subServices = [
         <p>Working closely with our agricultural team, our <a href="<?= BASE_URL ?>/services/concrete-services.php">concrete division</a>
            delivers comprehensive solutions for your projects. Whether you need repairs, replacements, or
            new structures, we provide the same reliable support and quality workmanship start to finish.</p>
-        <p>Reach out to our experts today by calling <a href="tel:<?= SITE_PHONE_TEL ?>"><?= SITE_PHONE ?></a>.</p>
+        <p>Reach out to our experts today at <a href="mailto:<?= AG_EMAIL ?>"><?= AG_EMAIL ?></a>.</p>
 
         <a href="<?= BASE_URL ?>/index.php" class="back-link">&larr; Go back to main menu</a>
         <a href="<?= BASE_URL ?>/projects.php" class="back-link" style="margin-left:24px;">View our Projects &rarr;</a>

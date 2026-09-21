@@ -194,4 +194,15 @@ $body = "PERSONAL INFORMATION\n"
 
 send_email(CAREERS_EMAIL, $subject, $body, $email, $name);
 
+// --- Confirmation email back to the applicant ---
+$confirmSubject = 'We received your application, ' . header_safe(SITE_NAME);
+$confirmBody = "Hi $name,\n\n"
+    . "Thanks for applying for the $position position at " . SITE_NAME . " We've received your "
+    . "application and our team will review it soon. If it looks like a good fit, we'll reach out "
+    . "to you directly to set up next steps.\n\n"
+    . "If you have any questions in the meantime, just reply to this email.\n\n"
+    . SITE_NAME . "\n"
+    . SITE_PHONE . "\n";
+send_email($email, $confirmSubject, $confirmBody, CAREERS_EMAIL, SITE_NAME);
+
 redirect_with(['sent' => 1]);

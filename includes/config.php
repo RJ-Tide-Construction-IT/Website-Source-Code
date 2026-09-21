@@ -7,6 +7,11 @@ define('SITE_PHONE_TEL', '+17122550175');
 define('SITE_EMAIL', 'info@rjtide.com');
 define('SITE_ADDRESS', '1821 US Highway 20, Lawton, IA 51030');
 
+// Shown on the Agricultural/Industrial pages in place of the phone number.
+// This inbox needs to actually exist (an alias/mailbox forwarding to
+// shodgson@rjtide.com) in Microsoft 365, that setup happens over there, not here.
+define('AG_EMAIL', 'ag@rjtide.com');
+
 // Where form submissions actually get delivered, separate from SITE_EMAIL
 // (the address shown publicly on the site) so the two can change independently.
 define('CAREERS_EMAIL', 'tanderson@rjtide.com');            // every job application

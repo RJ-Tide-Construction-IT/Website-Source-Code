@@ -70,7 +70,7 @@ $subServices = [
            sure it runs right from day one.</p>
         <p>Trust RJ Tide Construction for reliable and efficient millwright services that keep your
            operations running smoothly.</p>
-        <p>Reach out to our experts today by calling <a href="tel:<?= SITE_PHONE_TEL ?>"><?= SITE_PHONE ?></a>.</p>
+        <p>Reach out to our experts today at <a href="mailto:<?= AG_EMAIL ?>"><?= AG_EMAIL ?></a>.</p>
 
         <a href="<?= BASE_URL ?>/index.php" class="back-link">&larr; Go back to main menu</a>
         <a href="<?= BASE_URL ?>/projects.php" class="back-link" style="margin-left:24px;">View our Projects &rarr;</a>
