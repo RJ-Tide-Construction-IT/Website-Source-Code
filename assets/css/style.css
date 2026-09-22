@@ -678,23 +678,11 @@ section { padding: 64px 0; }
 
 /* The compact jump-to row (6 sub-service links) has no room to stay on one
    line on a phone, min-width:0 was squeezing each label into an unreadable
-   sliver that overflowed into its neighbor. Below this width, let each
-   button keep its natural size and the row scroll horizontally instead. */
+   sliver that overflowed into its neighbor. Below this width, wrap into a
+   2-up grid instead so every button keeps a readable size. */
 @media (max-width: 640px) {
-  .service-links--compact {
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x proximity;
-    margin: 0 -24px;
-    padding: 0 24px 6px;
-  }
-  .service-links--compact li {
-    flex: 0 0 auto;
-    min-width: 150px;
-    scroll-snap-align: start;
-  }
+  .service-links--compact { flex-wrap: wrap; }
+  .service-links--compact li { flex: 1 1 calc(50% - 8px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
