@@ -675,6 +675,14 @@ section { padding: 64px 0; }
   .site-footer__inner { grid-template-columns: 1fr; }
 }
 
+/* The compact jump-to row (6 sub-service links) has no room to stay on one
+   line on a phone, min-width:0 was squeezing each label into an unreadable
+   sliver, so wrap into a 2-up grid instead below this width. */
+@media (max-width: 640px) {
+  .service-links--compact { flex-wrap: wrap; }
+  .service-links--compact li { flex: 1 1 calc(50% - 8px); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .feature-grid .card,
   .market-card,
