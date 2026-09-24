@@ -57,10 +57,17 @@ $subServices = [
 
         <h3 id="millwright-support" style="margin-top:3rem;">Millwright Support</h3>
         <p>Our <a href="<?= BASE_URL ?>/services/ag-industrial-maintenance.php#millwright">millwright team</a>
-           keeps your grain handling and storage equipment running, from installing and aligning legs,
-           distributors, and conveyor systems to fast, reliable repairs when harvest can&rsquo;t wait.
-           Whether it&rsquo;s routine maintenance or an emergency breakdown, we bring the same precision and
-           reliability to every job.</p>
+           installs, maintains, and repairs the machinery that keeps agricultural operations moving, from
+           grain handling and storage systems to feed mills and processing equipment. Whether it&rsquo;s
+           setting new equipment, erecting structural steel, towers, and catwalks, or tracking down a problem
+           in a system that&rsquo;s already running, our crews bring the rigging, alignment, and troubleshooting
+           experience to get it done right. Because our millwrights work hand in hand with our design build
+           team, one team can carry a project from the drawings to the day it starts running.</p>
+        <p>When something wears out or breaks down, we cover it: motors, gearboxes, bearings, drives, belts,
+           and conveyors, plus spouting, distributors, and other components. Our in-house welding and
+           fabrication shop builds and repairs parts to spec, so we&rsquo;re not stuck waiting when a job
+           needs something custom. Whether it&rsquo;s routine maintenance, a new install, or an emergency
+           breakdown when harvest can&rsquo;t wait, we bring the same precision and reliability to every job.</p>
         <h3 id="concrete-support" style="margin-top:3rem;">Concrete Support for Ag Facilities</h3>
         <p>Working closely with our agricultural team, our <a href="<?= BASE_URL ?>/services/concrete-services.php">concrete division</a>
            delivers comprehensive solutions for your projects. Whether you need repairs, replacements, or
