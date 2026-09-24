@@ -98,19 +98,6 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/job-posting-header.php';
            employment, with the ability to maintain it, and must be able to pass an auto insurance coverage
            check.</p>
 
-        <h3>Work Authorization</h3>
-        <p>As a condition of employment and in compliance with the law, each new employee must complete an
-           Employment Eligibility Verification form (I-9) and present documents that establish identity and
-           employment eligibility.</p>
-
-        <h3>AAP / EEO Statement</h3>
-        <p>RJ Tide Construction does not unlawfully discriminate in employment opportunities or practices on
-           the basis of race, color, religion, sex, national origin, age, disability, or any other
-           characteristic protected by law except for restriction due to bona fide occupational requirements.</p>
-
-        <h3>Other Duties</h3>
-        <p>Please note this job description is not designed to cover or contain a comprehensive listing of
-           activities, duties or responsibilities that are required of the employee for this job. Duties,
-           responsibilities and activities may change at any time with or without notice.</p>
+<?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/job-posting-standard-sections.php'; ?>
 
 <?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/job-posting-footer.php'; ?>

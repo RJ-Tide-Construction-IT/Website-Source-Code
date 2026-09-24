@@ -31,3 +31,6 @@ jobs:
             **/.github/**
             includes/secrets.php
             uploads/**
+            # Full-size camera originals, kept for re-cropping but never
+            # linked by any page, the site uses the resized assets/img/**/web/ copies.
+            originals/**

@@ -74,6 +74,30 @@ $GLOBALS['MAIN_NAV'] = [
 // end up in the notification email, no matter what's POSTed.
 $GLOBALS['CONTACT_INTERESTS'] = ['Concrete', 'Agricultural', 'Industrial', 'Other'];
 
+// Checkbox/dropdown options on the Job Application form (employment.php).
+// apply-handler.php reads these same lists, so a checkbox added here shows up
+// on the form AND in the HR email, and only these values can ever end up in
+// that email, no matter what's POSTed.
+// Experience skills: 'field_key' => 'Label shown on the form and in the email'.
+$GLOBALS['APPLICATION_EXPERIENCE_SKILLS'] = [
+    'concrete_flatwork'    => 'Concrete Flatwork',
+    'concrete_foundations' => 'Concrete Foundations',
+    'heavy_equipment'      => 'Heavy Equipment Operator',
+    'carpentry'            => 'Finish/Rough Carpentry',
+    'millwright'           => 'Millwright',
+];
+$GLOBALS['APPLICATION_LICENSES'] = [
+    'State Driver\'s License', 'CDL', 'First Aid/CPR', 'Forklift',
+    'ACI Certified', 'Welding', 'NCCCO, Crane Operator', 'NCCCO, Rigger',
+];
+$GLOBALS['APPLICATION_PHYSICAL_REQUIREMENTS'] = [
+    'Lift 50 lbs, 10 times a day',
+    'Climb up to 25 ft vertically without rest',
+    'Bend at the waist for long periods of time',
+    'Lift 20 lbs overhead, 50 times',
+    'Ability to work at 100 ft or higher',
+];
+
 // Every job posting. Shared by careers.php (which also uses 'open' to decide
 // what's listed, see the README) and employment.php's Position dropdown, so
 // the two can't drift out of sync with each other.

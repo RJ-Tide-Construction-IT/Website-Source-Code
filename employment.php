@@ -12,24 +12,10 @@ $jobs = array_merge(array_column($openJobs, 'title'), ['Other']);
 
 $proficiencyLevels = ['Fair', 'Good', 'Excellent'];
 $experienceLevels  = ['None', 'Average', 'Above'];
-$experienceSkills  = [
-    'concrete_flatwork'   => 'Concrete Flatwork',
-    'concrete_foundations' => 'Concrete Foundations',
-    'heavy_equipment'     => 'Heavy Equipment Operator',
-    'carpentry'           => 'Finish/Rough Carpentry',
-    'millwright'          => 'Millwright',
-];
-$licenses = [
-    'State Driver\'s License', 'CDL', 'First Aid/CPR', 'Forklift',
-    'ACI Certified', 'Welding', 'NCCCO, Crane Operator', 'NCCCO, Rigger',
-];
-$physicalRequirements = [
-    'Lift 50 lbs, 10 times a day',
-    'Climb up to 25 ft vertically without rest',
-    'Bend at the waist for long periods of time',
-    'Lift 20 lbs overhead, 50 times',
-    'Ability to work at 100 ft or higher',
-];
+// Shared with apply-handler.php, edit these lists in includes/config.php.
+$experienceSkills     = $GLOBALS['APPLICATION_EXPERIENCE_SKILLS'];
+$licenses             = $GLOBALS['APPLICATION_LICENSES'];
+$physicalRequirements = $GLOBALS['APPLICATION_PHYSICAL_REQUIREMENTS'];
 
 $submitted   = isset($_GET['sent']);
 $submitError = $_GET['error'] ?? null;

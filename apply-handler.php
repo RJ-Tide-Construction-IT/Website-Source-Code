@@ -105,29 +105,14 @@ $languageLine = function (string $prefix, string $languageLabel) {
 };
 
 // --- Build the experience/skill level lines ---
-$experienceSkills = [
-    'experience_concrete_flatwork'    => 'Concrete Flatwork',
-    'experience_concrete_foundations' => 'Concrete Foundations',
-    'experience_heavy_equipment'      => 'Heavy Equipment Operator',
-    'experience_carpentry'            => 'Finish/Rough Carpentry',
-    'experience_millwright'           => 'Millwright',
-];
+// Option lists are shared with employment.php via includes/config.php.
 $experienceLines = [];
-foreach ($experienceSkills as $key => $label) {
-    $experienceLines[] = "  $label: " . field($key);
+foreach ($GLOBALS['APPLICATION_EXPERIENCE_SKILLS'] as $key => $label) {
+    $experienceLines[] = "  $label: " . field('experience_' . $key);
 }
 
-$licenses = array_values(array_intersect((array) ($_POST['licenses'] ?? []), [
-    'State Driver\'s License', 'CDL', 'First Aid/CPR', 'Forklift',
-    'ACI Certified', 'Welding', 'NCCCO, Crane Operator', 'NCCCO, Rigger',
-]));
-$physical = array_values(array_intersect((array) ($_POST['physical'] ?? []), [
-    'Lift 50 lbs, 10 times a day',
-    'Climb up to 25 ft vertically without rest',
-    'Bend at the waist for long periods of time',
-    'Lift 20 lbs overhead, 50 times',
-    'Ability to work at 100 ft or higher',
-]));
+$licenses = array_values(array_intersect((array) ($_POST['licenses'] ?? []), $GLOBALS['APPLICATION_LICENSES']));
+$physical = array_values(array_intersect((array) ($_POST['physical'] ?? []), $GLOBALS['APPLICATION_PHYSICAL_REQUIREMENTS']));
 
 // --- Build the employment history blocks ---
 $employmentHistory = [];

@@ -16,8 +16,10 @@ exactly which file to open for common edits.
 | Change the text/wording on the homepage | [index.php](index.php) |
 | Change the About page text | [about.php](about.php) |
 | Change a service page (Concrete, Agricultural, Industrial Maintenance) | the matching file in [services/](services/) |
-| Add/edit a job posting | the matching file in [careers/](careers/), and the list on [careers.php](careers.php) |
-| Stop listing a position you're not hiring for right now | [careers.php](careers.php) — find the job and change its `'open' => true` to `'open' => false` |
+| Add/edit a job posting | the matching file in [careers/](careers/), and the `$GLOBALS['JOBS']` list in [includes/config.php](includes/config.php) |
+| Stop listing a position you're not hiring for right now | `$GLOBALS['JOBS']` in [includes/config.php](includes/config.php) — find the job and change its `'open' => true` to `'open' => false` |
+| Change the EEO / Work Authorization / Other Duties wording on job postings | [includes/job-posting-standard-sections.php](includes/job-posting-standard-sections.php) (shared by every posting that shows them) |
+| Add/remove a checkbox on the job application (licenses, physical requirements, experience) | the `APPLICATION_...` lists in [includes/config.php](includes/config.php) |
 | Add, remove, or edit a photo on the Projects page | the `$sections` array at the top of the matching file in [projects/](projects/), see below |
 | Change colors, fonts, or overall look | [assets/css/style.css](assets/css/style.css) |
 | Change the mobile menu, slideshow, or image lightbox behavior | [assets/js/main.js](assets/js/main.js) |
@@ -82,13 +84,17 @@ includes/              shared pieces every page uses
                             galleries" below
   job-posting-header.php    shared hero + back-link/Apply-Now/job-meta markup
   job-posting-footer.php    for every page in careers/, see below
+  job-posting-standard-sections.php
+                            the Work Authorization / EEO / Other Duties text
+                            shared by the full-format postings
 
 services/              one file per service page (Concrete, Agricultural,
                         Ag/Industrial Maintenance)
 
 careers/                one file per job posting. To stop listing one without
-                        deleting it, use the 'open' flag in careers.php's
-                        $jobs array (see the quick-lookup table above)
+                        deleting it, use the 'open' flag in the
+                        $GLOBALS['JOBS'] list in includes/config.php (see
+                        the quick-lookup table above)
 
 projects/               supporting pages for the Projects section
                         (agricultural.php, concrete.php, special-projects.php)
@@ -101,12 +107,17 @@ assets/js/main.js      small interactive bits: mobile menu, homepage
 
 assets/img/             all photos and logos, organized into subfolders by
                         where they're used (agriculture, concrete, millwright,
-                        special-projects, vendors, favicon, index). Inside
-                        most of those folders, a `web/` subfolder holds a
-                        resized, compressed copy of each photo, pages link
-                        to the `web/` copy, never the full-size original, so
-                        the site doesn't ship multi-megabyte camera photos to
-                        visitors. See "Adding a new photo" below.
+                        special-projects, vendors, favicon, index). Photos
+                        live in each folder's `web/` subfolder as resized,
+                        compressed copies, so the site doesn't ship
+                        multi-megabyte camera photos to visitors. See
+                        "Adding a new photo" below.
+
+originals/              full-size camera originals of the photos/video in
+                        assets/img/, same subfolder layout. Kept here so a
+                        photo can be re-cropped or re-sized later, but this
+                        folder is NOT uploaded to the live site, so never
+                        link a page to anything in it.
 
 contact-handler.php    processes the "Contact Us" form
 apply-handler.php      processes the "Apply for a job" form + resume upload
@@ -139,9 +150,11 @@ else needs to change:
 Photos are shown at a fixed size everywhere on the site (hero banners,
 gallery boxes, showcase grids), so a phone or camera's full-resolution
 original, often several megabytes, is far larger than what actually gets
-displayed. Before linking a new photo from a page, shrink it and save the
-copy into that folder's `web/` subfolder (e.g. `assets/img/concrete/web/`),
-then point the page at the `web/` copy, not the original. This machine can
+displayed. Put the original in the matching [originals/](originals/) subfolder
+(e.g. `originals/concrete/`), then shrink it and save the copy into
+`assets/img/<folder>/web/` (e.g. `assets/img/concrete/web/`) and point the
+page at that `web/` copy. Don't commit originals into `assets/img/`, anything
+there gets uploaded to the live site. This machine can
 do the resize without installing anything, via PowerShell:
 
 ```powershell
