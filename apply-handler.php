@@ -177,7 +177,26 @@ $body = "PERSONAL INFORMATION\n"
 
       . ($safeName ? "Resume saved on server as: uploads/resumes/$safeName\n" : "No resume attached.\n");
 
-send_email(CAREERS_EMAIL, $subject, $body, $email, $name);
+// --- Printable PDF copy, laid out like a paper application ---
+// If it can't be generated for any reason, the email still goes out with the
+// plain-text version above, so an application is never lost over the PDF.
+$attachments = [];
+try {
+    // A missing file is a fatal error require can't recover from, so check first
+    // (e.g. if includes/vendor/ didn't make it onto the server).
+    if (!is_file(__DIR__ . '/includes/vendor/autoload.php')) {
+        throw new RuntimeException('includes/vendor/ is missing, the PDF library is not installed');
+    }
+    require_once __DIR__ . '/includes/application-pdf.php';
+    $resumeNote = $safeName ? "Saved on server as uploads/resumes/$safeName" : 'No resume attached.';
+    $pdfName = preg_replace('/[^\p{L}\p{N} .,\-]/u', '', "Application - $name - $position - " . date('Y-m-d'));
+    $attachments[] = ['name' => $pdfName . '.pdf', 'content' => render_application_pdf($_POST, $resumeNote)];
+    $body = "A printable copy of this application is attached as a PDF.\n\n" . $body;
+} catch (Throwable $e) {
+    error_log('apply-handler: application PDF failed, sending without it, ' . $e->getMessage());
+}
+
+send_email(CAREERS_EMAIL, $subject, $body, $email, $name, $attachments);
 
 // --- Confirmation email back to the applicant ---
 $confirmSubject = 'We received your application, ' . header_safe(SITE_NAME);

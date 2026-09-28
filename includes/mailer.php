@@ -5,9 +5,10 @@
 require_once __DIR__ . '/secrets.php';
 
 /**
+ * @param array $attachments Optional files, each ['name' => 'file.pdf', 'content' => raw file bytes].
  * @return bool true if Brevo accepted the message, false otherwise.
  */
-function send_email(string $toEmail, string $subject, string $textBody, ?string $replyToEmail = null, ?string $replyToName = null): bool {
+function send_email(string $toEmail, string $subject, string $textBody, ?string $replyToEmail = null, ?string $replyToName = null, array $attachments = []): bool {
     if (!defined('BREVO_API_KEY') || BREVO_API_KEY === '') {
         error_log('send_email: BREVO_API_KEY is not configured in includes/secrets.php');
         return false;
@@ -24,6 +25,9 @@ function send_email(string $toEmail, string $subject, string $textBody, ?string 
             'email' => $replyToEmail,
             'name'  => $replyToName,
         ]);
+    }
+    foreach ($attachments as $file) {
+        $payload['attachment'][] = ['name' => $file['name'], 'content' => base64_encode($file['content'])];
     }
 
     $ch = curl_init('https://api.brevo.com/v3/smtp/email');

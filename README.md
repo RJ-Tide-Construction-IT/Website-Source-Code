@@ -20,6 +20,7 @@ exactly which file to open for common edits.
 | Stop listing a position you're not hiring for right now | `$GLOBALS['JOBS']` in [includes/config.php](includes/config.php) — find the job and change its `'open' => true` to `'open' => false` |
 | Change the EEO / Work Authorization / Other Duties wording on job postings | [includes/job-posting-standard-sections.php](includes/job-posting-standard-sections.php) (shared by every posting that shows them) |
 | Add/remove a checkbox on the job application (licenses, physical requirements, experience) | the `APPLICATION_...` lists in [includes/config.php](includes/config.php) |
+| Change the layout of the printable PDF attached to each job application email | [includes/application-pdf.php](includes/application-pdf.php), see "Printable application PDF" below |
 | Add, remove, or edit a photo on the Projects page | the `$sections` array at the top of the matching file in [projects/](projects/), see below |
 | Change colors, fonts, or overall look | [assets/css/style.css](assets/css/style.css) |
 | Change the mobile menu, slideshow, or image lightbox behavior | [assets/js/main.js](assets/js/main.js) |
@@ -87,6 +88,11 @@ includes/              shared pieces every page uses
   job-posting-standard-sections.php
                             the Work Authorization / EEO / Other Duties text
                             shared by the full-format postings
+  application-pdf.php      builds the printable PDF of each job application
+  pdf-logo.jpg              the logo used on that PDF
+  vendor/, composer.json    the dompdf library that makes the PDF, see
+                            "Printable application PDF" below, don't edit
+                            these by hand
 
 services/              one file per service page (Concrete, Agricultural,
                         Ag/Industrial Maintenance)
@@ -144,6 +150,26 @@ else needs to change:
   controls (there'd be nothing to navigate to).
 - A category with 0 photos (`'photos' => []`) renders just its `'note'` text,
   e.g. "Photos for this section are coming soon."
+
+## Printable application PDF
+
+Every job application email to HR has a PDF attached, laid out like a paper
+application (boxed fields, checkboxes, signature block, and a "For Office Use
+Only" box), so it can be printed and filed. The email body still has the same
+information as plain text.
+
+- The layout is regular HTML and CSS inside
+  [includes/application-pdf.php](includes/application-pdf.php). The checkbox
+  options come from the same `APPLICATION_...` lists in `config.php` as the
+  online form, so adding a checkbox there adds it to the PDF too.
+- If the PDF ever fails to generate, the email still goes out without it and
+  the reason is written to the server's PHP error log, so no application is lost.
+- The PDF is made by the free [dompdf](https://github.com/dompdf/dompdf) library
+  in `includes/vendor/`. It's committed to this repo on purpose, the FTP deploy
+  just copies files and has no install step. To update it, download
+  [composer.phar](https://getcomposer.org/download/) and run
+  `php -d extension=zip composer.phar update --working-dir=includes`, then
+  commit the changed `includes/vendor/` files.
 
 ## Adding a new photo
 
