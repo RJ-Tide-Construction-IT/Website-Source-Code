@@ -24,7 +24,7 @@ $subServices = [
 </section>
 
 <section>
-    <div class="container" style="max-width:800px;">
+    <div class="container container--narrow">
         <h3 id="industrial-maintenance">Industrial Maintenance</h3>
         <p>At RJ Tide, we know how costly unexpected downtime can be. That&rsquo;s why we provide reliable,
            full-scope maintenance for your agricultural and industrial operations, from routine upkeep to
@@ -48,7 +48,7 @@ $subServices = [
         <p>Trust RJ Tide Construction to keep your agricultural and industrial operations running smoothly,
            season after season.</p>
 
-        <h3 id="millwright" style="margin-top:3rem;">Millwright</h3>
+        <h3 id="millwright" class="heading--spaced">Millwright</h3>
         <p>RJ Tide knows that keeping your production running is most important. Our service crew of
            experts will do right by you and help keep you running smoothly.</p>
         <div class="subsection-photo">
@@ -73,7 +73,7 @@ $subServices = [
         <p>Reach out to our experts today at <a href="mailto:<?= AG_EMAIL ?>"><?= AG_EMAIL ?></a>.</p>
 
         <a href="<?= BASE_URL ?>/index.php" class="back-link">&larr; Go back to main menu</a>
-        <a href="<?= BASE_URL ?>/projects.php" class="back-link" style="margin-left:24px;">View our Projects &rarr;</a>
+        <a href="<?= BASE_URL ?>/projects.php" class="back-link">View our Projects &rarr;</a>
     </div>
 </section>
 

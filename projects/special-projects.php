@@ -3,8 +3,8 @@ $pageTitle = 'Specialty Concrete';
 $pageDescription = 'Photos of RJ Tide Construction decorative and specialty concrete work.';
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
-// 'location' is left blank until real per-photo job-site locations are
-// available; the gallery already renders it when a photo has one.
+// 'location' (optional) isn't shown on the page yet, it's recorded here so
+// it's ready if photo captions are ever added to the gallery.
 $sections = [
     [
         'label'  => 'Specialty Concrete',

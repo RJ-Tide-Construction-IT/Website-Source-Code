@@ -25,7 +25,7 @@ $subServices = [
 </section>
 
 <section>
-    <div class="container" style="max-width:800px;">
+    <div class="container container--narrow">
         <h3 id="design-build">Design Build</h3>
         <p>At RJ Tide, we understand how challenging it can be to find a partner who can manage every
            aspect of your agricultural project from start to finish. From concept to completion, we listen
@@ -40,22 +40,22 @@ $subServices = [
            growth. Our goal is to deliver the best-valued project, one that weighs future operation and
            maintenance cost alongside upfront construction cost.</p>
 
-        <div class="showcase-grid" style="grid-template-columns:repeat(3, 1fr);">
+        <div class="showcase-grid showcase-grid--thirds">
             <figure>
-                <img src="<?= BASE_URL ?>/assets/img/agriculture/web/design-build-drawing-2.jpg" alt="2D engineering drawing of the grain storage facility" loading="lazy" style="aspect-ratio:3/2;height:auto;">
+                <img src="<?= BASE_URL ?>/assets/img/agriculture/web/design-build-drawing-2.jpg" alt="2D engineering drawing of the grain storage facility" loading="lazy">
                 <figcaption>Engineering Drawing</figcaption>
             </figure>
             <figure>
-                <img src="<?= BASE_URL ?>/assets/img/agriculture/web/design-build-3d-render.jpg" alt="3D design concept of a grain handling and storage facility" loading="lazy" style="aspect-ratio:3/2;height:auto;">
+                <img src="<?= BASE_URL ?>/assets/img/agriculture/web/design-build-3d-render.jpg" alt="3D design concept of a grain handling and storage facility" loading="lazy">
                 <figcaption>3D Concept</figcaption>
             </figure>
             <figure>
-                <img src="<?= BASE_URL ?>/assets/img/agriculture/web/design-build-reality.jpg" alt="Completed grain storage facility matching the original design" loading="lazy" style="aspect-ratio:3/2;height:auto;">
+                <img src="<?= BASE_URL ?>/assets/img/agriculture/web/design-build-reality.jpg" alt="Completed grain storage facility matching the original design" loading="lazy">
                 <figcaption>Built Reality!</figcaption>
             </figure>
         </div>
 
-        <h3 id="millwright-support" style="margin-top:3rem;">Millwright Support</h3>
+        <h3 id="millwright-support" class="heading--spaced">Millwright Support</h3>
         <p>Our <a href="<?= BASE_URL ?>/services/ag-industrial-maintenance.php#millwright">millwright team</a>
            installs, maintains, and repairs the machinery that keeps agricultural operations moving, from
            grain handling and storage systems to feed mills and processing equipment. Whether it&rsquo;s
@@ -68,14 +68,14 @@ $subServices = [
            fabrication shop builds and repairs parts to spec, so we&rsquo;re not stuck waiting when a job
            needs something custom. Whether it&rsquo;s routine maintenance, a new install, or an emergency
            breakdown when harvest can&rsquo;t wait, we bring the same precision and reliability to every job.</p>
-        <h3 id="concrete-support" style="margin-top:3rem;">Concrete Support for Ag Facilities</h3>
+        <h3 id="concrete-support" class="heading--spaced">Concrete Support for Ag Facilities</h3>
         <p>Working closely with our agricultural team, our <a href="<?= BASE_URL ?>/services/concrete-services.php">concrete division</a>
            delivers comprehensive solutions for your projects. Whether you need repairs, replacements, or
            new structures, we provide the same reliable support and quality workmanship start to finish.</p>
         <p>Reach out to our experts today at <a href="mailto:<?= AG_EMAIL ?>"><?= AG_EMAIL ?></a>.</p>
 
         <a href="<?= BASE_URL ?>/index.php" class="back-link">&larr; Go back to main menu</a>
-        <a href="<?= BASE_URL ?>/projects.php" class="back-link" style="margin-left:24px;">View our Projects &rarr;</a>
+        <a href="<?= BASE_URL ?>/projects.php" class="back-link">View our Projects &rarr;</a>
     </div>
 </section>
 

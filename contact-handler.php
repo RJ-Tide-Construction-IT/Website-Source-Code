@@ -13,10 +13,10 @@ if (!empty($_POST['website'])) {
     exit;
 }
 
-$name    = trim($_POST['name'] ?? '');
-$email   = trim($_POST['email'] ?? '');
-$phone   = trim($_POST['phone'] ?? '');
-$message = trim($_POST['message'] ?? '');
+$name    = posted_text($_POST, 'name');
+$email   = posted_text($_POST, 'email');
+$phone   = posted_text($_POST, 'phone');
+$message = posted_text($_POST, 'message');
 
 // "I'm interested in" is a checkbox group now (0 or more). Only keep values
 // that match the known list, whatever's actually POSTed is user-controlled,

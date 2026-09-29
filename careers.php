@@ -24,7 +24,7 @@ $jobs = $GLOBALS['JOBS'];
             <?php endforeach; ?>
         </ul>
         <?php else: ?>
-        <p style="text-align:center;color:var(--color-text-muted);">We don&rsquo;t have any open positions listed right now, but
+        <p class="muted-note">We don&rsquo;t have any open positions listed right now, but
            we&rsquo;re always interested in hearing from skilled tradespeople. Check back soon, or
            <a href="<?= BASE_URL ?>/employment.php">reach out anyway</a>.</p>
         <?php endif; ?>
@@ -45,7 +45,7 @@ $jobs = $GLOBALS['JOBS'];
             <li>Employee Referral Bonuses &ndash; Rewarding team members for bringing in top talent.</li>
         </ul>
         <p style="text-align:center;margin-top:2.5rem;"><strong>RJ Tide is an Equal Opportunity Employer. Women and Minorities are encouraged to apply.</strong></p>
-        <div style="text-align:center;">
+        <div class="text-center">
             <a href="<?= BASE_URL ?>/employment.php" class="btn">Apply Here</a>
         </div>
     </div>

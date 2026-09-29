@@ -25,7 +25,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 </section>
 
 <section>
-    <div class="container" style="max-width:800px;">
+    <div class="container container--narrow">
         <a href="<?= BASE_URL ?>/careers.php" class="back-link">&larr; Go back</a>
         <a href="<?= BASE_URL ?>/employment.php" class="btn" style="float:right;">Apply Now</a>
         <div style="clear:both;"></div>

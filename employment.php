@@ -36,12 +36,12 @@ $errorMessages = [
 <section>
     <div class="container">
         <?php if ($submitted): ?>
-            <div class="form-note form-note--success" style="max-width:720px;margin:0 auto 20px;">Thanks for applying, we've received your application and will be in touch.</div>
+            <div class="form-note form-note--success form-width">Thanks for applying, we've received your application and will be in touch.</div>
         <?php elseif ($submitError): ?>
-            <div class="form-note form-note--error" style="max-width:720px;margin:0 auto 20px;"><?= htmlspecialchars($errorMessages[$submitError] ?? 'Something went wrong. Please try again.') ?></div>
+            <div class="form-note form-note--error form-width"><?= htmlspecialchars($errorMessages[$submitError] ?? 'Something went wrong. Please try again.') ?></div>
         <?php endif; ?>
 
-        <form action="<?= BASE_URL ?>/apply-handler.php" method="post" enctype="multipart/form-data" style="max-width:720px;margin:0 auto;">
+        <form action="<?= BASE_URL ?>/apply-handler.php" method="post" enctype="multipart/form-data" class="form-width">
 
             <h2 class="form-section-title">Personal Information</h2>
             <div class="form-field">
@@ -320,7 +320,7 @@ $errorMessages = [
                 </label>
             </div>
 
-            <div style="position:absolute;left:-9999px;" aria-hidden="true">
+            <div class="honeypot" aria-hidden="true">
                 <label for="website">Leave blank</label>
                 <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
             </div>

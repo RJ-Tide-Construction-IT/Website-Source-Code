@@ -59,6 +59,16 @@ ul { padding-left: 1.25em; }
   margin: 0 auto;
   padding: 0 24px;
 }
+/* Narrower column for long-form text (service pages, About, job postings). */
+.container--narrow { max-width: 800px; }
+
+/* Small shared helpers, used instead of repeating the same inline styles. */
+.text-center { text-align: center; }
+.heading--spaced { margin-top: 3rem; }
+.muted-note { text-align: center; color: var(--color-text-muted); }
+/* Larger centered intro paragraph under a section title. */
+.lead { max-width: 760px; margin: 0 auto 2rem; text-align: center; font-size: 1.15rem; }
+.lead--tight { margin-bottom: 1.5rem; }
 
 /* ---------- Buttons ---------- */
 .btn {
@@ -199,6 +209,11 @@ section { padding: 64px 0; }
 .section--dark { background: var(--color-navy); color: var(--color-white); }
 .section--dark h2, .section--dark h3 { color: var(--color-white); }
 .section-title { text-align: center; margin-bottom: 2rem; }
+
+/* Category headings and notes on the project gallery pages (includes/photo-sections.php). */
+.section-title--gallery { margin-top: 3.5rem; }
+.section-title--gallery:first-of-type { margin-top: 2rem; }
+.section-note { text-align: center; color: var(--color-text-muted); margin-top: -1.25rem; }
 
 /* Photo variant: layers a background image behind .section--dark with a
    translucent overlay in the same navy tone, so text stays readable. */
@@ -415,6 +430,13 @@ section { padding: 64px 0; }
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   margin: 2rem 0;
 }
+/* Always three across on larger screens (Agricultural design-build set),
+   stacking on phones where three would be too small to read. */
+.showcase-grid--thirds { grid-template-columns: repeat(3, 1fr); }
+.showcase-grid.showcase-grid--thirds img { aspect-ratio: 3 / 2; height: auto; }
+@media (max-width: 640px) {
+  .showcase-grid--thirds { grid-template-columns: 1fr; }
+}
 .showcase-grid figure {
   margin: 0;
   overflow: hidden;
@@ -594,6 +616,9 @@ section { padding: 64px 0; }
 .form-note { padding: 14px 18px; border-radius: var(--radius); margin-bottom: 20px; }
 .form-note--success { background: #e6f6ec; color: #1a7a3d; }
 .form-note--error { background: #fde8ea; color: var(--color-red-dark); }
+.form-width { max-width: 720px; margin-left: auto; margin-right: auto; }
+/* Spam trap: moved off-screen so people never see it, bots fill it in anyway. */
+.honeypot { position: absolute; left: -9999px; }
 
 /* ---------- Job listing ---------- */
 .job-list { list-style: none; padding: 0; display: grid; gap: 12px; }
@@ -614,6 +639,7 @@ section { padding: 64px 0; }
 .job-meta strong { display: block; color: var(--color-navy); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.03em; }
 
 .back-link { display: inline-block; margin-bottom: 1.5rem; font-weight: 600; }
+.back-link + .back-link { margin-left: 24px; }
 
 /* ---------- Contact ---------- */
 .contact-details { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 2.5rem; }

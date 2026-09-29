@@ -10,9 +10,12 @@ function redirect_with($params) {
 // Falls back to '-' for the email body so blank optional answers don't just
 // leave an empty line, making it clear the applicant skipped the question
 // rather than that something failed to save.
-function field(string $key): string {
-    $value = trim($_POST[$key] ?? '');
+function or_dash(string $value): string {
     return $value === '' ? '-' : $value;
+}
+
+function field(string $key): string {
+    return or_dash(posted_text($_POST, $key));
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -25,15 +28,26 @@ if (!empty($_POST['website'])) {
     redirect_with(['sent' => 1]);
 }
 
-$name     = trim($_POST['name'] ?? '');
-$email    = trim($_POST['email'] ?? '');
-$phone    = trim($_POST['phone'] ?? '');
-$position = trim($_POST['position'] ?? '');
-$message  = trim($_POST['message'] ?? '');
+$name     = posted_text($_POST, 'name');
+$email    = posted_text($_POST, 'email');
+$phone    = posted_text($_POST, 'phone');
+$position = posted_text($_POST, 'position');
 $certify  = !empty($_POST['certify']);
 
-if ($name === '' || $phone === '' || $position === '' || !$certify || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+// Position must be one of the real job titles (or 'Other', the dropdown's
+// catch-all), so arbitrary text can't be injected into the HR email subject.
+// Closed jobs are still accepted in case someone had the form open when a
+// posting was switched off.
+$validPositions = array_merge(array_column($GLOBALS['JOBS'], 'title'), ['Other']);
+
+if ($name === '' || $phone === '' || !in_array($position, $validPositions, true) || !$certify || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     redirect_with(['error' => 'validation']);
+}
+
+// Resumes and the applications.csv backup log both live under uploads/.
+$uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/uploads/resumes/';
+if (!is_dir($uploadDir)) {
+    mkdir($uploadDir, 0755, true);
 }
 
 // Resume is optional now that the form captures full employment history
@@ -68,11 +82,6 @@ if (!empty($_FILES['resume']) && $_FILES['resume']['error'] !== UPLOAD_ERR_NO_FI
     }
     $extension = $allowedMime[$mime];
 
-    $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/uploads/resumes/';
-    if (!is_dir($uploadDir)) {
-        mkdir($uploadDir, 0755, true);
-    }
-
     $safeName = bin2hex(random_bytes(16)) . '.' . $extension;
     $destination = $uploadDir . $safeName;
 
@@ -90,10 +99,6 @@ $csvSafe = function ($v) {
     if (preg_match('/^[=+\-@]/', $v)) { $v = "'" . $v; }
     return '"' . str_replace('"', '""', $v) . '"';
 };
-$uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/uploads/resumes/';
-if (!is_dir($uploadDir)) {
-    mkdir($uploadDir, 0755, true);
-}
 $logLine = implode(',', array_map($csvSafe, [date('c'), $name, $email, $phone, $position, $safeName ?? '']));
 file_put_contents($uploadDir . '../applications.csv', $logLine . "\n", FILE_APPEND | LOCK_EX);
 
@@ -116,17 +121,18 @@ $physical = array_values(array_intersect((array) ($_POST['physical'] ?? []), $GL
 
 // --- Build the employment history blocks ---
 $employmentHistory = [];
-$postedEmployers = $_POST['employer'] ?? [];
+$postedEmployers = is_array($_POST['employer'] ?? null) ? $_POST['employer'] : [];
 for ($i = 1; $i <= 3; $i++) {
-    $entry = $postedEmployers[$i] ?? [];
-    $company = trim($entry['company'] ?? '');
+    $entry = is_array($postedEmployers[$i] ?? null) ? $postedEmployers[$i] : [];
+    $job = fn(string $key) => or_dash(posted_text($entry, $key));
+    $company = posted_text($entry, 'company');
     if ($company === '') continue;
     $employmentHistory[] = "  Employer #$i: $company\n"
-        . '    Employed: ' . trim($entry['from'] ?? '-') . ' to ' . trim($entry['to'] ?? '-') . "\n"
-        . '    Title & Duties: ' . trim($entry['title'] ?? '-') . "\n"
-        . '    Wage: ' . trim($entry['starting_wage'] ?? '-') . ' starting, ' . trim($entry['final_wage'] ?? '-') . " final\n"
-        . '    Reason for Leaving: ' . trim($entry['reason'] ?? '-') . "\n"
-        . '    Supervisor: ' . trim($entry['supervisor'] ?? '-');
+        . '    Employed: ' . $job('from') . ' to ' . $job('to') . "\n"
+        . '    Title & Duties: ' . $job('title') . "\n"
+        . '    Wage: ' . $job('starting_wage') . ' starting, ' . $job('final_wage') . " final\n"
+        . '    Reason for Leaving: ' . $job('reason') . "\n"
+        . '    Supervisor: ' . $job('supervisor');
 }
 
 $languageLines = array_filter([

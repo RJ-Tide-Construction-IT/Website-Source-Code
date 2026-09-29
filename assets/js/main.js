@@ -15,9 +15,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var dots = el.querySelectorAll('.slideshow__dot');
     var prevBtn = el.querySelector('.slideshow__arrow--prev');
     var nextBtn = el.querySelector('.slideshow__arrow--next');
-    var caption = el.nextElementSibling && el.nextElementSibling.classList.contains('slideshow__caption')
-      ? el.nextElementSibling
-      : null;
     if (slides.length < 2) return;
 
     var current = 0;
@@ -29,7 +26,6 @@ document.addEventListener('DOMContentLoaded', function () {
       current = (index + slides.length) % slides.length;
       slides[current].classList.add('is-active');
       dots[current] && dots[current].classList.add('is-active');
-      if (caption) caption.textContent = slides[current].dataset.caption || '';
     }
 
     function restartTimer() {

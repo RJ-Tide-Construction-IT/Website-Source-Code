@@ -9,7 +9,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 </section>
 
 <section>
-    <div class="container" style="max-width:800px;">
+    <div class="container container--narrow">
         <div style="margin-bottom:2rem;">
             <img src="<?= BASE_URL ?>/assets/img/logo.png" alt="<?= htmlspecialchars(SITE_NAME) ?>" style="max-width:320px;width:100%;height:auto;margin:0 auto;">
         </div>
@@ -39,31 +39,11 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 </section>
 
 <section class="section--muted">
-    <div class="container">
-        <h2 class="section-title">Associations</h2>
-        <div class="logo-strip">
-            <?php foreach ($GLOBALS['ASSOCIATIONS'] as $assoc): ?>
-            <a href="<?= htmlspecialchars($assoc['url']) ?>" target="_blank" rel="noopener noreferrer" title="<?= htmlspecialchars($assoc['name']) ?>">
-                <img src="<?= BASE_URL ?>/assets/img/<?= htmlspecialchars($assoc['img']) ?>" alt="<?= htmlspecialchars($assoc['name']) ?>" loading="lazy">
-            </a>
-            <?php endforeach; ?>
-        </div>
-    </div>
+<?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/associations.php'; ?>
 </section>
 
 <section>
-    <div class="container">
-        <h3 class="section-title">We Build the Right Way</h3>
-        <p style="max-width:760px;margin:0 auto 2rem;text-align:center;font-size:1.15rem;">From the first shovel of dirt to the final walkthrough, our crews bring decades of hands-on
-           experience to every project. We pair proven construction methods with the latest equipment and
-           technology to keep your project on schedule and within budget.</p>
-        <div class="feature-grid">
-            <div class="card"><h4>Quality Craftsmanship</h4></div>
-            <div class="card"><h4>Reliable Timelines</h4></div>
-            <div class="card"><h4>Modern Technology</h4></div>
-            <div class="card"><h4>Experienced Crews</h4></div>
-        </div>
-    </div>
+<?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/build-right-way.php'; ?>
 </section>
 
 <?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>

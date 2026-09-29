@@ -6,14 +6,14 @@
 // just one photo there'd be nothing to navigate to, so it renders as a
 // single enlarged photo instead (same box size, no dead arrow/dot buttons).
 // A section with no photos yet renders just its note, no photo box.
-foreach ($sections as $i => $section):
+foreach ($sections as $section):
     $photoCount = count($section['photos']);
     $isCarousel = ($section['layout'] ?? '') === 'carousel' && $photoCount > 0;
     $isMultiSlide = $isCarousel && $photoCount > 1;
 ?>
-<h2 class="section-title" style="<?= $i === 0 ? 'margin-top:2rem;' : 'margin-top:3.5rem;' ?>"><?= htmlspecialchars($section['label']) ?></h2>
+<h2 class="section-title section-title--gallery"><?= htmlspecialchars($section['label']) ?></h2>
 <?php if (!empty($section['note'])): ?>
-<p style="text-align:center;color:var(--color-text-muted);margin-top:-1.25rem;"><?= htmlspecialchars($section['note']) ?></p>
+<p class="section-note"><?= htmlspecialchars($section['note']) ?></p>
 <?php endif; ?>
 <?php if ($isCarousel): ?>
     <div class="slideshow">

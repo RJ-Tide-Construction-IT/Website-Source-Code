@@ -5,15 +5,13 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
 // Section labels match the sub-service categories on
 // services/concrete-services.php so the two pages stay in sync.
-// 'location' is left blank until real per-photo job-site locations are
-// available; the gallery already renders it when a photo has one.
 $sections = [
     [
         'label'  => 'Flatwork',
         'note'   => '',
         'layout' => 'carousel',
         'photos' => [
-            ['img' => 'concrete/web/flatwork.jpg', 'caption' => 'Finishing an interior concrete flatwork pour', 'location' => ''],
+            ['img' => 'concrete/web/flatwork.jpg', 'caption' => 'Finishing an interior concrete flatwork pour'],
         ],
     ],
     [
@@ -21,7 +19,7 @@ $sections = [
         'note'   => '',
         'layout' => 'carousel',
         'photos' => [
-            ['img' => 'concrete/web/foundation.jpg', 'caption' => 'Forming a concrete foundation on-site', 'location' => ''],
+            ['img' => 'concrete/web/foundation.jpg', 'caption' => 'Forming a concrete foundation on-site'],
         ],
     ],
     [
@@ -29,7 +27,7 @@ $sections = [
         'note'   => '',
         'layout' => 'carousel',
         'photos' => [
-            ['img' => 'concrete/web/site-concrete.jpg', 'caption' => 'Pouring site concrete paving', 'location' => ''],
+            ['img' => 'concrete/web/site-concrete.jpg', 'caption' => 'Pouring site concrete paving'],
         ],
     ],
     [
@@ -37,7 +35,7 @@ $sections = [
         'note'   => '',
         'layout' => 'carousel',
         'photos' => [
-            ['img' => 'concrete/web/industrial.jpg', 'caption' => 'Finishing an industrial concrete slab', 'location' => ''],
+            ['img' => 'concrete/web/industrial.jpg', 'caption' => 'Finishing an industrial concrete slab'],
         ],
     ],
     [

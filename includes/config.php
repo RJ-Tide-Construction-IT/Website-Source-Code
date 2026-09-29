@@ -37,6 +37,13 @@ function header_safe(string $value): string {
     return trim(str_replace(["\r", "\n"], '', $value));
 }
 
+// One text answer from a submitted form array (usually $_POST). Anything that
+// isn't plain text (e.g. an array a bot POSTed) counts as blank instead of
+// crashing the form handler.
+function posted_text(array $source, string $key): string {
+    return is_string($source[$key] ?? null) ? trim($source[$key]) : '';
+}
+
 // Association logos linked from the homepage/about page.
 $GLOBALS['ASSOCIATIONS'] = [
     ['name' => 'American Concrete Institute',            'img' => 'aci-logo.webp',  'url' => 'https://www.concrete.org'],

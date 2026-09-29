@@ -18,7 +18,7 @@ $subServices = [
 </section>
 
 <section>
-    <div class="container" style="max-width:800px;">
+    <div class="container container--narrow">
         <p>At RJ Tide, we have heard from our clients how frustrating it can be to find someone who will
            handle all the concrete requirements of their project from start to finish. There is nothing
            worse than thinking you have a complete concrete package, only to get hit with surprise gaps in
@@ -39,7 +39,7 @@ $subServices = [
 </section>
 
 <section>
-    <div class="container" style="max-width:800px;">
+    <div class="container container--narrow">
         <h3 id="flatwork">Flatwork</h3>
         <p>We do anything from smooth concrete finished slabs to concrete stairs. We know what it takes to
            get the job done right. Our experts will provide not only the best looking, but the best quality
@@ -114,7 +114,7 @@ $subServices = [
 <section class="section--muted">
     <div class="container">
         <a href="<?= BASE_URL ?>/index.php" class="back-link">&larr; Go back to main menu</a>
-        <a href="<?= BASE_URL ?>/projects.php" class="back-link" style="margin-left:24px;">View our Projects &rarr;</a>
+        <a href="<?= BASE_URL ?>/projects.php" class="back-link">View our Projects &rarr;</a>
     </div>
 </section>
 

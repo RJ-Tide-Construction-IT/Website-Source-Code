@@ -64,7 +64,7 @@ $submitError = isset($_GET['error']);
                     <textarea id="message" name="message" required></textarea>
                 </div>
                 <!-- honeypot field: real users never fill this in -->
-                <div style="position:absolute;left:-9999px;" aria-hidden="true">
+                <div class="honeypot" aria-hidden="true">
                     <label for="website">Leave blank</label>
                     <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
                 </div>

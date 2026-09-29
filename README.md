@@ -85,6 +85,9 @@ includes/              shared pieces every page uses
                             galleries" below
   job-posting-header.php    shared hero + back-link/Apply-Now/job-meta markup
   job-posting-footer.php    for every page in careers/, see below
+  build-right-way.php      "We Build the Right Way" section, shared by the
+                            homepage and About page
+  associations.php         "Associations" logo strip, shared by the same two
   job-posting-standard-sections.php
                             the Work Authorization / EEO / Other Duties text
                             shared by the full-format postings
