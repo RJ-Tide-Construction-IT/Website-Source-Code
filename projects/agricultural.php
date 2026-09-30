@@ -28,9 +28,7 @@ $sections = [
 ];
 ?>
 
-<section class="page-hero page-hero--photo" style="background-image:url('<?= BASE_URL ?>/assets/img/agriculture/web/design-build-reality.jpg');">
-    <div class="container"><h1>Agricultural</h1></div>
-</section>
+<?php page_hero('Agricultural', 'agriculture/web/design-build-reality.jpg'); ?>
 
 <section>
     <div class="container">

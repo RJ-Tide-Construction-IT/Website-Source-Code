@@ -37,6 +37,15 @@ function header_safe(string $value): string {
     return trim(str_replace(["\r", "\n"], '', $value));
 }
 
+// URL for a site CSS/JS file with its last-modified time added, e.g.
+// /assets/css/style.css?v=1759240000. The URL only changes when the file does,
+// so after a deploy browsers fetch the new copy right away instead of mixing
+// new pages with an old cached stylesheet, and keep using their cache otherwise.
+function asset_url(string $path): string {
+    $file = dirname(__DIR__) . $path;
+    return BASE_URL . $path . (is_file($file) ? '?v=' . filemtime($file) : '');
+}
+
 // One text answer from a submitted form array (usually $_POST). Anything that
 // isn't plain text (e.g. an array a bot POSTed) counts as blank instead of
 // crashing the form handler.

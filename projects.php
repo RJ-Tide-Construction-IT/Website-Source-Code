@@ -25,14 +25,7 @@ $markets = [
 ];
 ?>
 
-<section class="page-hero">
-    <div class="container">
-        <h1>Project History</h1>
-        <p style="color:var(--color-peach);margin-top:0.75rem;">
-            Building Siouxland since 2010
-        </p>
-    </div>
-</section>
+<?php page_hero('Project History', null, '<p class="page-hero__subtitle">Building Siouxland since 2010</p>'); ?>
 
 <section>
     <div class="container" style="max-width:1100px;">

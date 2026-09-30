@@ -6,6 +6,20 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/config.php';
 //   $pageDescription (optional) meta description
 if (!isset($pageTitle)) { $pageTitle = SITE_NAME; }
 if (!isset($pageDescription)) { $pageDescription = 'Full-service concrete, millwright, and agricultural/industrial maintenance contractor based in Lawton, Iowa.'; }
+
+// The title banner at the top of every inner page. Pages call it right after
+// including this file, e.g.:
+//   page_hero('Contact Us');                                        dark banner
+//   page_hero('Agricultural', 'agriculture/web/jobsite-2.jpg');    photo banner
+// $image is relative to assets/img/. $extraHtml (optional) is extra markup shown
+// under the title, written by the page itself, never visitor input.
+function page_hero(string $title, ?string $image = null, string $extraHtml = ''): void {
+    $class = $image ? 'page-hero page-hero--photo' : 'page-hero';
+    $style = $image ? ' style="background-image:url(\'' . htmlspecialchars(BASE_URL . '/assets/img/' . $image) . '\');"' : '';
+    echo '<section class="' . $class . '"' . $style . ">\n"
+       . '    <div class="container"><h1>' . htmlspecialchars($title) . '</h1>' . $extraHtml . "</div>\n"
+       . "</section>\n";
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +35,7 @@ if (!isset($pageDescription)) { $pageDescription = 'Full-service concrete, millw
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
+<link rel="stylesheet" href="<?= asset_url('/assets/css/style.css') ?>">
 <?php if (GA4_MEASUREMENT_ID !== ''): ?>
 <script async src="https://www.googletagmanager.com/gtag/js?id=<?= htmlspecialchars(GA4_MEASUREMENT_ID) ?>"></script>
 <script>

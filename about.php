@@ -4,9 +4,7 @@ $pageDescription = 'More than 15 years of quality construction. Learn about RJ T
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 ?>
 
-<section class="page-hero">
-    <div class="container"><h1>More Than 15 Years of Quality Construction!</h1></div>
-</section>
+<?php page_hero('More Than 15 Years of Quality Construction!'); ?>
 
 <section>
     <div class="container container--narrow">

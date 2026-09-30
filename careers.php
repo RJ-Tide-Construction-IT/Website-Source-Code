@@ -9,9 +9,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 $jobs = $GLOBALS['JOBS'];
 ?>
 
-<section class="page-hero page-hero--photo" style="background-image:url('<?= BASE_URL ?>/assets/img/agriculture/web/sunrise-headhouse.jpg');">
-    <div class="container"><h1>Be a part of the RJ Tide family!</h1></div>
-</section>
+<?php page_hero('Be a part of the RJ Tide family!', 'agriculture/web/sunrise-headhouse.jpg'); ?>
 
 <section>
     <div class="container">

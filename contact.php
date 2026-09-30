@@ -7,9 +7,7 @@ $submitted = isset($_GET['sent']);
 $submitError = isset($_GET['error']);
 ?>
 
-<section class="page-hero">
-    <div class="container"><h1>Contact Us</h1></div>
-</section>
+<?php page_hero('Contact Us'); ?>
 
 <section>
     <div class="container">

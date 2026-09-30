@@ -18,11 +18,8 @@ if (!isset($pageDescription)) {
     $pageDescription = "Apply for the $pageTitle position at RJ Tide Construction Company, Inc. in Lawton, Iowa.";
 }
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
+page_hero($pageTitle);
 ?>
-
-<section class="page-hero">
-    <div class="container"><h1><?= htmlspecialchars($pageTitle) ?></h1></div>
-</section>
 
 <section>
     <div class="container container--narrow">

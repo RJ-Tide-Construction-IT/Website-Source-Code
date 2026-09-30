@@ -26,12 +26,7 @@ $errorMessages = [
 ];
 ?>
 
-<section class="page-hero">
-    <div class="container">
-        <h1>Job Application</h1>
-        <a href="<?= BASE_URL ?>/careers.php" class="btn btn--outline" style="margin-top:1rem;">&larr; Go back to Careers</a>
-    </div>
-</section>
+<?php page_hero('Job Application', null, '<a href="' . BASE_URL . '/careers.php" class="btn btn--outline page-hero__action">&larr; Go back to Careers</a>'); ?>
 
 <section>
     <div class="container">

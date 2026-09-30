@@ -46,6 +46,6 @@
     <button type="button" class="btn btn--sm" id="cookieBannerDismiss">Got it</button>
 </div>
 
-<script src="<?= BASE_URL ?>/assets/js/main.js"></script>
+<script src="<?= asset_url('/assets/js/main.js') ?>"></script>
 </body>
 </html>

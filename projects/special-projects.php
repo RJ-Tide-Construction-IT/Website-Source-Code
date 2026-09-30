@@ -23,9 +23,7 @@ $sections = [
 ];
 ?>
 
-<section class="page-hero page-hero--photo" style="background-image:url('<?= BASE_URL ?>/assets/img/special-projects/web/chapel-facade.jpg');">
-    <div class="container"><h1>Specialty Concrete</h1></div>
-</section>
+<?php page_hero('Specialty Concrete', 'special-projects/web/chapel-facade.jpg'); ?>
 
 <section>
     <div class="container">

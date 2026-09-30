@@ -9,19 +9,9 @@ $subServices = [
 ];
 ?>
 
-<section class="page-hero page-hero--photo" style="background-image:url('<?= BASE_URL ?>/assets/img/industrial-maintenance/web/20250108_163555.jpg');">
-    <div class="container"><h1>Industrial Maintenance</h1></div>
-</section>
+<?php page_hero('Industrial Maintenance', 'industrial-maintenance/web/20250108_163555.jpg'); ?>
 
-<section class="section--muted">
-    <div class="container">
-        <ul class="service-links">
-            <?php foreach ($subServices as $label => $href): ?>
-            <li><a href="<?= $href ?>"><?= htmlspecialchars($label) ?></a></li>
-            <?php endforeach; ?>
-        </ul>
-    </div>
-</section>
+<?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/service-links.php'; ?>
 
 <section>
     <div class="container container--narrow">
