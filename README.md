@@ -16,8 +16,11 @@ exactly which file to open for common edits.
 | Change the text/wording on the homepage | [index.php](index.php) |
 | Change the About page text | [about.php](about.php) |
 | Change a service page (Concrete, Agricultural, Industrial Maintenance) | the matching file in [services/](services/) |
-| Add/edit a job posting | the matching file in [careers/](careers/), and the `$GLOBALS['JOBS']` list in [includes/config.php](includes/config.php) |
-| Stop listing a position you're not hiring for right now | `$GLOBALS['JOBS']` in [includes/config.php](includes/config.php) — find the job and change its `'open' => true` to `'open' => false` |
+| Add a new job posting | Employee Dashboard > **Job Postings** > **Add a job posting** (Admins), no code changes needed |
+| Edit one of the 11 original job postings | the matching file in [careers/](careers/) (these are built into the site; the list of them is `$GLOBALS['JOBS']` in [includes/config.php](includes/config.php)) |
+| Stop listing a position you're not hiring for right now | Sign in to the Employee Dashboard (`/dashboard/`) and use **Job Openings**, no code changes needed |
+| Give an employee more dashboard access, or turn off someone's access | Employee Dashboard > **Users** (Admins only) |
+| Change what each dashboard role can do, or who is always an Admin | `DASHBOARD_ROLES` / `DASHBOARD_ADMIN_EMAILS` in [includes/config.php](includes/config.php) |
 | Change the EEO / Work Authorization / Other Duties wording on job postings | [includes/job-posting-standard-sections.php](includes/job-posting-standard-sections.php) (shared by every posting that shows them) |
 | Add/remove a checkbox on the job application (licenses, physical requirements, experience) | the `APPLICATION_...` lists in [includes/config.php](includes/config.php) |
 | Change the layout of the printable PDF attached to each job application email | [includes/application-pdf.php](includes/application-pdf.php), see "Printable application PDF" below |
@@ -153,6 +156,98 @@ else needs to change:
   controls (there'd be nothing to navigate to).
 - A category with 0 photos (`'photos' => []`) renders just its `'note'` text,
   e.g. "Photos for this section are coming soon."
+
+## Employee Dashboard
+
+Employees sign in at **https://rjtide.com/dashboard/** (also linked as "Employee
+Login" in the footer) with their RJ Tide Microsoft 365 account.
+
+**Built so far:** sign-in, roles, the **Job Openings** page (check the
+positions you're hiring for, the Careers page updates immediately), the
+**Job Postings** page (Admins add new postings, see below), and the **Users**
+page (Admins change roles or turn off access). Document uploads are shown as
+"Coming soon" and come next. Timecards aren't part of the dashboard, they're
+handled by a separate service.
+
+**Job postings added on the dashboard** get their own page
+(`careers/posting.php?id=...`) that looks just like the built-in ones, and
+appear on Job Openings, the Careers page, and the application's position list
+like any other job. The description box uses a simple format: a line starting
+with `# ` is a heading, `- ` is a bullet point, and a blank line starts a new
+paragraph. **Preview** shows exactly how it will look before saving. Job titles
+must be unique (they're how the openings list and the application tell jobs
+apart). Changing a title keeps the same web address. The 11 original postings
+are built into the site and are still edited in [careers/](careers/).
+
+**Roles** (set in `DASHBOARD_ROLES` in [includes/config.php](includes/config.php)):
+
+| Role | Can do |
+|---|---|
+| Employee | Employee features (document uploads, once built) |
+| Office | + manage Job Openings |
+| Admin | everything: also add/edit Job Postings and the Users page |
+
+To let Office add postings too, add `'edit_postings'` to the Office line in
+`DASHBOARD_ROLES`.
+
+Everyone starts as an Employee the first time they sign in. The emails in
+`DASHBOARD_ADMIN_EMAILS` are always Admins, so the dashboard can't end up with
+nobody able to manage it. Every role and job-opening change is recorded under
+"Recent activity" on the Users page. Dashboard pages are hidden from search
+engines and never load Google Analytics or Clarity.
+
+**Where things live:** pages in [dashboard/](dashboard/), building blocks in
+[includes/dashboard/](includes/dashboard/), job listing logic (openings,
+added postings, the description format) in
+[includes/job-postings.php](includes/job-postings.php), and the server-written
+data (database, sign-in sessions, `job-openings.json`, `job-postings.json`) in
+`uploads/dashboard/`, which visitors can't reach, git ignores, and the deploy
+never overwrites. Back up that folder along with `uploads/resumes/`, since
+added postings live only there.
+
+### Employee Dashboard setup (one time)
+
+**1. Register the dashboard with Microsoft** (needs a Microsoft 365 admin):
+
+1. Go to https://entra.microsoft.com > **Applications** > **App registrations** > **New registration**.
+2. Name: `RJ Tide Employee Dashboard`. Supported account types:
+   **Accounts in this organizational directory only (single tenant)**.
+3. Redirect URI: platform **Web**, address
+   `https://rjtide.com/dashboard/auth-callback.php` (exactly this), then **Register**.
+4. On the app's Overview page, copy the **Application (client) ID** and the
+   **Directory (tenant) ID**.
+5. **Certificates & secrets** > **New client secret** > pick 24 months > **Add**,
+   then copy the secret's **Value** right away (it's only shown once).
+   Put a reminder on the calendar a few weeks before it expires: when it does,
+   sign-in stops working until a new secret is made and swapped in.
+6. Optional, to limit who can sign in: **Enterprise applications** > the app >
+   **Properties** > **Assignment required** = Yes, then add the allowed people or
+   groups under **Users and groups**. Otherwise anyone with an RJ Tide account can
+   sign in (as an Employee, with no extra access until an Admin gives it).
+
+**2. Add the values to `includes/secrets.php` on the server** (via FTP or the
+hosting file manager, it's never uploaded by the deploy). See
+[includes/secrets.example.php](includes/secrets.example.php) for the exact lines:
+`MS_TENANT_ID`, `MS_CLIENT_ID`, `MS_CLIENT_SECRET`.
+
+**3. Database:** nothing to do if the host supports SQLite (PHP's `pdo_sqlite`
+extension), the dashboard creates its own database file. If the dashboard shows
+"Sorry, the Employee Dashboard ran into a problem" and the server's PHP error log
+says `could not find driver`, either ask HostPapa to enable `pdo_sqlite`, or
+create a MySQL database in the control panel and fill in the three
+`DASHBOARD_DB_...` lines in `secrets.php`.
+
+**4. First sign-in:** sign in as one of the `DASHBOARD_ADMIN_EMAILS` accounts,
+then have others sign in and set their roles on the Users page.
+
+### Trying the dashboard on your own computer
+
+1. Enable SQLite in your local PHP: open the `php.ini` file shown by `php --ini`
+   and remove the `;` in front of `extension=pdo_sqlite`.
+2. In your local `includes/secrets.php`, add `define('DASHBOARD_DEV_LOGIN', true);`
+3. Run `php -S localhost:8000` and open http://localhost:8000/dashboard/, then use
+   **Local test sign-in** to sign in as anyone. This test sign-in only works on
+   your own computer and is never uploaded to the live site.
 
 ## Printable application PDF
 

@@ -4,8 +4,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/config.php';
 // Every page sets these before including header.php:
 //   $pageTitle       (required) e.g. "About Us"
 //   $pageDescription (optional) meta description
+//   $privatePage     (optional) true on Employee Dashboard pages: hides the page
+//                    from search engines and skips Google Analytics / Clarity,
+//                    so employee information is never sent to tracking tools.
 if (!isset($pageTitle)) { $pageTitle = SITE_NAME; }
 if (!isset($pageDescription)) { $pageDescription = 'Full-service concrete, millwright, and agricultural/industrial maintenance contractor based in Lawton, Iowa.'; }
+$privatePage = !empty($privatePage);
+$loadAnalytics = !$privatePage;
 
 // The title banner at the top of every inner page. Pages call it right after
 // including this file, e.g.:
@@ -28,6 +33,9 @@ function page_hero(string $title, ?string $image = null, string $extraHtml = '')
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?= htmlspecialchars($pageTitle) ?> | <?= htmlspecialchars(SITE_NAME) ?></title>
 <meta name="description" content="<?= htmlspecialchars($pageDescription) ?>">
+<?php if ($privatePage): ?>
+<meta name="robots" content="noindex, nofollow">
+<?php endif; ?>
 <link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="<?= BASE_URL ?>/assets/img/favicon/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="192x192" href="<?= BASE_URL ?>/assets/img/favicon/favicon-192x192.png">
@@ -36,7 +44,7 @@ function page_hero(string $title, ?string $image = null, string $extraHtml = '')
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?= asset_url('/assets/css/style.css') ?>">
-<?php if (GA4_MEASUREMENT_ID !== ''): ?>
+<?php if ($loadAnalytics && GA4_MEASUREMENT_ID !== ''): ?>
 <script async src="https://www.googletagmanager.com/gtag/js?id=<?= htmlspecialchars(GA4_MEASUREMENT_ID) ?>"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -45,7 +53,7 @@ function page_hero(string $title, ?string $image = null, string $extraHtml = '')
   gtag('config', '<?= htmlspecialchars(GA4_MEASUREMENT_ID) ?>');
 </script>
 <?php endif; ?>
-<?php if (CLARITY_PROJECT_ID !== ''): ?>
+<?php if ($loadAnalytics && CLARITY_PROJECT_ID !== ''): ?>
 <script>
   (function(c,l,a,r,i,t,y){
     c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};

@@ -114,13 +114,13 @@ $GLOBALS['APPLICATION_PHYSICAL_REQUIREMENTS'] = [
     'Ability to work at 100 ft or higher',
 ];
 
-// Every job posting. Shared by careers.php (which also uses 'open' to decide
-// what's listed, see the README) and employment.php's Position dropdown, so
-// the two can't drift out of sync with each other.
-// To stop showing a position (not currently hiring for it), change its
-// 'open' value below from true to false, its posting page still works at
-// the same address in case anyone has the link saved, it just won't be
-// listed on careers.php. Set it back to true whenever you're hiring for it again.
+// Every job posting. Shared by careers.php (which lists the open ones) and
+// employment.php's Position dropdown, so the two can't drift out of sync.
+// Which jobs are open is normally switched on the Employee Dashboard's
+// "Job Openings" page (dashboard/jobs.php). The 'open' values below are only
+// the starting point, used until someone saves that page for the first time.
+// A closed job's posting page still works at the same address in case anyone
+// has the link saved, it just isn't listed on careers.php.
 $GLOBALS['JOBS'] = [
     ['title' => 'Craftsman 1',                 'href' => '/careers/craftsman-1.php',               'open' => true],
     ['title' => 'Craftsman 2',                 'href' => '/careers/craftsman-2.php',               'open' => true],
@@ -134,3 +134,29 @@ $GLOBALS['JOBS'] = [
     ['title' => 'Millwright 1',                'href' => '/careers/millwright-1.php',               'open' => true],
     ['title' => 'Millwright 2',                'href' => '/careers/millwright-2.php',               'open' => true],
 ];
+
+// ---------- Employee Dashboard ----------
+
+// Server-written dashboard files (database, sign-in sessions, job openings and
+// postings). Lives under uploads/, which visitors can't reach and the deploy
+// never touches.
+define('DASHBOARD_DATA_DIR', dirname(__DIR__) . '/uploads/dashboard');
+define('JOB_OPENINGS_FILE', DASHBOARD_DATA_DIR . '/job-openings.json');
+define('JOB_POSTINGS_FILE', DASHBOARD_DATA_DIR . '/job-postings.json');
+
+// What each role can do. Everyone signed in can use the employee features;
+// the list for each role adds the extra pages it can see. To give someone
+// more access, change their role on the dashboard's Users page.
+$GLOBALS['DASHBOARD_ROLES'] = [
+    'employee' => ['label' => 'Employee', 'can' => []],
+    'office'   => ['label' => 'Office',   'can' => ['manage_jobs']],
+    'admin'    => ['label' => 'Admin',    'can' => ['manage_jobs', 'edit_postings', 'manage_users']],
+];
+
+// These work accounts are always Admins, so the dashboard can never end up with
+// nobody able to manage it. Everyone else starts as an Employee on first sign-in.
+$GLOBALS['DASHBOARD_ADMIN_EMAILS'] = ['mcross@rjtide.com'];
+
+// Job listings: which jobs are open, and postings added on the dashboard.
+// See includes/job-postings.php.
+require_once __DIR__ . '/job-postings.php';

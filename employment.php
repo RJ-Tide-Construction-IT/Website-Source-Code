@@ -3,11 +3,11 @@ $pageTitle = 'Job Application';
 $pageDescription = 'Apply to join RJ Tide Construction Company, Inc.';
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
-// Same job list careers.php uses (includes/config.php), filtered to only
-// positions currently marked 'open' there, so an applicant can't select a
+// Same job list careers.php uses, filtered to only the positions currently
+// open (switched on the Employee Dashboard), so an applicant can't select a
 // posting that isn't actually being hired for. 'Other' is appended since
 // it's not a real posting, just a catch-all for anyone else applying.
-$openJobs = array_filter($GLOBALS['JOBS'], fn($job) => $job['open']);
+$openJobs = array_filter(jobs_with_status(), fn($job) => $job['open']);
 $jobs = array_merge(array_column($openJobs, 'title'), ['Other']);
 
 $proficiencyLevels = ['Fair', 'Good', 'Excellent'];

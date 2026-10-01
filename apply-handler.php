@@ -38,7 +38,7 @@ $certify  = !empty($_POST['certify']);
 // catch-all), so arbitrary text can't be injected into the HR email subject.
 // Closed jobs are still accepted in case someone had the form open when a
 // posting was switched off.
-$validPositions = array_merge(array_column($GLOBALS['JOBS'], 'title'), ['Other']);
+$validPositions = array_merge(array_column(all_jobs(), 'title'), ['Other']);
 
 if ($name === '' || $phone === '' || !in_array($position, $validPositions, true) || !$certify || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     redirect_with(['error' => 'validation']);
