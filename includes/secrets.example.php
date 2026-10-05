@@ -28,9 +28,3 @@ define('GOOGLE_CLIENT_SECRET', '');
 define('DASHBOARD_DB_DSN', '');  // e.g. mysql:host=localhost;dbname=rjtide_dashboard;charset=utf8mb4
 define('DASHBOARD_DB_USER', '');
 define('DASHBOARD_DB_PASS', '');
-
-// ---------- Local testing only ----------
-// true lets you use dashboard/dev-login.php on YOUR OWN COMPUTER to try the
-// dashboard without Microsoft sign-in. It's ignored on the live server
-// regardless, but never set it there anyway.
-define('DASHBOARD_DEV_LOGIN', false);

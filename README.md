@@ -267,8 +267,7 @@ the hosting file manager, it's never uploaded by the deploy), before deploying,
 so the sign-in page is never live half set up. See
 [includes/secrets.example.php](includes/secrets.example.php) for the exact lines:
 `MS_TENANT_ID`, `MS_CLIENT_ID`, `MS_CLIENT_SECRET` for Microsoft, and
-`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` for Google. Don't add
-`DASHBOARD_DEV_LOGIN` on the server.
+`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` for Google.
 
 **4. Deploy:** merge the dashboard work into `master` and push. The deploy
 only runs for `master`.
@@ -291,50 +290,15 @@ www.rjtide.com are sent there first, since Microsoft and Google only return
 people to the one registered address. If the site's main address ever changes,
 update `SITE_URL` and the redirect address in both Entra and Google Cloud.
 
-### Trying the dashboard on your own computer
+### Trying out changes to the dashboard
 
-1. Enable SQLite in your local PHP: open the `php.ini` file shown by `php --ini`
-   and remove the `;` in front of `extension=pdo_sqlite`. (Or start the server
-   with `php -d extension=pdo_sqlite -S localhost:8000` every time instead.)
-2. In your local `includes/secrets.php`, add `define('DASHBOARD_DEV_LOGIN', true);`
-3. Run `php -S localhost:8000` and open http://localhost:8000/dashboard/.
-
-Everything works locally, including the whole sign-in flow:
-
-- **Sign in with Microsoft / Sign in with Google** go to a **pretend** sign-in
-  page on your computer while their real settings are blank. Type any name and
-  email and you go through the real return page and security checks, exactly
-  like a real sign-in. Microsoft with mcross@rjtide.com signs in as an Admin; a
-  Google sign-in waits for approval; **Cancel**, or unticking "email is
-  verified" on the Google page, shows what a failed sign-in looks like. Once you
-  fill in a service's real settings (and register `http://localhost:8000/dashboard/auth-callback.php`
-  as a redirect address with it), its button goes to the real service instead.
-- **Local test sign-in** is a shortcut that skips the sign-in pages entirely.
-
-Both only work on your own computer and are never uploaded to the live site.
-Approval emails aren't sent while testing locally. If something goes wrong, the
-error page shows the real error and how to fix it (only on your computer).
-
-### Testing the dashboard after a change
-
-The [tests/](tests/) folder has about 130 automated checks covering sign-in,
-roles, Google approvals, job openings and postings, form protection, and the
-setup check. Run them all after changing anything in the dashboard:
-
-```
-powershell -ExecutionPolicy Bypass -File tests\run-tests.ps1
-```
-
-It takes a minute or two and ends with a summary such as
-`127 checks, 0 failed`; anything that broke is listed by name. It needs no
-setup: it runs against a fresh, empty database on your own computer, sets your
-local dashboard data aside and puts it back afterwards, never sends email, and
-never touches the live site (the deploy doesn't upload `tests/`). The
-setup-check suite needs internet, since it really contacts Microsoft and Google.
-
-To add a check, open the matching file in [tests/suites/](tests/suites/) and copy
-the pattern of the checks around it. The shared helpers (signing in as a
-pretend person, submitting forms) are in [tests/lib.ps1](tests/lib.ps1).
+The dashboard only works on the live site: signing in always goes through the
+real Microsoft or Google sign-in and returns to https://rjtide.com, so there's
+no way to sign in to it from your own computer. After deploying a dashboard
+change, sign in on the live site and try it there, and use
+**https://rjtide.com/dashboard/setup-check.php** if anything seems wrong. (The
+public pages can still be previewed locally as usual, see "Previewing your
+changes before they go live" above.)
 
 ## Printable application PDF
 

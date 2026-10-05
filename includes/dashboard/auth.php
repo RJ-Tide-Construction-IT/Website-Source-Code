@@ -5,29 +5,10 @@
 // Signed-in sessions end after this long, even if the browser stays open.
 const DASHBOARD_SESSION_HOURS = 12;
 
-// True when running on PHP's built-in preview server (php -S) on your own
-// computer, false on the live site.
-function dashboard_is_local(): bool {
-    return PHP_SAPI === 'cli-server';
-}
-
-// The local-only test sign-in (dashboard/dev-login.php) and the pretend sign-in pages work only when ALL of
-// these are true: DASHBOARD_DEV_LOGIN is set in secrets.php, the site is running
-// on PHP's built-in preview server (php -S), and the request comes from this
-// same computer. The file is also never uploaded by the deploy.
-function dashboard_dev_login_allowed(): bool {
-    return defined('DASHBOARD_DEV_LOGIN') && DASHBOARD_DEV_LOGIN === true
-        && PHP_SAPI === 'cli-server'
-        && in_array($_SERVER['REMOTE_ADDR'] ?? '', ['127.0.0.1', '::1'], true);
-}
-
-// On the live site, the dashboard only runs at SITE_URL's address, so sign-in
-// sessions and the sign-in services' return address always match. Visitors who arrive
-// at another address (e.g. www.rjtide.com) are sent there first.
+// The dashboard only runs at SITE_URL's address, so sign-in sessions and the
+// sign-in services' return address always match. Visitors who arrive at
+// another address (e.g. www.rjtide.com) are sent there first.
 function dashboard_require_main_address(): void {
-    if (dashboard_is_local()) {
-        return;
-    }
     $mainHost = parse_url(SITE_URL, PHP_URL_HOST);
     if (strcasecmp($_SERVER['HTTP_HOST'] ?? '', $mainHost) !== 0) {
         redirect(SITE_URL . ($_SERVER['REQUEST_URI'] ?? BASE_URL . '/dashboard/'));
@@ -50,8 +31,7 @@ function dashboard_start_session(): void {
     session_set_cookie_params([
         'lifetime' => 0,
         'path'     => BASE_URL . '/dashboard/',
-        // Always HTTPS-only on the live site; locally php -S is plain http.
-        'secure'   => !dashboard_is_local() || (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'),
+        'secure'   => true, // only ever sent over HTTPS
         'httponly' => true,
         'samesite' => 'Lax',
     ]);

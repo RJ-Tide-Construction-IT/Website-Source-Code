@@ -13,11 +13,6 @@ if (is_string($_GET['with'] ?? null) && isset($services[$_GET['with']])) {
 
 $startUrl = fn(string $method) => BASE_URL . '/dashboard/login.php?with=' . $method . '&next=' . urlencode($next);
 
-// Local testing note under a button whose pretend sign-in page is standing in.
-$pretendNote = fn(string $method) => empty($services[$method]['pretend']) ? ''
-    : '<p class="dash-meta dash-pretend-note">Local testing: goes to a pretend sign-in page until the real '
-      . htmlspecialchars($services[$method]['label']) . ' settings are filled in.</p>';
-
 header('Cache-Control: no-store');
 dashboard_page_start('Employee Sign In', null);
 ?>
@@ -34,7 +29,6 @@ dashboard_page_start('Employee Sign In', null);
     <div class="dash-signin__option">
         <a class="btn" href="<?= htmlspecialchars($startUrl('microsoft')) ?>">Sign in with Microsoft</a>
         <p class="dash-meta">For office staff, with your RJ Tide work account (the one you use for work email).</p>
-        <?= $pretendNote('microsoft') ?>
     </div>
     <?php endif; ?>
 
@@ -43,12 +37,7 @@ dashboard_page_start('Employee Sign In', null);
         <a class="btn btn--outline-dark" href="<?= htmlspecialchars($startUrl('google')) ?>">Sign in with Google</a>
         <p class="dash-meta">For employees without a company email, with your Google (Gmail) account.
            The first time, an Admin will need to approve your account.</p>
-        <?= $pretendNote('google') ?>
     </div>
-    <?php endif; ?>
-
-    <?php if (dashboard_dev_login_allowed()): ?>
-    <p class="dash-meta"><a href="<?= BASE_URL ?>/dashboard/dev-login.php?next=<?= urlencode($next) ?>">Local test sign-in</a> (only works on your own computer)</p>
     <?php endif; ?>
 </div>
 <?php dashboard_page_end(); ?>

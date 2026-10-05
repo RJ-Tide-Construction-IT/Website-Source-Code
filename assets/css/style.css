@@ -719,8 +719,6 @@ a.dash-tile:hover { border-color: var(--color-red); text-decoration: none; }
 .dash-row--inactive td { color: var(--color-text-muted); }
 .dash-signin { max-width: 520px; margin: 0 auto; text-align: center; }
 .dash-signin__option { margin: 0 0 1.75rem; }
-.dash-signin__form { text-align: left; }
-.dash-pretend-note { color: #6b4a00; font-style: italic; }
 .dash-signin__option .dash-meta { margin: 10px 0 0; }
 .dash-notice { background: #fff6e0; color: #6b4a00; }
 .dash-subheading--first { margin-top: 0; }

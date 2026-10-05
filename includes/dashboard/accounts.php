@@ -6,15 +6,15 @@
 
 // How each sign-in method is shown on the Users page.
 function sign_in_method_label(string $method): string {
-    return ['microsoft' => 'Microsoft', 'google' => 'Google', 'test' => 'Local test'][$method] ?? ucfirst($method);
+    return ['microsoft' => 'Microsoft', 'google' => 'Google'][$method] ?? ucfirst($method);
 }
 
 // Whether this account is always an Admin (DASHBOARD_ADMIN_EMAILS in config.php).
 // Only company (Microsoft 365) accounts qualify: anyone can make a Google
 // account that uses an @rjtide.com address, so a Google sign-in never gets
-// Admin this way. (The local test sign-in counts too, so you can test as Admin.)
+// Admin this way.
 function is_permanent_admin(string $method, string $email): bool {
-    return in_array($method, ['microsoft', 'test'], true)
+    return $method === 'microsoft'
         && in_array(strtolower($email), array_map('strtolower', $GLOBALS['DASHBOARD_ADMIN_EMAILS']), true);
 }
 
@@ -74,11 +74,6 @@ function sign_in_user(string $method, string $accountId, string $email, string $
 // Emails the Admins that someone new is waiting for approval. Best effort:
 // if email isn't set up or fails, the person still shows on the Users page.
 function notify_admins_of_new_sign_in(string $name, string $email): void {
-    if (dashboard_is_local()) {
-        // Never send real email while testing on your own computer.
-        error_log("Employee Dashboard (local): would email Admins that $name ($email) is waiting for approval");
-        return;
-    }
     if (!is_file(dirname(__DIR__) . '/secrets.php')) {
         return;
     }
