@@ -11,6 +11,7 @@ $sections = [
         'layout' => 'carousel',
         'photos' => [
             ['img' => 'special-projects/web/chapel-facade.jpg', 'caption' => 'Stone-veneer Chapel Facade with Decorative Concrete Detailing', 'location' => 'Trinity Heights'],
+            ['img' => 'special-projects/web/chapel-polished-floor.jpg', 'caption' => 'Polished Decorative Concrete Floor in a Stone Chapel'],
         ],
     ],
     [
@@ -18,6 +19,7 @@ $sections = [
         'layout' => 'carousel',
         'photos' => [
             ['img' => 'special-projects/web/relief-panel.jpg', 'caption' => 'Custom Statue of Saint Joseph', 'location' => 'Trinity Heights'],
+            ['img' => 'special-projects/web/chapel-engraved-floor.jpg', 'caption' => 'Engraved Decorative Concrete Floor Around a Baptismal Font'],
         ],
     ],
 ];
