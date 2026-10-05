@@ -139,19 +139,6 @@ if ($googleAny) {
     }
 }
 
-// Safety. On your own computer (php -S) the local test sign-in is meant to be
-// on, so this only flags it on the live server.
-$devLoginOn = defined('DASHBOARD_DEV_LOGIN') && DASHBOARD_DEV_LOGIN === true;
-if (PHP_SAPI === 'cli-server') {
-    setup_check($checks, $devLoginOn ? 'Local test sign-in is on (fine on your own computer)' : 'Local test sign-in is off', true);
-    if ($devLoginOn) {
-        setup_check($checks, 'Local testing: the Microsoft/Google buttons use pretend sign-in pages until their real settings are filled in', true);
-    }
-} else {
-    setup_check($checks, 'Local test sign-in is turned off', !$devLoginOn,
-        'Remove DASHBOARD_DEV_LOGIN from includes/secrets.php on the server. (It has no effect on the live site anyway, but it shouldn\'t be there.)');
-}
-
 $allOk = !in_array(false, array_column($checks, 'ok'), true);
 
 $pageTitle   = 'Dashboard Setup Check';

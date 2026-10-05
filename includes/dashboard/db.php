@@ -48,9 +48,8 @@ function db_migrations(bool $mysql): array {
     return [
         1 => [
             // account_id is the sign-in service's permanent id for the person,
-            // prefixed with the service: 'microsoft:...', 'google:...', or
-            // 'test:...' for the local test sign-in. sign_in_method is the
-            // service's key ('microsoft', 'google', 'test'). Google sign-ins
+            // prefixed with the service: 'microsoft:...' or 'google:...'.
+            // sign_in_method is the service's key ('microsoft' or 'google'). Google sign-ins
             // start with awaiting_approval = 1 until an Admin approves them.
             "CREATE TABLE users (
                 id                $id,

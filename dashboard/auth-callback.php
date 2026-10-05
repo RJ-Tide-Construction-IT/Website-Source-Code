@@ -12,9 +12,6 @@ try {
     $message = $e->getCode() === SIGN_IN_EXPIRED
         ? 'Sign-in took too long (it needs to be finished within ' . (SIGN_IN_TIME_LIMIT / 60) . ' minutes). Please try again.'
         : 'Sign-in didn\'t work. Please try again.';
-    if (dashboard_is_local()) {
-        $message .= ' (Shown only on your own computer: ' . $e->getMessage() . '.)';
-    }
     flash('error', $message);
     redirect($login);
 }

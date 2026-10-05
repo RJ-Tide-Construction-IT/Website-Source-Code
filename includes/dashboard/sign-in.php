@@ -16,17 +16,8 @@
 // the service with a one-time state, nonce and PKCE code challenge; the service
 // sends it back to auth-callback.php with a code, which is exchanged
 // server-to-server for the signed-in person's identity.
-//
-// LOCAL TESTING: on your own computer, with the local test sign-in turned on
-// (see dashboard_dev_login_allowed()), a service whose real settings are blank
-// uses a pretend sign-in page instead (dashboard/pretend-sign-in.php), so the
-// whole sign-in flow can be tried without registering anything. Fill in the
-// real settings and that button goes to the real Microsoft or Google again.
 
 const GUID_PATTERN = '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i';
-
-// Stand-in tenant ID for pretend Microsoft sign-ins when MS_TENANT_ID is blank.
-const PRETEND_TENANT_ID = '00000000-0000-4000-8000-000000000000';
 
 // A sign-in has to be finished within this long after clicking the button.
 const SIGN_IN_TIME_LIMIT = 600;
@@ -39,38 +30,24 @@ const SIGN_IN_EXPIRED = 1;
 // double-clicked button, or the sign-in page open in two tabs).
 const MAX_PENDING_SIGN_INS = 5;
 
-// Pretend sign-in pages are allowed under exactly the same conditions as the
-// local test sign-in: your own computer only, never the live site.
-function pretend_sign_in_allowed(): bool {
-    return dashboard_dev_login_allowed();
-}
-
 function setting(string $name): string {
     return defined($name) ? (string) constant($name) : '';
 }
 
 // The sign-in services, keyed by the short name stored on each user.
 //   label      button text and how the Users page names it
-//   ready      true once its settings are filled in (or a pretend page stands in)
-//   pretend    true when the local pretend sign-in page is standing in
+//   ready      true once its settings are filled in
 //   authorize / token   the service's sign-in and code-exchange addresses
 //   identity   checks the service's ID token and returns [account id, email, name]
 //              for the person, or throws if anything doesn't check out
 function sign_in_services(): array {
-    $tenant  = setting('MS_TENANT_ID');
-    $msReal  = preg_match(GUID_PATTERN, $tenant) && setting('MS_CLIENT_ID') !== '' && setting('MS_CLIENT_SECRET') !== '';
-    $pretend = pretend_sign_in_allowed();
-    if (!$msReal && $pretend && !preg_match(GUID_PATTERN, $tenant)) {
-        $tenant = PRETEND_TENANT_ID;
-    }
-
-    $services = [
+    $tenant = setting('MS_TENANT_ID');
+    return [
         'microsoft' => [
             'label'         => 'Microsoft',
             // Must be RJ Tide's own tenant ID (a GUID), never "common" or
             // "organizations", which would let any company's accounts sign in.
-            'ready'         => (bool) $msReal,
-            'tenant'        => $tenant,
+            'ready'         => preg_match(GUID_PATTERN, $tenant) && setting('MS_CLIENT_ID') !== '' && setting('MS_CLIENT_SECRET') !== '',
             'client_id'     => setting('MS_CLIENT_ID'),
             'client_secret' => setting('MS_CLIENT_SECRET'),
             'authorize'     => 'https://login.microsoftonline.com/' . rawurlencode($tenant) . '/oauth2/v2.0/authorize',
@@ -103,22 +80,6 @@ function sign_in_services(): array {
             },
         ],
     ];
-
-    // Local testing: a pretend sign-in page stands in for any service whose
-    // real settings are blank. Its identity checks stay exactly the same.
-    foreach ($services as $key => $service) {
-        if (!$service['ready'] && $pretend) {
-            $services[$key] = [
-                'ready'         => true,
-                'pretend'       => true,
-                'client_id'     => "pretend-$key",
-                'client_secret' => '',
-                'authorize'     => BASE_URL . '/dashboard/pretend-sign-in.php?service=' . $key,
-                'token'         => '',
-            ] + $service;
-        }
-    }
-    return $services;
 }
 
 // The services that are set up and can be offered on the sign-in page.
@@ -135,16 +96,9 @@ function require_claims(array $checks): void {
 }
 
 // Where the services send people back to. Must exactly match the redirect
-// address registered with Microsoft and with Google. On the live site that's
-// always SITE_URL's address; on your own computer (php -S) it's the local
-// address, e.g. http://localhost:8000/..., which needs registering too to test.
+// address registered with Microsoft and with Google: always SITE_URL's address.
 function sign_in_redirect_uri(): string {
-    $path = BASE_URL . '/dashboard/auth-callback.php';
-    if (!dashboard_is_local()) {
-        return SITE_URL . $path;
-    }
-    $https = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
-    return ($https ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $path;
+    return SITE_URL . BASE_URL . '/dashboard/auth-callback.php';
 }
 
 function base64url(string $bytes): string {
@@ -212,9 +166,7 @@ function finish_sign_in(): array {
     // The ID token came straight from the service over a verified HTTPS
     // connection in exchange for this site's secret, so its claims can be read
     // directly (OpenID Connect Core 3.1.3.7). They're still checked below.
-    $idToken = !empty($service['pretend'])
-        ? pretend_exchange_code($pending['method'], $service['client_id'], $_GET['code'], $pending['verifier'])
-        : exchange_code($service, $_GET['code'], $pending['verifier']);
+    $idToken = exchange_code($service, $_GET['code'], $pending['verifier']);
     $parts  = explode('.', $idToken);
     $claims = json_decode((string) base64_decode(strtr($parts[1] ?? '', '-_', '+/')), true);
     if (!is_array($claims)) {
@@ -265,44 +217,4 @@ function exchange_code(array $service, string $code, string $verifier): string {
         throw new RuntimeException('Token request returned HTTP ' . $status . ': ' . substr((string) ($tokens['error_description'] ?? $response), 0, 300));
     }
     return $tokens['id_token'];
-}
-
-// ---------- Local testing: pretend sign-in ----------
-// dashboard/pretend-sign-in.php stands in for Microsoft's or Google's sign-in
-// page and issues a one-time code, kept in this browser's session. The code is
-// exchanged here, inside this page, rather than over the network as with the
-// real services, because PHP's preview server (php -S) handles one request at
-// a time and couldn't answer a request to itself. Everything else (state,
-// nonce, PKCE, the ID-token checks) runs exactly as for the real thing.
-
-// Called by the pretend sign-in page. Returns the one-time code to send back.
-function pretend_issue_code(string $method, string $clientId, string $codeChallenge, array $claims): string {
-    if (!pretend_sign_in_allowed()) {
-        throw new RuntimeException('Pretend sign-in is only for local testing');
-    }
-    $code = base64url(random_bytes(32));
-    $_SESSION['pretend_codes'][$code] = [
-        'method' => $method, 'client_id' => $clientId, 'challenge' => $codeChallenge,
-        'claims' => $claims, 'issued' => time(),
-    ];
-    return $code;
-}
-
-function pretend_exchange_code(string $method, string $clientId, string $code, string $verifier): string {
-    if (!pretend_sign_in_allowed()) {
-        throw new RuntimeException('Pretend sign-in is only for local testing');
-    }
-    $issued = $_SESSION['pretend_codes'][$code] ?? null;
-    unset($_SESSION['pretend_codes'][$code]); // one use only, like the real thing
-    if (!$issued || time() - $issued['issued'] > 600) {
-        throw new RuntimeException('Pretend sign-in: unknown, used, or expired code');
-    }
-    if ($issued['method'] !== $method || $issued['client_id'] !== $clientId) {
-        throw new RuntimeException('Pretend sign-in: code was issued for a different service');
-    }
-    if (!hash_equals($issued['challenge'], base64url(hash('sha256', $verifier, true)))) {
-        throw new RuntimeException('Pretend sign-in: PKCE verifier does not match');
-    }
-    // An unsigned token in the same three-part format the real services use.
-    return base64url('{"alg":"none"}') . '.' . base64url(json_encode($issued['claims'])) . '.';
 }
