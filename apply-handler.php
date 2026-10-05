@@ -2,9 +2,9 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/mailer.php';
 
+// Back to the application form, with ?sent=1 or ?error=... for its message.
 function redirect_with($params) {
-    header('Location: ' . BASE_URL . '/employment.php?' . http_build_query($params));
-    exit;
+    redirect(BASE_URL . '/employment.php?' . http_build_query($params));
 }
 
 // Falls back to '-' for the email body so blank optional answers don't just
@@ -19,8 +19,7 @@ function field(string $key): string {
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ' . BASE_URL . '/employment.php');
-    exit;
+    redirect(BASE_URL . '/employment.php');
 }
 
 // Honeypot
@@ -38,7 +37,7 @@ $certify  = !empty($_POST['certify']);
 // catch-all), so arbitrary text can't be injected into the HR email subject.
 // Closed jobs are still accepted in case someone had the form open when a
 // posting was switched off.
-$validPositions = array_merge(array_column($GLOBALS['JOBS'], 'title'), ['Other']);
+$validPositions = array_merge(array_column(all_jobs(), 'title'), ['Other']);
 
 if ($name === '' || $phone === '' || !in_array($position, $validPositions, true) || !$certify || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     redirect_with(['error' => 'validation']);

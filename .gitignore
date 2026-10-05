@@ -6,5 +6,8 @@ uploads/resumes/*
 !uploads/resumes/.htaccess
 uploads/applications.csv
 
+# Employee Dashboard data written by the server (database, sessions, job openings).
+uploads/dashboard/
+
 # Real API keys, copy includes/secrets.example.php to includes/secrets.php and fill in.
 includes/secrets.php

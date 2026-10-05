@@ -3,11 +3,11 @@ $pageTitle = 'Job Application';
 $pageDescription = 'Apply to join RJ Tide Construction Company, Inc.';
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
-// Same job list careers.php uses (includes/config.php), filtered to only
-// positions currently marked 'open' there, so an applicant can't select a
+// Same job list careers.php uses, filtered to only the positions currently
+// open (switched on the Employee Dashboard), so an applicant can't select a
 // posting that isn't actually being hired for. 'Other' is appended since
 // it's not a real posting, just a catch-all for anyone else applying.
-$openJobs = array_filter($GLOBALS['JOBS'], fn($job) => $job['open']);
+$openJobs = array_filter(jobs_with_status(), fn($job) => $job['open']);
 $jobs = array_merge(array_column($openJobs, 'title'), ['Other']);
 
 $proficiencyLevels = ['Fair', 'Good', 'Excellent'];
@@ -16,6 +16,18 @@ $experienceLevels  = ['None', 'Average', 'Above'];
 $experienceSkills     = $GLOBALS['APPLICATION_EXPERIENCE_SKILLS'];
 $licenses             = $GLOBALS['APPLICATION_LICENSES'];
 $physicalRequirements = $GLOBALS['APPLICATION_PHYSICAL_REQUIREMENTS'];
+
+// One Yes/No question. The field name is what apply-handler.php and the PDF
+// read (e.g. 'weekends'); $required makes the browser insist on an answer.
+function yes_no_field(string $name, string $label, bool $required = false): void { ?>
+<div class="form-field">
+    <label><?= htmlspecialchars($label) ?><?= $required ? ' *' : '' ?></label>
+    <div class="checkbox-group">
+        <label class="checkbox-option"><input type="radio" name="<?= $name ?>" value="Yes"<?= $required ? ' required' : '' ?>> Yes</label>
+        <label class="checkbox-option"><input type="radio" name="<?= $name ?>" value="No"> No</label>
+    </div>
+</div>
+<?php }
 
 $submitted   = isset($_GET['sent']);
 $submitError = $_GET['error'] ?? null;
@@ -75,13 +87,7 @@ $errorMessages = [
                 <label for="emergency_contact">Emergency Contact Name, Relationship &amp; Phone</label>
                 <input type="text" id="emergency_contact" name="emergency_contact">
             </div>
-            <div class="form-field">
-                <label>Are you 18 years of age or older? *</label>
-                <div class="checkbox-group">
-                    <label class="checkbox-option"><input type="radio" name="age_18" value="Yes" required> Yes</label>
-                    <label class="checkbox-option"><input type="radio" name="age_18" value="No"> No</label>
-                </div>
-            </div>
+            <?php yes_no_field('age_18', 'Are you 18 years of age or older?', true); ?>
 
             <h2 class="form-section-title">Employment Desired</h2>
             <div class="form-row">
@@ -103,58 +109,22 @@ $errorMessages = [
                     <label for="salary_desired">Salary Desired</label>
                     <input type="text" id="salary_desired" name="salary_desired">
                 </div>
-                <div class="form-field">
-                    <label>Are you employed now?</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-option"><input type="radio" name="employed_now" value="Yes"> Yes</label>
-                        <label class="checkbox-option"><input type="radio" name="employed_now" value="No"> No</label>
-                    </div>
-                </div>
+                <?php yes_no_field('employed_now', 'Are you employed now?'); ?>
             </div>
             <div class="form-row">
-                <div class="form-field">
-                    <label>Have you ever applied/worked for RJ Tide Construction Company before?</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-option"><input type="radio" name="applied_before" value="Yes"> Yes</label>
-                        <label class="checkbox-option"><input type="radio" name="applied_before" value="No"> No</label>
-                    </div>
-                </div>
+                <?php yes_no_field('applied_before', 'Have you ever applied/worked for RJ Tide Construction Company before?'); ?>
                 <div class="form-field">
                     <label for="applied_before_when">If yes, when?</label>
                     <input type="text" id="applied_before_when" name="applied_before_when">
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-field">
-                    <label>Can you work weekends?</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-option"><input type="radio" name="weekends" value="Yes"> Yes</label>
-                        <label class="checkbox-option"><input type="radio" name="weekends" value="No"> No</label>
-                    </div>
-                </div>
-                <div class="form-field">
-                    <label>Available to work overtime?</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-option"><input type="radio" name="overtime" value="Yes"> Yes</label>
-                        <label class="checkbox-option"><input type="radio" name="overtime" value="No"> No</label>
-                    </div>
-                </div>
+                <?php yes_no_field('weekends', 'Can you work weekends?'); ?>
+                <?php yes_no_field('overtime', 'Available to work overtime?'); ?>
             </div>
             <div class="form-row">
-                <div class="form-field">
-                    <label>Willing to travel?</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-option"><input type="radio" name="travel" value="Yes"> Yes</label>
-                        <label class="checkbox-option"><input type="radio" name="travel" value="No"> No</label>
-                    </div>
-                </div>
-                <div class="form-field">
-                    <label>Willing to stay overnight?</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-option"><input type="radio" name="overnight" value="Yes"> Yes</label>
-                        <label class="checkbox-option"><input type="radio" name="overnight" value="No"> No</label>
-                    </div>
-                </div>
+                <?php yes_no_field('travel', 'Willing to travel?'); ?>
+                <?php yes_no_field('overnight', 'Willing to stay overnight?'); ?>
             </div>
 
             <h2 class="form-section-title">General</h2>

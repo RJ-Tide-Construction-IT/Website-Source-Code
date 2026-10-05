@@ -3,14 +3,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/mailer.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ' . BASE_URL . '/contact.php');
-    exit;
+    redirect(BASE_URL . '/contact.php');
 }
 
 // Honeypot, bots fill every field, humans never see this one.
 if (!empty($_POST['website'])) {
-    header('Location: ' . BASE_URL . '/contact.php?sent=1');
-    exit;
+    redirect(BASE_URL . '/contact.php?sent=1');
 }
 
 $name    = posted_text($_POST, 'name');
@@ -25,8 +23,7 @@ $interests = array_values(array_intersect((array) ($_POST['interest'] ?? []), $G
 $interest  = $interests ? implode(', ', $interests) : 'Not specified';
 
 if ($name === '' || $email === '' || $message === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    header('Location: ' . BASE_URL . '/contact.php?error=1');
-    exit;
+    redirect(BASE_URL . '/contact.php?error=1');
 }
 
 $subject = 'New contact form submission from ' . header_safe($name);
@@ -55,5 +52,4 @@ foreach ($recipients as $recipient) {
     $sent = send_email($recipient, $subject, $body, $email, $name) && $sent;
 }
 
-header('Location: ' . BASE_URL . '/contact.php?' . ($sent ? 'sent=1' : 'error=1'));
-exit;
+redirect(BASE_URL . '/contact.php?' . ($sent ? 'sent=1' : 'error=1'));

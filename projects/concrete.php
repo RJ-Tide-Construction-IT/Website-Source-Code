@@ -12,6 +12,7 @@ $sections = [
         'layout' => 'carousel',
         'photos' => [
             ['img' => 'concrete/web/flatwork.jpg', 'caption' => 'Finishing an interior concrete flatwork pour'],
+            ['img' => 'concrete/web/interior-slab-pour.jpg', 'caption' => 'Finishing an interior slab pour beside reinforced sections'],
         ],
     ],
     [
@@ -28,6 +29,8 @@ $sections = [
         'layout' => 'carousel',
         'photos' => [
             ['img' => 'concrete/web/site-concrete.jpg', 'caption' => 'Pouring site concrete paving'],
+            ['img' => 'concrete/web/exterior-slab-placement.jpg', 'caption' => 'Crew placing a large exterior slab at a commercial building'],
+            ['img' => 'concrete/web/paving-at-dusk.jpg', 'caption' => 'Fresh concrete paving placed beside a finished slab'],
         ],
     ],
     [

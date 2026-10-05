@@ -24,8 +24,8 @@ page_hero($pageTitle);
 <section>
     <div class="container container--narrow">
         <a href="<?= BASE_URL ?>/careers.php" class="back-link">&larr; Go back</a>
-        <a href="<?= BASE_URL ?>/employment.php" class="btn" style="float:right;">Apply Now</a>
-        <div style="clear:both;"></div>
+        <a href="<?= BASE_URL ?>/employment.php" class="btn posting-apply">Apply Now</a>
+        <div class="clear"></div>
 
         <?php if (!empty($jobMeta)): ?>
         <div class="job-meta">

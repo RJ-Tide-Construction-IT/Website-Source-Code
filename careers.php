@@ -3,10 +3,10 @@ $pageTitle = 'Careers';
 $pageDescription = 'Join the RJ Tide family. Actively accepting applications for craftsman, millwright, and leadership positions.';
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
-// The full job list (with 'open' flags) lives in includes/config.php as
-// $GLOBALS['JOBS'], shared with employment.php's Position dropdown so the
-// two can't drift out of sync. To stop showing a position, edit it there.
-$jobs = $GLOBALS['JOBS'];
+// The job list lives in includes/config.php ($GLOBALS['JOBS']), shared with
+// employment.php's Position dropdown. Which jobs are open is switched on the
+// Employee Dashboard's Job Openings page.
+$jobs = jobs_with_status();
 ?>
 
 <?php page_hero('Be a part of the RJ Tide family!', 'agriculture/web/sunrise-headhouse.jpg'); ?>
