@@ -77,13 +77,3 @@ function format_time(?string $utc): string {
     $time = new DateTime($utc, new DateTimeZone('UTC'));
     return $time->setTimezone(new DateTimeZone('America/Chicago'))->format('M j, Y g:i A');
 }
-
-// The local-only test sign-in (dashboard/dev-login.php) works only when ALL of
-// these are true: DASHBOARD_DEV_LOGIN is set in secrets.php, the site is running
-// on PHP's built-in preview server (php -S), and the request comes from this
-// same computer. The file is also never uploaded by the deploy.
-function dashboard_dev_login_allowed(): bool {
-    return defined('DASHBOARD_DEV_LOGIN') && DASHBOARD_DEV_LOGIN === true
-        && PHP_SAPI === 'cli-server'
-        && in_array($_SERVER['REMOTE_ADDR'] ?? '', ['127.0.0.1', '::1'], true);
-}

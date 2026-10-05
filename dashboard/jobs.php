@@ -8,8 +8,7 @@ $user = require_capability('manage_jobs');
 
 $titles = array_column(all_jobs(), 'title');
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    verify_csrf();
+if (form_submitted()) {
     $before = open_job_titles();
     $posted = array_filter((array) ($_POST['open'] ?? []), 'is_string');
     $open   = array_values(array_intersect($titles, $posted)); // only real job titles, in list order

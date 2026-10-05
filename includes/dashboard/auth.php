@@ -1,8 +1,38 @@
 <?php
-// Sign-in sessions, roles, and form protection for the Employee Dashboard.
+// Sign-in sessions, roles, page protection, and form protection for the
+// Employee Dashboard. Creating accounts and approvals are in accounts.php.
 
 // Signed-in sessions end after this long, even if the browser stays open.
 const DASHBOARD_SESSION_HOURS = 12;
+
+// True when running on PHP's built-in preview server (php -S) on your own
+// computer, false on the live site.
+function dashboard_is_local(): bool {
+    return PHP_SAPI === 'cli-server';
+}
+
+// The local-only test sign-in (dashboard/dev-login.php) and the pretend sign-in pages work only when ALL of
+// these are true: DASHBOARD_DEV_LOGIN is set in secrets.php, the site is running
+// on PHP's built-in preview server (php -S), and the request comes from this
+// same computer. The file is also never uploaded by the deploy.
+function dashboard_dev_login_allowed(): bool {
+    return defined('DASHBOARD_DEV_LOGIN') && DASHBOARD_DEV_LOGIN === true
+        && PHP_SAPI === 'cli-server'
+        && in_array($_SERVER['REMOTE_ADDR'] ?? '', ['127.0.0.1', '::1'], true);
+}
+
+// On the live site, the dashboard only runs at SITE_URL's address, so sign-in
+// sessions and the sign-in services' return address always match. Visitors who arrive
+// at another address (e.g. www.rjtide.com) are sent there first.
+function dashboard_require_main_address(): void {
+    if (dashboard_is_local()) {
+        return;
+    }
+    $mainHost = parse_url(SITE_URL, PHP_URL_HOST);
+    if (strcasecmp($_SERVER['HTTP_HOST'] ?? '', $mainHost) !== 0) {
+        redirect(SITE_URL . ($_SERVER['REQUEST_URI'] ?? BASE_URL . '/dashboard/'));
+    }
+}
 
 function dashboard_start_session(): void {
     if (session_status() === PHP_SESSION_ACTIVE) {
@@ -20,7 +50,8 @@ function dashboard_start_session(): void {
     session_set_cookie_params([
         'lifetime' => 0,
         'path'     => BASE_URL . '/dashboard/',
-        'secure'   => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+        // Always HTTPS-only on the live site; locally php -S is plain http.
+        'secure'   => !dashboard_is_local() || (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'),
         'httponly' => true,
         'samesite' => 'Lax',
     ]);
@@ -40,18 +71,10 @@ function current_user(): ?array {
     if (!$id || time() - ($_SESSION['signed_in_at'] ?? 0) > DASHBOARD_SESSION_HOURS * 3600) {
         return null;
     }
-    $stmt = db()->prepare('SELECT * FROM users WHERE id = ? AND active = 1');
+    $stmt = db()->prepare('SELECT * FROM users WHERE id = ? AND active = 1 AND awaiting_approval = 0');
     $stmt->execute([$id]);
     $user = $stmt->fetch() ?: null;
     return $user;
-}
-
-// Sends the browser to another page and stops this one. Always use this rather
-// than header('Location: ...') on its own: without the exit, the rest of the
-// page would keep running (and could output things it shouldn't).
-function redirect(string $url): never {
-    header('Location: ' . $url);
-    exit;
 }
 
 // A role's display name, e.g. 'office' => 'Office'.
@@ -64,43 +87,6 @@ function user_can(?array $user, string $capability): bool {
         return false;
     }
     return in_array($capability, $GLOBALS['DASHBOARD_ROLES'][$user['role']]['can'] ?? [], true);
-}
-
-function is_permanent_admin(string $email): bool {
-    return in_array(strtolower($email), array_map('strtolower', $GLOBALS['DASHBOARD_ADMIN_EMAILS']), true);
-}
-
-// Called after Microsoft confirms who someone is. Creates their dashboard
-// account on first sign-in (as an Employee, or Admin for the emails listed in
-// config.php) and keeps their name/email in sync with Microsoft 365.
-// Returns false if an Admin has deactivated the account.
-function sign_in_user(string $oid, string $email, string $name): bool {
-    $pdo  = db();
-    $stmt = $pdo->prepare('SELECT * FROM users WHERE ms_oid = ?');
-    $stmt->execute([$oid]);
-    $user = $stmt->fetch();
-
-    if (!$user) {
-        $role = is_permanent_admin($email) ? 'admin' : 'employee';
-        $pdo->prepare('INSERT INTO users (ms_oid, email, name, role, active, created_at, last_login_at) VALUES (?, ?, ?, ?, 1, ?, ?)')
-            ->execute([$oid, $email, $name, $role, db_now(), db_now()]);
-        $userId = (int) $pdo->lastInsertId();
-        audit($userId, 'account_created', "$name ($email) signed in for the first time as " . role_label($role));
-    } else {
-        if (!$user['active']) {
-            audit((int) $user['id'], 'sign_in_blocked', "$name ($email) tried to sign in but their account is deactivated");
-            return false;
-        }
-        $userId = (int) $user['id'];
-        $role = is_permanent_admin($email) ? 'admin' : $user['role'];
-        $pdo->prepare('UPDATE users SET email = ?, name = ?, role = ?, last_login_at = ? WHERE id = ?')
-            ->execute([$email, $name, $role, db_now(), $userId]);
-    }
-
-    session_regenerate_id(true); // new session ID at sign-in, so an old one can't be reused
-    $_SESSION['user_id'] = $userId;
-    $_SESSION['signed_in_at'] = time();
-    return true;
 }
 
 function sign_out(): void {
@@ -149,9 +135,21 @@ function require_capability(string $capability): array {
 }
 
 // ---------- Form protection ----------
-// Every dashboard form includes csrf_field(), and every POST handler calls
-// verify_csrf(), so another website can't submit forms using an employee's
-// signed-in session.
+// Every dashboard form includes csrf_field(), and every page checks for a
+// submission with form_submitted() (which checks the token), so another
+// website can't submit forms using an employee's signed-in session.
+
+// True if this request is a form submission, after checking its form token
+// (a missing or wrong token stops the page). Always use this, rather than
+// checking $_SERVER['REQUEST_METHOD'] directly, so the token check can't be
+// forgotten:   if (form_submitted()) { ...handle the form... }
+function form_submitted(): bool {
+    if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+        return false;
+    }
+    verify_csrf();
+    return true;
+}
 
 function csrf_token(): string {
     if (empty($_SESSION['csrf'])) {

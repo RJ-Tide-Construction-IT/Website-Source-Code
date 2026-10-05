@@ -43,8 +43,7 @@ $form = [
 $errors  = [];
 $preview = false;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    verify_csrf();
+if (form_submitted()) {
     $action = posted_text($_POST, 'action');
 
     if ($action === 'delete' && $existing) {

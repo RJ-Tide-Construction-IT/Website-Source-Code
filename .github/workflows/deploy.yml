@@ -31,8 +31,11 @@ jobs:
             **/.github/**
             includes/secrets.php
             uploads/**
-            # Local-only test sign-in for the Employee Dashboard, must never be live.
+            # Local-only test sign-in pages for the Employee Dashboard, must never be live.
             dashboard/dev-login.php
+            dashboard/pretend-sign-in.php
+            # Automated tests, only ever run on a developer's computer.
+            tests/**
             # Full-size camera originals, kept for re-cropping but never
             # linked by any page, the site uses the resized assets/img/**/web/ copies.
             originals/**

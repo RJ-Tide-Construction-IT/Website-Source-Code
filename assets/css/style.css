@@ -642,6 +642,9 @@ section { padding: 64px 0; }
 
 .back-link { display: inline-block; margin-bottom: 1.5rem; font-weight: 600; }
 .back-link + .back-link { margin-left: 24px; }
+/* "Apply Now" on job postings, sitting to the right of the "Go back" link. */
+.posting-apply { float: right; }
+.clear { clear: both; }
 
 /* ---------- Contact ---------- */
 .contact-details { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 2.5rem; }
@@ -715,12 +718,26 @@ a.dash-tile:hover { border-color: var(--color-red); text-decoration: none; }
 .dash-table form { margin: 0; }
 .dash-row--inactive td { color: var(--color-text-muted); }
 .dash-signin { max-width: 520px; margin: 0 auto; text-align: center; }
+.dash-signin__option { margin: 0 0 1.75rem; }
+.dash-signin__form { text-align: left; }
+.dash-pretend-note { color: #6b4a00; font-style: italic; }
+.dash-signin__option .dash-meta { margin: 10px 0 0; }
+.dash-notice { background: #fff6e0; color: #6b4a00; }
+.dash-subheading--first { margin-top: 0; }
+.dash-actions form { display: flex; flex-wrap: wrap; gap: 8px; }
 .dash-meta { color: var(--color-text-muted); font-size: 0.9rem; }
 .dash-subheading { margin-top: 2.5rem; font-size: 1.3rem; }
 .dash-role-list, .dash-activity { padding-left: 1.25em; }
 .dash-activity li { margin-bottom: 6px; }
 .badge--open { background: #e6f6ec; color: #1a7a3d; margin-left: 0; }
 .dash-actions a + a { margin-left: 14px; }
+
+/* Setup check (dashboard/setup-check.php) */
+.setup-checks { list-style: none; padding: 0; margin: 1.5rem 0; }
+.setup-checks li { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid #eee; }
+.setup-checks__mark { flex-shrink: 0; width: 24px; font-weight: 700; font-size: 1.1rem; text-align: center; }
+.setup-checks .is-ok .setup-checks__mark { color: #1a7a3d; }
+.setup-checks .is-bad .setup-checks__mark { color: var(--color-red-dark); }
 
 /* Job posting editor (dashboard/posting-edit.php) */
 .dash-form { max-width: 860px; }

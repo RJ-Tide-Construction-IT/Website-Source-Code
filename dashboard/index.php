@@ -10,6 +10,15 @@ dashboard_page_start('Employee Dashboard', $user);
 ?>
 <p class="dash-welcome">Welcome, <?= htmlspecialchars(strtok($user['name'], ' ') ?: $user['name']) ?>.</p>
 
+<?php if (user_can($user, 'manage_users')):
+    $waitingCount = (int) db()->query('SELECT COUNT(*) FROM users WHERE awaiting_approval = 1')->fetchColumn();
+    if ($waitingCount): ?>
+<div class="form-note dash-notice">
+    <?= $waitingCount === 1 ? '1 person is' : $waitingCount . ' people are' ?> waiting for approval.
+    <a href="<?= BASE_URL ?>/dashboard/users.php">Review on the Users page</a>
+</div>
+<?php endif; endif; ?>
+
 <div class="dash-tiles">
     <?php foreach ($tiles as $tile): ?>
     <?php if ($tile['href'] !== null): ?>

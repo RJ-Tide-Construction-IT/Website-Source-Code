@@ -19,6 +19,12 @@ define('CONTACT_EMAIL_DEFAULT', 'mcross@rjtide.com');       // contact form: no 
 define('CONTACT_EMAIL_AGRICULTURAL', 'shodgson@rjtide.com'); // contact form: "Agricultural" checked
 define('CONTACT_EMAIL_CONCRETE', 'khodgson@rjtide.com');     // contact form: "Concrete" checked
 
+// The live site's main address (no trailing slash). The Employee Dashboard
+// always uses this address, sending visitors from www.rjtide.com here first,
+// because Microsoft and Google sign-in only accept the return address
+// registered with them.
+define('SITE_URL', 'https://rjtide.com');
+
 // Root-relative base path. Leave as '' when the site is hosted at the domain root
 // (e.g. https://rjtide.com/). Set to '/subfolder' if it's hosted in a subfolder.
 define('BASE_URL', '');
@@ -44,6 +50,15 @@ function header_safe(string $value): string {
 function asset_url(string $path): string {
     $file = dirname(__DIR__) . $path;
     return BASE_URL . $path . (is_file($file) ? '?v=' . filemtime($file) : '');
+}
+
+// Sends the browser to another page and stops this one. Always use this rather
+// than header('Location: ...') on its own: without the exit, the rest of the
+// page would keep running (and could output things it shouldn't).
+// (Kept to older-PHP syntax, since this file loads on every public page.)
+function redirect(string $url): void {
+    header('Location: ' . $url);
+    exit;
 }
 
 // One text answer from a submitted form array (usually $_POST). Anything that
@@ -153,8 +168,9 @@ $GLOBALS['DASHBOARD_ROLES'] = [
     'admin'    => ['label' => 'Admin',    'can' => ['manage_jobs', 'edit_postings', 'manage_users']],
 ];
 
-// These work accounts are always Admins, so the dashboard can never end up with
-// nobody able to manage it. Everyone else starts as an Employee on first sign-in.
+// These work (Microsoft 365) accounts are always Admins, so the dashboard can
+// never end up with nobody able to manage it. Everyone else starts as an
+// Employee on first sign-in (Google sign-ins also need an Admin's approval).
 $GLOBALS['DASHBOARD_ADMIN_EMAILS'] = ['mcross@rjtide.com'];
 
 // Job listings: which jobs are open, and postings added on the dashboard.

@@ -47,15 +47,22 @@ function db_migrations(bool $mysql): array {
 
     return [
         1 => [
+            // account_id is the sign-in service's permanent id for the person,
+            // prefixed with the service: 'microsoft:...', 'google:...', or
+            // 'test:...' for the local test sign-in. sign_in_method is the
+            // service's key ('microsoft', 'google', 'test'). Google sign-ins
+            // start with awaiting_approval = 1 until an Admin approves them.
             "CREATE TABLE users (
-                id            $id,
-                ms_oid        VARCHAR(64)  NOT NULL UNIQUE,
-                email         VARCHAR(255) NOT NULL,
-                name          VARCHAR(255) NOT NULL,
-                role          VARCHAR(20)  NOT NULL DEFAULT 'employee',
-                active        SMALLINT     NOT NULL DEFAULT 1,
-                created_at    VARCHAR(19)  NOT NULL,
-                last_login_at VARCHAR(19)  NULL
+                id                $id,
+                account_id        VARCHAR(100) NOT NULL UNIQUE,
+                sign_in_method    VARCHAR(20)  NOT NULL,
+                email             VARCHAR(255) NOT NULL,
+                name              VARCHAR(255) NOT NULL,
+                role              VARCHAR(20)  NOT NULL DEFAULT 'employee',
+                active            SMALLINT     NOT NULL DEFAULT 1,
+                awaiting_approval SMALLINT     NOT NULL DEFAULT 0,
+                created_at        VARCHAR(19)  NOT NULL,
+                last_login_at     VARCHAR(19)  NULL
             )$engine",
             // Who changed what, e.g. role changes and job openings.
             "CREATE TABLE audit_log (

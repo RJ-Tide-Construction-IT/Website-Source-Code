@@ -11,9 +11,15 @@ define('BREVO_API_KEY', '');
 // ---------- Employee Dashboard: Microsoft 365 sign-in ----------
 // From the app registration in the Microsoft Entra admin center, see the
 // README's "Employee Dashboard setup". Leave blank until that's set up.
-define('MS_TENANT_ID', '');      // "Directory (tenant) ID", looks like 1a2b3c4d-....
+define('MS_TENANT_ID', '');      // "Directory (tenant) ID". RJ Tide's is 87167729-2aaa-42ad-95f6-cdff8fed8047 (public, not a secret)
 define('MS_CLIENT_ID', '');      // "Application (client) ID"
 define('MS_CLIENT_SECRET', '');  // Certificates & secrets > client secret "Value"
+
+// ---------- Employee Dashboard: Google sign-in (field crews) ----------
+// From the OAuth client in Google Cloud Console, see the README's
+// "Employee Dashboard setup". Leave blank to hide the Google button.
+define('GOOGLE_CLIENT_ID', '');      // ends in .apps.googleusercontent.com
+define('GOOGLE_CLIENT_SECRET', '');
 
 // ---------- Employee Dashboard: database (optional) ----------
 // Leave these out (or blank) to use the built-in SQLite file in
