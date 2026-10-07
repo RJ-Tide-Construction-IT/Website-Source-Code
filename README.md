@@ -178,12 +178,30 @@ Login" in the footer) in one of two ways:
 
 Either button only appears once its settings are filled in on the server.
 
-**Built so far:** sign-in, roles, the **Job Openings** page (check the
-positions you're hiring for, the Careers page updates immediately), the
-**Job Postings** page (Admins add new postings, see below), and the **Users**
-page (Admins change roles or turn off access). Document uploads are shown as
-"Coming soon" and come next. Timecards aren't part of the dashboard, they're
-handled by a separate service.
+**Built so far:** sign-in, roles, **My Requests** and **Review Requests** (see
+below), the **Job Openings** page (check the positions you're hiring for, the
+Careers page updates immediately), the **Job Postings** page (Admins add new
+postings, see below), and the **Users** page (Admins change roles or turn off
+access). Document uploads are shown as "Coming soon" and come next. Timecards
+aren't part of the dashboard, they're handled by a separate service.
+
+**Employee requests:** every employee can send HR a **Time Off** request
+(Vacation/PTO, Sick, Unpaid, or Other with a note), an **Address Change**, or a
+**Direct Deposit Change** from **My Requests**, follow its status there, and
+cancel it while it's still waiting. People with the **HR** role (and Admins)
+handle them on **Review Requests**: time off is approved or denied, address and
+direct deposit changes are marked done once entered into payroll, or rejected,
+each with an optional note. HR is emailed when a request comes in, and the
+employee is emailed when it's decided. Nobody can decide their own request.
+
+Direct deposit bank numbers get extra protection: they're stored encrypted with
+`DASHBOARD_ENCRYPTION_KEY` (setup step 3 below), only HR can see them, behind a
+**Show bank details** button on that request's page, and every viewing is
+recorded in "Recent activity". Emails and lists only ever show "account ending
+1234". The numbers are permanently erased the moment the request is marked
+done, rejected, or cancelled. Until the key is set, the direct deposit form is
+switched off (time off and address changes still work). The logic for all
+three is in [includes/dashboard/requests.php](includes/dashboard/requests.php).
 
 **Job postings added on the dashboard** get their own page
 (`careers/posting.php?id=...`) that looks just like the built-in ones, and
@@ -199,9 +217,12 @@ are built into the site and are still edited in [careers/](careers/).
 
 | Role | Can do |
 |---|---|
-| Employee | Employee features (document uploads, once built) |
+| Employee | My Requests (time off, address, direct deposit) |
 | Office | + manage Job Openings |
-| Admin | everything: also add/edit Job Postings and the Users page |
+| HR | + Review Requests, including viewing direct deposit bank details |
+| Admin | everything: Job Openings, Job Postings, Review Requests, and the Users page |
+
+Only give the HR role to people who handle payroll, since it can see bank details.
 
 To let Office add postings too, add `'edit_postings'` to the Office line in
 `DASHBOARD_ROLES`.
@@ -269,6 +290,18 @@ so the sign-in page is never live half set up. See
 `MS_TENANT_ID`, `MS_CLIENT_ID`, `MS_CLIENT_SECRET` for Microsoft, and
 `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` for Google.
 
+Also add `DASHBOARD_ENCRYPTION_KEY`, which encrypts direct deposit bank numbers.
+Make one by running this once on your computer and pasting the result between
+the quotes (treat it like a password; don't email it or put it anywhere else):
+
+```
+php -r "echo base64_encode(random_bytes(32)), PHP_EOL;"
+```
+
+Keep the same key from then on: if it ever changes, direct deposit requests
+still waiting for review can't be read, so HR would reject them and the
+employees would send them again.
+
 **4. Deploy:** merge the dashboard work into `master` and push. The deploy
 only runs for `master`.
 
@@ -290,15 +323,30 @@ www.rjtide.com are sent there first, since Microsoft and Google only return
 people to the one registered address. If the site's main address ever changes,
 update `SITE_URL` and the redirect address in both Entra and Google Cloud.
 
-### Trying out changes to the dashboard
+### Testing the dashboard on your own computer
 
-The dashboard only works on the live site: signing in always goes through the
-real Microsoft or Google sign-in and returns to https://rjtide.com, so there's
-no way to sign in to it from your own computer. After deploying a dashboard
-change, sign in on the live site and try it there, and use
-**https://rjtide.com/dashboard/setup-check.php** if anything seems wrong. (The
-public pages can still be previewed locally as usual, see "Previewing your
-changes before they go live" above.)
+1. Make sure PHP's SQLite support is on: in the `php.ini` file shown by
+   `php --ini`, the line `extension=pdo_sqlite` must not start with `;`.
+2. In your **local** `includes/secrets.php` (never the server's), add:
+   ```php
+   define('DASHBOARD_LOCAL_TESTING', true);
+   ```
+   To try direct deposit requests too, also add a `DASHBOARD_ENCRYPTION_KEY`
+   made with the command in setup step 3 (use a different key than the server's).
+3. Run `php -S localhost:8000` and open http://localhost:8000/dashboard/, then
+   click **Local test sign-in**.
+
+On the **Local Testing** page (also a tab once signed in) you can sign in as
+anyone, as a Microsoft-style account (mcross@rjtide.com is an Admin, anyone else
+starts as an Employee) or a Google-style one (waits for approval), and switch
+between everyone you've created with one click, e.g. an employee sending a
+request and an HR person reviewing it. **No real emails are sent**: every email
+the dashboard would send is listed at the bottom of that page instead.
+
+This only works with that setting on, on PHP's preview server, from your own
+computer, so it can never be switched on for the live site, and the deploy never
+uploads the Local Testing page. Your test data lives in `uploads/dashboard/` on
+your computer; delete that folder to start fresh.
 
 ## Printable application PDF
 

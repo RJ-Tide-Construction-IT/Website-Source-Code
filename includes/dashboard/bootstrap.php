@@ -9,6 +9,7 @@ require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/accounts.php';
 require_once __DIR__ . '/sign-in.php';
+require_once __DIR__ . '/requests.php';
 require_once __DIR__ . '/layout.php';
 
 // Any unexpected error (e.g. the database can't be reached) shows a plain

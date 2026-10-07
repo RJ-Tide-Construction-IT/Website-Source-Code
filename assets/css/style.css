@@ -730,6 +730,37 @@ a.dash-tile:hover { border-color: var(--color-red); text-decoration: none; }
 .badge--open { background: #e6f6ec; color: #1a7a3d; margin-left: 0; }
 .dash-actions a + a { margin-left: 14px; }
 
+/* Employee requests (dashboard/requests.php, request-new.php, review*.php) */
+.request-actions { margin-bottom: 1.75rem; }
+.badge.status--pending   { background: #fff6e0; color: #6b4a00; margin-left: 0; }
+.badge.status--approved,
+.badge.status--done      { background: #e6f6ec; color: #1a7a3d; margin-left: 0; }
+.badge.status--denied,
+.badge.status--rejected  { background: #fde8ea; color: var(--color-red-dark); margin-left: 0; }
+.badge.status--cancelled { margin-left: 0; }
+.dash-link-button {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-red);
+  font: inherit;
+  cursor: pointer;
+}
+.dash-link-button:hover { text-decoration: underline; }
+.dash-details { max-width: 760px; margin-bottom: 1.5rem; }
+.dash-details th { width: 180px; color: var(--color-text-muted); font-weight: 600; text-transform: none; font-size: 0.95rem; letter-spacing: 0; }
+.dash-details--revealed { outline: 2px solid #f2c94c; }
+.dash-reveal { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 1.5rem; }
+.dash-decision { max-width: 760px; }
+
+/* Local testing page (dashboard/local-sign-in.php, never on the live site) */
+.local-grid { display: grid; gap: 32px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+.local-clear { margin: -0.75rem 0 1rem; }
+.local-email { margin-bottom: 1rem; padding: 12px 16px; border: 1px solid #eee; border-radius: var(--radius); background: var(--color-white); }
+.local-email p { margin: 0 0 4px; }
+.local-email__subject { font-weight: 600; color: var(--color-navy); }
+.local-email pre { margin: 6px 0 0; white-space: pre-wrap; font-family: inherit; font-size: 0.92rem; color: var(--color-text); }
+
 /* Setup check (dashboard/setup-check.php) */
 .setup-checks { list-style: none; padding: 0; margin: 1.5rem 0; }
 .setup-checks li { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid #eee; }

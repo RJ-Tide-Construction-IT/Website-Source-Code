@@ -21,7 +21,7 @@ dashboard_page_start('Employee Sign In', null);
     <div class="form-note form-note--success">You&rsquo;re signed out.</div>
     <?php endif; ?>
 
-    <?php if (!$services): ?>
+    <?php if (!$services && !local_testing()): ?>
     <div class="form-note form-note--error">Employee sign-in isn&rsquo;t available yet. Please check back soon, or contact the office.</div>
     <?php endif; ?>
 
@@ -38,6 +38,10 @@ dashboard_page_start('Employee Sign In', null);
         <p class="dash-meta">For employees without a company email, with your Google (Gmail) account.
            The first time, an Admin will need to approve your account.</p>
     </div>
+    <?php endif; ?>
+
+    <?php if (local_testing()): ?>
+    <p class="dash-meta"><a href="<?= BASE_URL ?>/dashboard/local-sign-in.php">Local test sign-in</a> (only on your own computer)</p>
     <?php endif; ?>
 </div>
 <?php dashboard_page_end(); ?>

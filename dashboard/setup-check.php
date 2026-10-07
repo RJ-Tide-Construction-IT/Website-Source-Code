@@ -139,6 +139,23 @@ if ($googleAny) {
     }
 }
 
+// Direct deposit requests: the bank numbers are encrypted with this key, and
+// the form stays switched off without it.
+$encryptionKey = base64_decode(setup_setting('DASHBOARD_ENCRYPTION_KEY'), true);
+if (setup_check($checks, 'Direct deposit: encryption is available (openssl, AES-256-GCM)',
+        function_exists('openssl_encrypt') && in_array('aes-256-gcm', openssl_get_cipher_methods(), true),
+        'Ask the host to enable the openssl PHP extension.')) {
+    setup_check($checks, 'Direct deposit: the encryption key is set', $encryptionKey !== false && strlen($encryptionKey) === 32,
+        'Add DASHBOARD_ENCRYPTION_KEY to includes/secrets.php on the server (see includes/secrets.example.php for the one-line command that makes one). Until then the direct deposit form is switched off.');
+}
+
+// Local testing is for your own computer (php -S) only. It can't switch on for
+// the live site anyway, but the setting shouldn't be in the server's secrets.php.
+if (PHP_SAPI !== 'cli-server') {
+    setup_check($checks, 'Local testing is turned off', !(defined('DASHBOARD_LOCAL_TESTING') && DASHBOARD_LOCAL_TESTING === true),
+        'Remove the DASHBOARD_LOCAL_TESTING line from includes/secrets.php on the server. It only belongs on your own computer.');
+}
+
 $allOk = !in_array(false, array_column($checks, 'ok'), true);
 
 $pageTitle   = 'Dashboard Setup Check';

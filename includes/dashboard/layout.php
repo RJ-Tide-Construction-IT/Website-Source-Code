@@ -11,8 +11,18 @@
 //   'text' the home page tile's description (no 'text' = no tile, e.g. Home itself)
 //   'also' (optional) other pages that belong to this tab, so it stays highlighted there
 function dashboard_pages(): array {
-    return [
+    $local = !local_testing() ? [] : [
+        // Only on your own computer, see local_testing() in auth.php.
+        ['label' => 'Local Testing', 'href' => '/dashboard/local-sign-in.php', 'can' => null],
+    ];
+    return array_merge([
         ['label' => 'Home',         'href' => '/dashboard/',          'can' => null],
+        ['label' => 'My Requests',  'href' => '/dashboard/requests.php', 'can' => null,
+         'text'  => 'Request time off, or change your address or direct deposit.',
+         'also'  => ['/dashboard/request-new.php']],
+        ['label' => 'Review Requests', 'href' => '/dashboard/review.php', 'can' => 'handle_requests',
+         'text'  => 'Approve time off, and process address and direct deposit changes.',
+         'also'  => ['/dashboard/review-request.php']],
         ['label' => 'Documents',    'href' => null,                   'can' => null,
          'text'  => 'Upload certifications, safety forms, receipts, and job-site photos.'],
         ['label' => 'Job Openings', 'href' => '/dashboard/jobs.php',  'can' => 'manage_jobs',
@@ -22,7 +32,7 @@ function dashboard_pages(): array {
          'also'  => ['/dashboard/posting-edit.php']],
         ['label' => 'Users',        'href' => '/dashboard/users.php', 'can' => 'manage_users',
          'text'  => 'Give employees more access, or turn off access for people who have left.'],
-    ];
+    ], $local);
 }
 
 // The pages this person's role lets them see.

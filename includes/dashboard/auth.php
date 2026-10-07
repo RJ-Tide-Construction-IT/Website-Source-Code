@@ -5,10 +5,25 @@
 // Signed-in sessions end after this long, even if the browser stays open.
 const DASHBOARD_SESSION_HOURS = 12;
 
+// LOCAL TESTING: true only when ALL of these hold, so it can never be on for
+// the live site: DASHBOARD_LOCAL_TESTING is true in includes/secrets.php, the
+// site is running on PHP's preview server (php -S), and the request comes from
+// this same computer. It allows dashboard/local-sign-in.php (never uploaded by
+// the deploy), keeps you at localhost, and writes emails to a file instead of
+// sending them. See "Testing the dashboard on your own computer" in the README.
+function local_testing(): bool {
+    return defined('DASHBOARD_LOCAL_TESTING') && DASHBOARD_LOCAL_TESTING === true
+        && PHP_SAPI === 'cli-server'
+        && in_array($_SERVER['REMOTE_ADDR'] ?? '', ['127.0.0.1', '::1'], true);
+}
+
 // The dashboard only runs at SITE_URL's address, so sign-in sessions and the
 // sign-in services' return address always match. Visitors who arrive at
 // another address (e.g. www.rjtide.com) are sent there first.
 function dashboard_require_main_address(): void {
+    if (local_testing()) {
+        return;
+    }
     $mainHost = parse_url(SITE_URL, PHP_URL_HOST);
     if (strcasecmp($_SERVER['HTTP_HOST'] ?? '', $mainHost) !== 0) {
         redirect(SITE_URL . ($_SERVER['REQUEST_URI'] ?? BASE_URL . '/dashboard/'));
@@ -31,7 +46,7 @@ function dashboard_start_session(): void {
     session_set_cookie_params([
         'lifetime' => 0,
         'path'     => BASE_URL . '/dashboard/',
-        'secure'   => true, // only ever sent over HTTPS
+        'secure'   => !local_testing(), // HTTPS only (php -S on your computer is plain http)
         'httponly' => true,
         'samesite' => 'Lax',
     ]);

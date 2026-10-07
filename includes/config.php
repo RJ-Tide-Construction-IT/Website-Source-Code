@@ -165,7 +165,10 @@ define('JOB_POSTINGS_FILE', DASHBOARD_DATA_DIR . '/job-postings.json');
 $GLOBALS['DASHBOARD_ROLES'] = [
     'employee' => ['label' => 'Employee', 'can' => []],
     'office'   => ['label' => 'Office',   'can' => ['manage_jobs']],
-    'admin'    => ['label' => 'Admin',    'can' => ['manage_jobs', 'edit_postings', 'manage_users']],
+    // HR reviews time off, address and direct deposit requests, including
+    // viewing bank details, so give this role only to people who handle payroll.
+    'hr'       => ['label' => 'HR',       'can' => ['handle_requests']],
+    'admin'    => ['label' => 'Admin',    'can' => ['manage_jobs', 'edit_postings', 'handle_requests', 'manage_users']],
 ];
 
 // These work (Microsoft 365) accounts are always Admins, so the dashboard can

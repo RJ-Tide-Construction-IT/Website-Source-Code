@@ -31,6 +31,8 @@ jobs:
             **/.github/**
             includes/secrets.php
             uploads/**
+            # Local-testing page for the Employee Dashboard, must never be live.
+            dashboard/local-sign-in.php
             # Full-size camera originals, kept for re-cropping but never
             # linked by any page, the site uses the resized assets/img/**/web/ copies.
             originals/**
