@@ -33,14 +33,15 @@ $submitError = isset($_GET['error']);
         <?php endif; ?>
 
         <div class="contact-layout">
-            <form action="<?= BASE_URL ?>/contact-handler.php" method="post">
+            <form id="contact-form" action="<?= BASE_URL ?>/contact-handler.php" method="post">
                 <div class="form-field">
                     <label for="name">Name</label>
                     <input type="text" id="name" name="name" required>
                 </div>
+                <p>Please provide an email address or phone number so we can reach you.</p>
                 <div class="form-field">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="email" name="email">
                 </div>
                 <div class="form-field">
                     <label for="phone">Phone</label>
@@ -78,5 +79,22 @@ $submitError = isset($_GET['error']);
         </div>
     </div>
 </section>
+
+<script>
+// Require at least one way to reach the visitor: email or phone.
+(function () {
+    var form = document.getElementById('contact-form');
+    var email = document.getElementById('email');
+    var phone = document.getElementById('phone');
+    function check() {
+        var missing = email.value.trim() === '' && phone.value.trim() === '';
+        email.setCustomValidity(missing ? 'Please enter an email address or phone number.' : '');
+    }
+    email.addEventListener('input', check);
+    phone.addEventListener('input', check);
+    form.addEventListener('submit', check);
+    check();
+})();
+</script>
 
 <?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>
