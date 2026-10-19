@@ -39,7 +39,7 @@ $submitError = isset($_GET['error']);
                     <label for="name">Name</label>
                     <input type="text" id="name" name="name" required>
                 </div>
-                <p>Please provide an email address or phone number so we can reach you.</p>
+                <p class="form-field-hint">Please provide an email address or phone number so we can reach you.</p>
                 <div class="form-field">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email">
@@ -81,22 +81,5 @@ $submitError = isset($_GET['error']);
         </div>
     </div>
 </section>
-
-<script>
-// Require at least one way to reach the visitor: email or phone.
-(function () {
-    var form = document.getElementById('contact-form');
-    var email = document.getElementById('email');
-    var phone = document.getElementById('phone');
-    function check() {
-        var missing = email.value.trim() === '' && phone.value.trim() === '';
-        email.setCustomValidity(missing ? 'Please enter an email address or phone number.' : '');
-    }
-    email.addEventListener('input', check);
-    phone.addEventListener('input', check);
-    form.addEventListener('submit', check);
-    check();
-})();
-</script>
 
 <?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>

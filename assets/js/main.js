@@ -222,3 +222,37 @@ document.addEventListener('DOMContentLoaded', function () {
     try { localStorage.setItem('cookieNoticeSeen', '1'); } catch (e) {}
   });
 });
+
+// Contact form: needs at least one way to reach the visitor, email or phone.
+// contact-handler.php checks the same thing server-side.
+document.addEventListener('DOMContentLoaded', function () {
+  var form = document.getElementById('contact-form');
+  var email = document.getElementById('email');
+  var phone = document.getElementById('phone');
+  if (!form || !email || !phone) return;
+
+  function check() {
+    var missing = email.value.trim() === '' && phone.value.trim() === '';
+    email.setCustomValidity(missing ? 'Please enter an email address or phone number.' : '');
+  }
+  email.addEventListener('input', check);
+  phone.addEventListener('input', check);
+  check();
+});
+
+// Cloudflare Turnstile (includes/turnstile.php): don't submit a form until its
+// "Verify you are human" check is done, so a visitor isn't sent back to an
+// empty form, painful on the long job application.
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.cf-turnstile').forEach(function (widget) {
+    var form = widget.closest('form');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+      var token = form.querySelector('[name="cf-turnstile-response"]');
+      if (!token || token.value === '') {
+        e.preventDefault();
+        alert('Please complete the "Verify you are human" check before submitting.');
+      }
+    });
+  });
+});

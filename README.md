@@ -28,6 +28,7 @@ exactly which file to open for common edits.
 | Change colors, fonts, or overall look | [assets/css/style.css](assets/css/style.css) |
 | Change the mobile menu, slideshow, or image lightbox behavior | [assets/js/main.js](assets/js/main.js) |
 | Change what's in the top menu bar on every page | `$GLOBALS['MAIN_NAV']` inside [includes/config.php](includes/config.php) |
+| Change who receives contact form emails (by department) | the `CONTACT_EMAIL_...` settings in [includes/config.php](includes/config.php) |
 | Change the very top or bottom of every page (logo bar, menu, footer links) | [includes/header.php](includes/header.php) / [includes/footer.php](includes/footer.php) |
 | Swap out a photo or logo | replace the file in [assets/img/](assets/img/) (keep the same filename so nothing breaks) |
 
@@ -68,8 +69,8 @@ Every page (like `index.php` or `about.php`) is a full HTML page, but three
 pieces are shared and pulled in automatically so they only need to be edited
 once:
 
-- **[includes/header.php](includes/header.php)**, the top of every page: logo, menu bar.
-- **[includes/footer.php](includes/footer.php)**, the bottom of every page: contact info, page links, the cookie notice.
+- **[includes/header.php](includes/header.php)**, the top of every page: logo, address and phone number, menu bar. On phones the address hides but the phone number stays, as a tap-to-call button.
+- **[includes/footer.php](includes/footer.php)**, the bottom of every page: address, email, page links, the cookie notice.
 - **[includes/config.php](includes/config.php)**, site-wide facts (phone number, email, address, the menu links) plus a couple of small logo lists. Change a value here and it updates everywhere it's used.
 
 ## Full folder guide
@@ -79,12 +80,16 @@ index.php, about.php, contact.php, projects.php, careers.php, employment.php
                        the main pages of the site
 
 includes/              shared pieces every page uses
-  header.php             top of the page (logo, menu)
-  footer.php              bottom of the page (contact info, page links)
+  header.php             top of the page (logo, address + phone, menu)
+  footer.php              bottom of the page (address, email, page links)
   config.php              phone/email/address + menu links, edited in one place
   mailer.php               sends emails for the contact/application forms
-  secrets.php              API key for the email service (not in this repo,
-                            see "Email setup" below)
+  turnstile.php            the "Verify you are human" check on the contact
+                            and application forms, see "Contact and job
+                            application forms" below
+  secrets.php              private keys (email service, human check, etc.),
+                            not in this repo, see "Contact and job
+                            application forms" below
   photo-sections.php       shared renderer for the photo galleries on the
                             Projects sub-pages, see "Editing the project
                             galleries" below
@@ -118,7 +123,8 @@ assets/css/style.css   all colors and fonts, the color/font values are near
 
 assets/js/main.js      small interactive bits: mobile menu, project
                         gallery slideshows, image lightbox, vendor logo
-                        carousel, cookie notice
+                        carousel, cookie notice, contact/application form
+                        checks
 
 assets/img/             all photos and logos, organized into subfolders by
                         where they're used (agriculture, concrete, millwright,
@@ -347,6 +353,39 @@ This only works with that setting on, on PHP's preview server, from your own
 computer, so it can never be switched on for the live site, and the deploy never
 uploads the Local Testing page. Your test data lives in `uploads/dashboard/` on
 your computer; delete that folder to start fresh.
+
+## Contact and job application forms
+
+[contact.php](contact.php) and [employment.php](employment.php) send their
+submissions by email through [Brevo](https://www.brevo.com/), handled by
+[contact-handler.php](contact-handler.php) and [apply-handler.php](apply-handler.php).
+
+- **Contact form:** name, message, and an email address **or** phone number
+  (at least one) are required. Emails are routed by the "I'm interested in"
+  boxes: Agricultural and Concrete go to their department, anything else to the
+  default inbox (the `CONTACT_EMAIL_...` settings in `config.php`).
+- **Spam protection, two layers on both forms:**
+  - a hidden "honeypot" field that bots fill in and people never see;
+  - a [Cloudflare Turnstile](https://www.cloudflare.com/products/turnstile/)
+    "Verify you are human" box above the submit button
+    ([includes/turnstile.php](includes/turnstile.php)). Most visitors just see a
+    checkmark, no picture puzzles. The browser won't submit until it's done, and
+    the server double-checks with Cloudflare before anything is emailed or saved.
+
+### Email and human-check setup
+
+The keys live in `includes/secrets.php`, which is never committed or uploaded by
+the deploy. Create it on your computer **and** on the live server (via FTP or
+the hosting file manager) by copying
+[includes/secrets.example.php](includes/secrets.example.php) and filling in:
+
+| Setting | Where to get it | If left blank |
+|---|---|---|
+| `BREVO_API_KEY` | Brevo dashboard > **SMTP & API** > **API Keys** | form emails aren't sent (visitors see an error) |
+| `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` | Cloudflare dashboard > **Turnstile** > your widget | the human check is switched off, the forms still work |
+
+Turnstile only works on the hostnames listed on the widget in Cloudflare. To test
+it on your own computer, add `localhost` there; otherwise test on the live site.
 
 ## Printable application PDF
 

@@ -73,11 +73,11 @@ function page_hero(string $title, ?string $image = null, string $extraHtml = '')
             </a>
 
             <div class="site-header__contact">
-                <a href="https://maps.google.com/?q=<?= urlencode(SITE_ADDRESS) ?>" class="site-header__address" target="_blank" rel="noopener noreferrer">
+                <a href="https://maps.google.com/?q=<?= urlencode(SITE_ADDRESS) ?>" class="site-header__pill site-header__address" target="_blank" rel="noopener noreferrer">
                     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C7.86 2 4.5 5.36 4.5 9.5c0 5.5 6.5 11.5 7 12 .5-.5 7-6.5 7-12C18.5 5.36 15.14 2 12 2zm0 10.25a2.75 2.75 0 1 1 0-5.5 2.75 2.75 0 0 1 0 5.5z"/></svg>
                     <?= htmlspecialchars(SITE_ADDRESS) ?>
                 </a>
-                <a href="tel:<?= SITE_PHONE_TEL ?>" class="site-header__address site-header__phone" aria-label="Call <?= SITE_PHONE ?>">
+                <a href="tel:<?= SITE_PHONE_TEL ?>" class="site-header__pill site-header__phone" aria-label="Call <?= SITE_PHONE ?>">
                     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z"/></svg>
                     <span class="site-header__phone-number"><?= SITE_PHONE ?></span>
                 </a>

@@ -16,30 +16,15 @@ function turnstile_enabled(): bool {
 }
 
 // The checkbox widget plus Cloudflare's script. Prints nothing when switched off.
-// Also stops the form submitting until the check is done, so a visitor isn't
-// sent back to an empty form (painful on the long job application).
+// assets/js/main.js stops the form submitting until the check is done.
 function turnstile_widget(): void {
     if (!turnstile_enabled()) {
         return;
     }
-    ?>
-<div class="form-field">
-    <div class="cf-turnstile" data-sitekey="<?= htmlspecialchars(TURNSTILE_SITE_KEY) ?>"></div>
-</div>
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-<script>
-(function () {
-    var form = document.currentScript.closest('form');
-    form.addEventListener('submit', function (e) {
-        var token = form.querySelector('[name="cf-turnstile-response"]');
-        if (!token || token.value === '') {
-            e.preventDefault();
-            alert('Please complete the "Verify you are human" check before submitting.');
-        }
-    });
-})();
-</script>
-<?php
+    echo '<div class="form-field">'
+       . '<div class="cf-turnstile" data-sitekey="' . htmlspecialchars(TURNSTILE_SITE_KEY) . '"></div>'
+       . "</div>\n"
+       . '<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>' . "\n";
 }
 
 // Asks Cloudflare, server-to-server, whether this submission passed. Always
