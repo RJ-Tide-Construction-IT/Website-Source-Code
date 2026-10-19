@@ -8,7 +8,7 @@
 // Brevo dashboard > SMTP & API > API Keys.
 define('BREVO_API_KEY', '');
 
-// ---------- Contact form: Cloudflare Turnstile (human check) ----------
+// ---------- Contact form + job application: Cloudflare Turnstile (human check) ----------
 // Cloudflare dashboard > Turnstile > your widget. Leave blank to switch the
 // check off. The site key is public; the secret key is not.
 define('TURNSTILE_SITE_KEY', '');

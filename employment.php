@@ -2,6 +2,7 @@
 $pageTitle = 'Job Application';
 $pageDescription = 'Apply to join RJ Tide Construction Company, Inc.';
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/turnstile.php';
 
 // Same job list careers.php uses, filtered to only the positions currently
 // open (switched on the Employee Dashboard), so an applicant can't select a
@@ -35,6 +36,7 @@ $errorMessages = [
     'validation' => 'Please fill in all required fields with a valid email address.',
     'file'       => 'Your resume must be a PDF or Word document under 5MB.',
     'upload'     => 'We couldn\'t save your resume upload. Please try again.',
+    'captcha'    => 'We couldn\'t confirm you\'re a person. Please complete the "Verify you are human" check and try again.',
 ];
 ?>
 
@@ -289,6 +291,7 @@ $errorMessages = [
                 <label for="website">Leave blank</label>
                 <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
             </div>
+            <?php turnstile_widget(); ?>
             <button type="submit" class="btn">Submit Application</button>
         </form>
     </div>
