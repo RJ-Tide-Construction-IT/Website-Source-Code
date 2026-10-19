@@ -5,7 +5,6 @@
         <div class="site-footer__col">
             <h3><?= htmlspecialchars(SITE_NAME) ?></h3>
             <p><?= htmlspecialchars(SITE_ADDRESS) ?></p>
-            <p><a href="tel:<?= SITE_PHONE_TEL ?>"><?= SITE_PHONE ?></a></p>
             <p><a href="mailto:<?= SITE_EMAIL ?>"><?= SITE_EMAIL ?></a></p>
         </div>
 

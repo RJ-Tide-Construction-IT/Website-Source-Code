@@ -107,6 +107,7 @@ ul { padding-left: 1.25em; }
 .site-header__brand { display: flex; align-items: center; gap: 20px; flex-shrink: 0; }
 .site-header__logo { display: flex; align-items: center; flex-shrink: 0; }
 .site-header__logo img { max-height: 64px; width: auto; }
+.site-header__contact { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
 .site-header__address {
   display: inline-flex;
   align-items: center;
@@ -796,7 +797,8 @@ a.dash-tile:hover { border-color: var(--color-red); text-decoration: none; }
 /* Nine nav items + phone number don't fit in one row below ~1050px, switch to
    the hamburger menu there instead of letting the row wrap mid-line. */
 @media (max-width: 1050px) {
-  .site-header__address { display: none; }
+  /* Address hides, but the phone stays: tap-to-call matters most on mobile. */
+  .site-header__address:not(.site-header__phone) { display: none; }
   .nav-toggle { display: flex; }
   .main-nav {
     position: absolute;
@@ -818,6 +820,14 @@ a.dash-tile:hover { border-color: var(--color-red); text-decoration: none; }
 
 @media (max-width: 880px) {
   .site-footer__inner { grid-template-columns: 1fr; }
+}
+
+/* Small phones: no room for the number beside the logo and hamburger, so the
+   phone pill shrinks to a round call button. */
+@media (max-width: 480px) {
+  .site-header__phone { padding: 10px; }
+  .site-header__phone svg { width: 18px; height: 18px; }
+  .site-header__phone-number { display: none; }
 }
 
 /* The compact jump-to row (6 sub-service links) has no room to stay on one
