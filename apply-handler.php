@@ -1,6 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/mailer.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/turnstile.php';
 
 // Back to the application form, with ?sent=1 or ?error=... for its message.
 function redirect_with($params) {
@@ -25,6 +26,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // Honeypot
 if (!empty($_POST['website'])) {
     redirect_with(['sent' => 1]);
+}
+
+// Cloudflare Turnstile: nothing is saved or emailed unless the human check passed.
+if (!turnstile_passed()) {
+    redirect_with(['error' => 'captcha']);
 }
 
 $name     = posted_text($_POST, 'name');
