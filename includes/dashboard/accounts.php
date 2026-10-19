@@ -71,19 +71,36 @@ function sign_in_user(string $method, string $accountId, string $email, string $
     return 'signed_in';
 }
 
-// Emails the Admins that someone new is waiting for approval. Best effort:
-// if email isn't set up or fails, the person still shows on the Users page.
-function notify_admins_of_new_sign_in(string $name, string $email): void {
+// Every email the dashboard sends goes through here. Best effort: if email
+// isn't set up or fails, nothing else is affected. When local testing (see
+// local_testing() in auth.php), nothing is sent: the email is added to
+// uploads/dashboard/local-test-emails.log instead, and listed on the local
+// sign-in page, so you can see exactly what would have gone out.
+const LOCAL_TEST_EMAIL_LOG = DASHBOARD_DATA_DIR . '/local-test-emails.log';
+
+function dashboard_send_email(string $to, string $subject, string $body): void {
+    if (local_testing()) {
+        dashboard_ensure_dir(DASHBOARD_DATA_DIR);
+        $entry = ['sent_at' => db_now(), 'to' => $to, 'subject' => $subject, 'body' => $body];
+        file_put_contents(LOCAL_TEST_EMAIL_LOG, json_encode($entry) . "\n", FILE_APPEND | LOCK_EX);
+        return;
+    }
     if (!is_file(dirname(__DIR__) . '/secrets.php')) {
         return;
     }
     require_once dirname(__DIR__) . '/mailer.php';
+    send_email($to, $subject, $body);
+}
+
+// Emails the Admins that someone new is waiting for approval. Best effort:
+// if email isn't set up or fails, the person still shows on the Users page.
+function notify_admins_of_new_sign_in(string $name, string $email): void {
     $admins = db()->query("SELECT email FROM users WHERE role = 'admin' AND active = 1 AND awaiting_approval = 0 AND sign_in_method = 'microsoft'")->fetchAll(PDO::FETCH_COLUMN);
     $admins = array_unique(array_merge($admins, $GLOBALS['DASHBOARD_ADMIN_EMAILS']));
     $body = "$name ($email) signed in to the Employee Dashboard with Google for the first time.\n\n"
           . "They can't see anything until an Admin approves them. To approve or decline, go to:\n"
           . SITE_URL . BASE_URL . "/dashboard/users.php\n";
     foreach ($admins as $admin) {
-        send_email($admin, 'Employee Dashboard: ' . header_safe($name) . ' is waiting for approval', $body);
+        dashboard_send_email($admin, 'Employee Dashboard: ' . header_safe($name) . ' is waiting for approval', $body);
     }
 }

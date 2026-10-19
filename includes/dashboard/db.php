@@ -72,6 +72,25 @@ function db_migrations(bool $mysql): array {
                 created_at VARCHAR(19)  NOT NULL
             )$engine",
         ],
+        2 => [
+            // Employee requests: time off, address changes, direct deposit
+            // changes (see includes/dashboard/requests.php).
+            //   details    JSON, never contains bank numbers
+            //   sensitive  direct deposit bank numbers, encrypted, and erased
+            //              (set to NULL) as soon as the request is no longer pending
+            "CREATE TABLE requests (
+                id          $id,
+                user_id     INT          NOT NULL,
+                type        VARCHAR(20)  NOT NULL,
+                status      VARCHAR(20)  NOT NULL DEFAULT 'pending',
+                details     TEXT         NOT NULL,
+                sensitive   TEXT         NULL,
+                review_note TEXT         NULL,
+                reviewed_by INT          NULL,
+                reviewed_at VARCHAR(19)  NULL,
+                created_at  VARCHAR(19)  NOT NULL
+            )$engine",
+        ],
     ];
 }
 

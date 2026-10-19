@@ -19,6 +19,13 @@ dashboard_page_start('Employee Dashboard', $user);
 </div>
 <?php endif; endif; ?>
 
+<?php if (user_can($user, 'handle_requests') && ($requestCount = pending_request_count())): ?>
+<div class="form-note dash-notice">
+    <?= $requestCount === 1 ? '1 employee request is' : $requestCount . ' employee requests are' ?> waiting for review.
+    <a href="<?= BASE_URL ?>/dashboard/review.php">Review requests</a>
+</div>
+<?php endif; ?>
+
 <div class="dash-tiles">
     <?php foreach ($tiles as $tile): ?>
     <?php if ($tile['href'] !== null): ?>
