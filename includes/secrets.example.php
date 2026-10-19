@@ -8,6 +8,12 @@
 // Brevo dashboard > SMTP & API > API Keys.
 define('BREVO_API_KEY', '');
 
+// ---------- Contact form: Cloudflare Turnstile (human check) ----------
+// Cloudflare dashboard > Turnstile > your widget. Leave blank to switch the
+// check off. The site key is public; the secret key is not.
+define('TURNSTILE_SITE_KEY', '');
+define('TURNSTILE_SECRET_KEY', '');
+
 // ---------- Employee Dashboard: Microsoft 365 sign-in ----------
 // From the app registration in the Microsoft Entra admin center, see the
 // README's "Employee Dashboard setup". Leave blank until that's set up.

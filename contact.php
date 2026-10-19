@@ -2,6 +2,7 @@
 $pageTitle = 'Contact Us';
 $pageDescription = 'Get in touch with RJ Tide Construction Company, Inc., Lawton, Iowa.';
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/turnstile.php';
 
 $submitted = isset($_GET['sent']);
 $submitError = isset($_GET['error']);
@@ -67,6 +68,7 @@ $submitError = isset($_GET['error']);
                     <label for="website">Leave blank</label>
                     <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
                 </div>
+                <?php turnstile_widget(); ?>
                 <button type="submit" class="btn">Send Message</button>
             </form>
 

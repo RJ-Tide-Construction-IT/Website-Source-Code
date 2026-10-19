@@ -1,6 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/mailer.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/turnstile.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect(BASE_URL . '/contact.php');
@@ -11,7 +12,12 @@ if (!empty($_POST['website'])) {
     redirect(BASE_URL . '/contact.php?sent=1');
 }
 
-$name    = posted_text($_POST, 'name');
+// Cloudflare Turnstile: no email goes out unless the human check passed.
+if (!turnstile_passed()) {
+    redirect(BASE_URL . '/contact.php?error=1');
+}
+
+$name   = posted_text($_POST, 'name');
 $email   = posted_text($_POST, 'email');
 $phone   = posted_text($_POST, 'phone');
 $message = posted_text($_POST, 'message');
