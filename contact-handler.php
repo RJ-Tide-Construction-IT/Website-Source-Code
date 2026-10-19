@@ -22,7 +22,11 @@ $message = posted_text($_POST, 'message');
 $interests = array_values(array_intersect((array) ($_POST['interest'] ?? []), $GLOBALS['CONTACT_INTERESTS']));
 $interest  = $interests ? implode(', ', $interests) : 'Not specified';
 
-if ($name === '' || $email === '' || $message === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+// Need at least one way to reach them: email or phone. Email is optional,
+// but if given it must be valid.
+if ($name === '' || $message === ''
+    || ($email === '' && $phone === '')
+    || ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL))) {
     redirect(BASE_URL . '/contact.php?error=1');
 }
 
@@ -49,7 +53,7 @@ if (!$recipients) {
 
 $sent = true;
 foreach ($recipients as $recipient) {
-    $sent = send_email($recipient, $subject, $body, $email, $name) && $sent;
+    $sent = send_email($recipient, $subject, $body, $email ?: null, $name) && $sent;
 }
 
 redirect(BASE_URL . '/contact.php?' . ($sent ? 'sent=1' : 'error=1'));
