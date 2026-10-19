@@ -108,7 +108,7 @@ ul { padding-left: 1.25em; }
 .site-header__logo { display: flex; align-items: center; flex-shrink: 0; }
 .site-header__logo img { max-height: 64px; width: auto; }
 .site-header__contact { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
-.site-header__address {
+.site-header__pill {
   display: inline-flex;
   align-items: center;
   gap: 7px;
@@ -121,8 +121,8 @@ ul { padding-left: 1.25em; }
   text-decoration: none;
   transition: background 0.15s ease, transform 0.15s ease;
 }
-.site-header__address:hover { background: var(--color-grey); transform: translateY(-2px); }
-.site-header__address svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--color-red); }
+.site-header__pill:hover { background: var(--color-grey); transform: translateY(-2px); }
+.site-header__pill svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--color-red); }
 
 .main-nav ul {
   list-style: none;
@@ -825,11 +825,11 @@ a.dash-tile:hover { border-color: var(--color-red); text-decoration: none; }
 .site-footer__bottom { padding: 20px 24px; font-size: 0.85rem; color: rgba(255,255,255,0.75); }
 
 /* ---------- Responsive ---------- */
-/* Nine nav items + phone number don't fit in one row below ~1050px, switch to
+/* Nine nav items + the address/phone pills don't fit in one row below ~1050px, switch to
    the hamburger menu there instead of letting the row wrap mid-line. */
 @media (max-width: 1050px) {
   /* Address hides, but the phone stays: tap-to-call matters most on mobile. */
-  .site-header__address:not(.site-header__phone) { display: none; }
+  .site-header__address { display: none; }
   .nav-toggle { display: flex; }
   .main-nav {
     position: absolute;
@@ -878,7 +878,7 @@ a.dash-tile:hover { border-color: var(--color-red); text-decoration: none; }
   .logo-strip a,
   .vendor-carousel__track,
   .vendor-carousel__box,
-  .site-header__address {
+  .site-header__pill {
     transition: none;
   }
   .feature-grid .card:hover,
@@ -886,7 +886,7 @@ a.dash-tile:hover { border-color: var(--color-red); text-decoration: none; }
   .showcase-grid figure:hover img,
   .logo-strip a:hover,
   .vendor-carousel__box:hover,
-  .site-header__address:hover {
+  .site-header__pill:hover {
     transform: none;
   }
 }
