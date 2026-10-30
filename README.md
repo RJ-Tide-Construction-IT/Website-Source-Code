@@ -15,6 +15,7 @@ exactly which file to open for common edits.
 | Change the phone number, email, or address shown site-wide | [includes/config.php](includes/config.php) |
 | Change the text/wording on the homepage | [index.php](index.php) |
 | Change the About page text | [about.php](about.php) |
+| Change the Privacy Policy (e.g. after adding a new tracking or form service) | [privacy.php](privacy.php), and update its "Last updated" date at the top |
 | Change a service page (Concrete, Agricultural, Industrial Maintenance) | the matching file in [services/](services/) |
 | Add a new job posting | Employee Dashboard > **Job Postings** > **Add a job posting** (Admins), no code changes needed |
 | Edit one of the 11 original job postings | the matching file in [careers/](careers/) (these are built into the site; the list of them is `$GLOBALS['JOBS']` in [includes/config.php](includes/config.php)) |
@@ -76,8 +77,8 @@ once:
 ## Full folder guide
 
 ```
-index.php, about.php, contact.php, projects.php, careers.php, employment.php
-                       the main pages of the site
+index.php, about.php, contact.php, projects.php, careers.php, employment.php,
+privacy.php            the main pages of the site
 
 includes/              shared pieces every page uses
   header.php             top of the page (logo, address + phone, menu)
@@ -364,6 +365,12 @@ submissions by email through [Brevo](https://www.brevo.com/), handled by
   (at least one) are required. Emails are routed by the "I'm interested in"
   boxes: Agricultural and Concrete go to their department, anything else to the
   default inbox (the `CONTACT_EMAIL_...` settings in `config.php`).
+- **Job applications:** emailed to `CAREERS_EMAIL` with the applicant's resume
+  (if they uploaded one) and a printable PDF of the application attached. A
+  backup copy of each resume stays in `uploads/resumes/`. Resumes must be PDF or
+  Word, 5MB max; the browser warns as soon as a wrong file is picked, so the
+  applicant doesn't lose the form. If you change the limit, change both
+  `$maxBytes` in `apply-handler.php` and `data-max-bytes` in `employment.php`.
 - **Spam protection, two layers on both forms:**
   - a hidden "honeypot" field that bots fill in and people never see;
   - a [Cloudflare Turnstile](https://www.cloudflare.com/products/turnstile/)
@@ -441,3 +448,16 @@ $bmp.Save("C:\path\to\assets\img\<folder>\web\<name>.jpg", $jpegCodec, $encParam
 That resizes to a 1600px-max dimension at 82% JPEG quality, usually a
 90%+ size reduction with no visible quality loss at the sizes photos display
 on the site.
+
+**Videos** work the same way: original in `originals/`, a compressed copy in
+`assets/img/<folder>/web/`. Shrink it with [ffmpeg](https://ffmpeg.org/)
+(`winget install Gyan.FFmpeg`); this is what the millwright timelapse uses
+(no sound, 960px wide, about 4.5MB for a minute of video):
+
+```
+ffmpeg -i originals\<folder>\<name>.mp4 -an -vf scale=960:-2 -c:v libx264 -preset slow -crf 30 -pix_fmt yuv420p -movflags +faststart assets\img\<folder>\web\<name>.mp4
+```
+
+On the page, give the `<video>` tag `muted playsinline preload="none"
+data-play-when-visible` (not `autoplay`): it then downloads nothing until the
+visitor scrolls to it, and plays when it's on screen.

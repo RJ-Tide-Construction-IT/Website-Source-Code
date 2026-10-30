@@ -68,7 +68,7 @@ if (!empty($_FILES['resume']) && $_FILES['resume']['error'] !== UPLOAD_ERR_NO_FI
     // --- Resume upload validation ---
     // Whitelist by real content (finfo), not the client-supplied name/extension,
     // and cap size, so this can't be used to plant an executable file.
-    $maxBytes = 5 * 1024 * 1024;
+    $maxBytes = 5 * 1024 * 1024; // also data-max-bytes on the file input in employment.php
     if ($resume['size'] > $maxBytes) {
         redirect_with(['error' => 'file']);
     }
@@ -186,12 +186,22 @@ $body = "PERSONAL INFORMATION\n"
 
       . "MESSAGE\n" . field('message') . "\n\n"
 
-      . ($safeName ? "Resume saved on server as: uploads/resumes/$safeName\n" : "No resume attached.\n");
+      . ($safeName ? "Resume attached (backup copy saved on server as uploads/resumes/$safeName).\n" : "No resume attached.\n");
+
+// Attachments are named after the applicant so HR can tell them apart in a
+// downloads folder, with anything that isn't safe in a file name stripped.
+$attachmentName = fn(string $label) => preg_replace('/[^\p{L}\p{N} .,\-]/u', '', "$label - $name - $position - " . date('Y-m-d'));
+
+// --- The applicant's resume, so HR doesn't need FTP access to read it ---
+// The 5MB upload cap keeps this well inside Brevo's 20MB per-email limit.
+$attachments = [];
+if ($safeName) {
+    $attachments[] = ['name' => $attachmentName('Resume') . '.' . $extension, 'content' => file_get_contents($destination)];
+}
 
 // --- Printable PDF copy, laid out like a paper application ---
 // If it can't be generated for any reason, the email still goes out with the
 // plain-text version above, so an application is never lost over the PDF.
-$attachments = [];
 try {
     // A missing file is a fatal error require can't recover from, so check first
     // (e.g. if includes/vendor/ didn't make it onto the server).
@@ -199,9 +209,8 @@ try {
         throw new RuntimeException('includes/vendor/ is missing, the PDF library is not installed');
     }
     require_once __DIR__ . '/includes/application-pdf.php';
-    $resumeNote = $safeName ? "Saved on server as uploads/resumes/$safeName" : 'No resume attached.';
-    $pdfName = preg_replace('/[^\p{L}\p{N} .,\-]/u', '', "Application - $name - $position - " . date('Y-m-d'));
-    $attachments[] = ['name' => $pdfName . '.pdf', 'content' => render_application_pdf($_POST, $resumeNote)];
+    $resumeNote = $safeName ? 'Attached to the application email' : 'No resume attached.';
+    $attachments[] = ['name' => $attachmentName('Application') . '.pdf', 'content' => render_application_pdf($_POST, $resumeNote)];
     $body = "A printable copy of this application is attached as a PDF.\n\n" . $body;
 } catch (Throwable $e) {
     error_log('apply-handler: application PDF failed, sending without it, ' . $e->getMessage());

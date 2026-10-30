@@ -240,6 +240,47 @@ document.addEventListener('DOMContentLoaded', function () {
   check();
 });
 
+// Videos marked data-play-when-visible: nothing downloads until the visitor
+// scrolls to one, then it plays muted (and pauses when scrolled away). Visitors
+// who've asked their device for reduced motion just get the play button.
+document.addEventListener('DOMContentLoaded', function () {
+  var videos = document.querySelectorAll('video[data-play-when-visible]');
+  if (!videos.length || !('IntersectionObserver' in window)) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.play().catch(function () {});
+      } else {
+        entry.target.pause();
+      }
+    });
+  }, { threshold: 0.5 });
+  videos.forEach(function (video) { observer.observe(video); });
+});
+
+// Job application resume: catch a too-big or wrong-type file as soon as it's
+// picked. apply-handler.php rejects these too, but by then the applicant is
+// sent back to an empty form and loses everything they typed.
+document.addEventListener('DOMContentLoaded', function () {
+  var input = document.getElementById('resume');
+  if (!input || !input.dataset.maxBytes) return;
+
+  input.addEventListener('change', function () {
+    var file = input.files[0];
+    var message = '';
+    if (file && !/\.(pdf|doc|docx)$/i.test(file.name)) {
+      message = 'Your resume must be a PDF or Word document.';
+    } else if (file && file.size > Number(input.dataset.maxBytes)) {
+      message = 'Your resume is too large (' + (file.size / 1048576).toFixed(1) + 'MB). The limit is '
+        + Math.round(input.dataset.maxBytes / 1048576) + 'MB.';
+    }
+    input.setCustomValidity(message);
+    if (message) input.reportValidity();
+  });
+});
+
 // Cloudflare Turnstile (includes/turnstile.php): don't submit a form until its
 // "Verify you are human" check is done, so a visitor isn't sent back to an
 // empty form, painful on the long job application.

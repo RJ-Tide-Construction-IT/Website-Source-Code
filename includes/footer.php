@@ -30,7 +30,7 @@
     </div>
 
     <div class="site-footer__bottom container">
-        <p>&copy; <?= date('Y') ?> <?= htmlspecialchars(SITE_NAME) ?>. All rights reserved.</p>
+        <p>&copy; <?= date('Y') ?> <?= htmlspecialchars(SITE_NAME) ?>. All rights reserved. &middot; <a href="<?= BASE_URL ?>/privacy.php">Privacy Policy</a></p>
     </div>
 </footer>
 
@@ -42,7 +42,7 @@
 </div>
 
 <div class="cookie-banner" id="cookieBanner" hidden>
-    <p>We use cookies to understand how visitors use this site, so we can improve it. <a href="mailto:<?= SITE_EMAIL ?>">Contact us</a> with questions.</p>
+    <p>We use cookies to understand how visitors use this site, so we can improve it. See our <a href="<?= BASE_URL ?>/privacy.php">Privacy Policy</a>.</p>
     <button type="button" class="btn btn--sm" id="cookieBannerDismiss">Got it</button>
 </div>
 

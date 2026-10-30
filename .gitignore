@@ -11,3 +11,6 @@ uploads/dashboard/
 
 # Real API keys, copy includes/secrets.example.php to includes/secrets.php and fill in.
 includes/secrets.php
+
+# Claude Code guidance file, kept local only.
+CLAUDE.md

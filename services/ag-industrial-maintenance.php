@@ -44,7 +44,7 @@ $subServices = [
         <div class="subsection-photo">
             <video src="<?= BASE_URL ?>/assets/img/millwright/web/lincolnway-timelapse.mp4"
                    poster="<?= BASE_URL ?>/assets/img/millwright/web/lincolnway-timelapse-poster.jpg"
-                   controls autoplay muted playsinline>
+                   controls muted playsinline preload="none" data-play-when-visible>
             </video>
         </div>
         <p>Our millwright services cover the seamless installation, maintenance, and repair of agricultural

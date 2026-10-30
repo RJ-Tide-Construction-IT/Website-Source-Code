@@ -271,7 +271,8 @@ $errorMessages = [
             <h2 class="form-section-title">Resume &amp; Additional Info</h2>
             <div class="form-field">
                 <label for="resume">Resume (PDF or Word, max 5MB, optional)</label>
-                <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx">
+                <!-- data-max-bytes must match $maxBytes in apply-handler.php -->
+                <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" data-max-bytes="5242880">
             </div>
             <div class="form-field">
                 <label for="message">Anything else you'd like us to know?</label>
