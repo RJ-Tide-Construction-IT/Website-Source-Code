@@ -36,6 +36,7 @@ $errorMessages = [
     'validation' => 'Please fill in all required fields with a valid email address.',
     'file'       => 'Your resume must be a PDF or Word document under 5MB.',
     'upload'     => 'We couldn\'t save your resume upload. Please try again.',
+    'send'       => 'We saved your application but couldn\'t deliver it to our hiring team. Please call us at ' . SITE_PHONE . ' so we don\'t miss it.',
     'captcha'    => 'We couldn\'t confirm you\'re a person. Please complete the "Verify you are human" check and try again.',
 ];
 ?>
@@ -55,34 +56,34 @@ $errorMessages = [
             <h2 class="form-section-title">Personal Information</h2>
             <div class="form-field">
                 <label for="name">Full Name *</label>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="name" name="name" autocomplete="name" required>
             </div>
             <div class="form-row">
                 <div class="form-field">
                     <label for="email">Email *</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="email" name="email" autocomplete="email" required>
                 </div>
                 <div class="form-field">
                     <label for="phone">Phone *</label>
-                    <input type="tel" id="phone" name="phone" required>
+                    <input type="tel" id="phone" name="phone" autocomplete="tel" required>
                 </div>
             </div>
             <div class="form-field">
                 <label for="address">Present Address</label>
-                <input type="text" id="address" name="address">
+                <input type="text" id="address" name="address" autocomplete="street-address">
             </div>
             <div class="form-row">
                 <div class="form-field">
                     <label for="city">City</label>
-                    <input type="text" id="city" name="city">
+                    <input type="text" id="city" name="city" autocomplete="address-level2">
                 </div>
                 <div class="form-field">
                     <label for="state">State</label>
-                    <input type="text" id="state" name="state">
+                    <input type="text" id="state" name="state" autocomplete="address-level1">
                 </div>
                 <div class="form-field">
                     <label for="zip">Zip</label>
-                    <input type="text" id="zip" name="zip">
+                    <input type="text" id="zip" name="zip" autocomplete="postal-code" inputmode="numeric">
                 </div>
             </div>
             <div class="form-field">

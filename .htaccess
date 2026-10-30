@@ -6,7 +6,10 @@ Options -Indexes
     Header set X-Content-Type-Options "nosniff"
     Header set X-Frame-Options "SAMEORIGIN"
     Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Strict-Transport-Security "max-age=31536000" "expr=%{HTTPS} == 'on'"
 </IfModule>
+
+ErrorDocument 404 /404.php
 
 # Migration scratch data / scripts / docs, never needed by visitors.
 <FilesMatch "\.(ps1|md)$">

@@ -9,7 +9,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 $jobs = jobs_with_status();
 ?>
 
-<?php page_hero('Be a part of the RJ Tide family!', 'agriculture/web/sunrise-headhouse.jpg'); ?>
+<?php page_hero('Be a part of the RJ Tide family!', 'agriculture/web/sunrise-headhouse.webp'); ?>
 
 <section>
     <div class="container">

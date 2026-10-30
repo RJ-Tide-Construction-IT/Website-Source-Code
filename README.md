@@ -80,6 +80,12 @@ once:
 index.php, about.php, contact.php, projects.php, careers.php, employment.php,
 privacy.php            the main pages of the site
 
+404.php                the "Page Not Found" page (switched on in web.config)
+robots.txt, sitemap.php
+                       tell Google what to index. When you add a new public
+                       page, add it to the $pages list in sitemap.php (open
+                       job postings are added automatically)
+
 includes/              shared pieces every page uses
   header.php             top of the page (logo, address + phone, menu)
   footer.php              bottom of the page (address, email, page links)
@@ -423,31 +429,25 @@ displayed. Put the original in the matching [originals/](originals/) subfolder
 (e.g. `originals/concrete/`), then shrink it and save the copy into
 `assets/img/<folder>/web/` (e.g. `assets/img/concrete/web/`) and point the
 page at that `web/` copy. Don't commit originals into `assets/img/`, anything
-there gets uploaded to the live site. This machine can
-do the resize without installing anything, via PowerShell:
+there gets uploaded to the live site.
 
-```powershell
-Add-Type -AssemblyName System.Drawing
-$img = [System.Drawing.Image]::FromFile("C:\path\to\original.jpg")
-# If the photo needs rotating first (phone photos sometimes do), add e.g.:
-# $img.RotateFlip([System.Drawing.RotateFlipType]::Rotate90FlipNone)
-$maxDim = 1600
-$w = $img.Width; $h = $img.Height
-if ($w -ge $h) { $newW = [Math]::Min($maxDim, $w); $newH = [int]($h * $newW / $w) }
-else           { $newH = [Math]::Min($maxDim, $h); $newW = [int]($w * $newH / $h) }
-$bmp = New-Object System.Drawing.Bitmap($newW, $newH)
-$g = [System.Drawing.Graphics]::FromImage($bmp)
-$g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
-$g.DrawImage($img, 0, 0, $newW, $newH)
-$jpegCodec = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() | Where-Object { $_.MimeType -eq "image/jpeg" }
-$encParams = New-Object System.Drawing.Imaging.EncoderParameters(1)
-$encParams.Param[0] = New-Object System.Drawing.Imaging.EncoderParameter([System.Drawing.Imaging.Encoder]::Quality, [int64]82)
-$bmp.Save("C:\path\to\assets\img\<folder>\web\<name>.jpg", $jpegCodec, $encParams)
+Site photos are saved as **WebP**, which is about 30% smaller than JPG at
+the same quality. Make the `web/` copy with [ffmpeg](https://ffmpeg.org/)
+(`winget install Gyan.FFmpeg`), from the project folder:
+
+```
+ffmpeg -i originals\<folder>\<name>.jpg -vf "scale='min(1600,iw)':'min(1600,ih)':force_original_aspect_ratio=decrease" -c:v libwebp -quality 80 -compression_level 6 assets\img\<folder>\web\<name>.webp
 ```
 
-That resizes to a 1600px-max dimension at 82% JPEG quality, usually a
-90%+ size reduction with no visible quality loss at the sizes photos display
-on the site.
+That shrinks it to 1600px at most on its longest side, usually a 90%+ size
+reduction with no visible quality loss at the sizes photos display on the
+site. If a phone photo comes out sideways, add `transpose=1,` (90° clockwise)
+or `transpose=2,` (90° counter-clockwise) at the start of the part in quotes
+after `-vf`.
+
+[assets/img/share.jpg](assets/img/share.jpg) is the exception: it's the
+1200×630 picture shown in link previews when the site is shared, and stays a
+JPG because some apps' previews don't support WebP.
 
 **Videos** work the same way: original in `originals/`, a compressed copy in
 `assets/img/<folder>/web/`. Shrink it with [ffmpeg](https://ffmpeg.org/)

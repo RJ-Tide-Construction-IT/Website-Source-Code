@@ -10,22 +10,22 @@ $sections = [
         'label'  => 'Specialty Concrete',
         'layout' => 'carousel',
         'photos' => [
-            ['img' => 'special-projects/web/chapel-facade.jpg', 'caption' => 'Stone-veneer Chapel Facade with Decorative Concrete Detailing', 'location' => 'Trinity Heights'],
-            ['img' => 'special-projects/web/chapel-polished-floor.jpg', 'caption' => 'Polished Decorative Concrete Floor in a Stone Chapel'],
+            ['img' => 'special-projects/web/chapel-facade.webp', 'caption' => 'Stone-veneer Chapel Facade with Decorative Concrete Detailing', 'location' => 'Trinity Heights'],
+            ['img' => 'special-projects/web/chapel-polished-floor.webp', 'caption' => 'Polished Decorative Concrete Floor in a Stone Chapel'],
         ],
     ],
     [
         'label'  => 'Decorative Concrete',
         'layout' => 'carousel',
         'photos' => [
-            ['img' => 'special-projects/web/relief-panel.jpg', 'caption' => 'Custom Statue of Saint Joseph', 'location' => 'Trinity Heights'],
-            ['img' => 'special-projects/web/chapel-engraved-floor.jpg', 'caption' => 'Engraved Decorative Concrete Floor Around a Baptismal Font'],
+            ['img' => 'special-projects/web/relief-panel.webp', 'caption' => 'Custom Statue of Saint Joseph', 'location' => 'Trinity Heights'],
+            ['img' => 'special-projects/web/chapel-engraved-floor.webp', 'caption' => 'Engraved Decorative Concrete Floor Around a Baptismal Font'],
         ],
     ],
 ];
 ?>
 
-<?php page_hero('Specialty Concrete', 'special-projects/web/chapel-facade.jpg'); ?>
+<?php page_hero('Specialty Concrete', 'special-projects/web/chapel-facade.webp'); ?>
 
 <section>
     <div class="container">

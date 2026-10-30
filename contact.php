@@ -37,16 +37,16 @@ $submitError = isset($_GET['error']);
             <form id="contact-form" action="<?= BASE_URL ?>/contact-handler.php" method="post">
                 <div class="form-field">
                     <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required>
+                    <input type="text" id="name" name="name" autocomplete="name" required>
                 </div>
                 <p class="form-field-hint">Please provide an email address or phone number so we can reach you.</p>
                 <div class="form-field">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email">
+                    <input type="email" id="email" name="email" autocomplete="email">
                 </div>
                 <div class="form-field">
                     <label for="phone">Phone</label>
-                    <input type="tel" id="phone" name="phone">
+                    <input type="tel" id="phone" name="phone" autocomplete="tel">
                 </div>
                 <div class="form-field">
                     <label>I'm interested in</label>

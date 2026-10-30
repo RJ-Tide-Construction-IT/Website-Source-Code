@@ -10,7 +10,7 @@ $subServices = [
 ];
 ?>
 
-<?php page_hero('Agricultural', 'agriculture/web/jobsite-2.jpg'); ?>
+<?php page_hero('Agricultural', 'agriculture/web/jobsite-2.webp'); ?>
 
 <?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/service-links.php'; ?>
 
@@ -32,15 +32,15 @@ $subServices = [
 
         <div class="showcase-grid showcase-grid--thirds">
             <figure>
-                <img src="<?= BASE_URL ?>/assets/img/agriculture/web/design-build-drawing-2.jpg" alt="2D engineering drawing of the grain storage facility" loading="lazy">
+                <img src="<?= BASE_URL ?>/assets/img/agriculture/web/design-build-drawing-2.webp" alt="2D engineering drawing of the grain storage facility" loading="lazy">
                 <figcaption>Engineering Drawing</figcaption>
             </figure>
             <figure>
-                <img src="<?= BASE_URL ?>/assets/img/agriculture/web/design-build-3d-render.jpg" alt="3D design concept of a grain handling and storage facility" loading="lazy">
+                <img src="<?= BASE_URL ?>/assets/img/agriculture/web/design-build-3d-render.webp" alt="3D design concept of a grain handling and storage facility" loading="lazy">
                 <figcaption>3D Concept</figcaption>
             </figure>
             <figure>
-                <img src="<?= BASE_URL ?>/assets/img/agriculture/web/design-build-reality.jpg" alt="Completed grain storage facility matching the original design" loading="lazy">
+                <img src="<?= BASE_URL ?>/assets/img/agriculture/web/design-build-reality.webp" alt="Completed grain storage facility matching the original design" loading="lazy">
                 <figcaption>Built Reality!</figcaption>
             </figure>
         </div>

@@ -14,7 +14,7 @@
   --color-near-black:  #140609;
   --color-white:       #FFFFFF;
   --color-text:        #3A3A3A;
-  --color-text-muted:  #7A7A7A;
+  --color-text-muted:  #666666; /* 5.7:1 on white, 5:1 on the light grey, passes WCAG AA */
 
   --font-heading: "Roboto Slab", serif;
   --font-body:    "Roboto", sans-serif;
@@ -52,6 +52,22 @@ p { margin: 0 0 1em; }
 a { color: var(--color-red); text-decoration: none; }
 a:hover { color: var(--color-red-dark); text-decoration: underline; }
 img { max-width: 100%; height: auto; display: block; }
+
+/* "Skip to main content": hidden until a keyboard user tabs to it (it's the
+   first thing on every page), so they can jump past the logo bar and menu. */
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -100px;
+  z-index: 2000;
+  padding: 10px 18px;
+  border-radius: var(--radius);
+  background: var(--color-navy);
+  color: var(--color-white);
+  font-weight: 600;
+}
+.skip-link:focus { top: 16px; color: var(--color-white); }
+main:focus { outline: none; }
 ul { padding-left: 1.25em; }
 
 .container {

@@ -216,7 +216,13 @@ try {
     error_log('apply-handler: application PDF failed, sending without it, ' . $e->getMessage());
 }
 
-send_email(CAREERS_EMAIL, $subject, $body, $email, $name, $attachments);
+// If HR's copy can't be sent, tell the applicant to call instead of showing
+// "sent". The application isn't lost either way: the resume and the
+// applications.csv line above were already saved on the server.
+if (!send_email(CAREERS_EMAIL, $subject, $body, $email, $name, $attachments)) {
+    error_log("apply-handler: application email to HR failed ($position), the applicant's details are in applications.csv");
+    redirect_with(['error' => 'send']);
+}
 
 // --- Confirmation email back to the applicant ---
 $confirmSubject = 'We received your application, ' . header_safe(SITE_NAME);

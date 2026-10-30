@@ -14,7 +14,7 @@ $subServices = [
 $compactServiceLinks = true; // six buttons, keep them on one row
 ?>
 
-<?php page_hero('Full-Service Concrete', 'concrete/web/concrete-hero.jpg'); ?>
+<?php page_hero('Full-Service Concrete', 'concrete/web/concrete-hero.webp'); ?>
 
 <section>
     <div class="container container--narrow">
@@ -40,7 +40,7 @@ $compactServiceLinks = true; // six buttons, keep them on one row
            your plans and allow our team to provide smooth floor slabs for your project.</p>
 
         <div class="subsection-photo">
-            <img src="<?= BASE_URL ?>/assets/img/concrete/web/flatwork.jpg" alt="RJ Tide crew finishing an interior concrete flatwork pour" loading="lazy">
+            <img src="<?= BASE_URL ?>/assets/img/concrete/web/flatwork.webp" alt="RJ Tide crew finishing an interior concrete flatwork pour" loading="lazy">
         </div>
 
         <h3 id="foundations">Foundations</h3>
@@ -51,7 +51,7 @@ $compactServiceLinks = true; // six buttons, keep them on one row
            the experience to complete them successfully and on time.</p>
 
         <div class="subsection-photo">
-            <img src="<?= BASE_URL ?>/assets/img/concrete/web/foundation.jpg" alt="RJ Tide crew forming a concrete foundation on-site" loading="lazy">
+            <img src="<?= BASE_URL ?>/assets/img/concrete/web/foundation.webp" alt="RJ Tide crew forming a concrete foundation on-site" loading="lazy">
         </div>
 
         <h3 id="site-concrete">Site Concrete</h3>
@@ -68,7 +68,7 @@ $compactServiceLinks = true; // six buttons, keep them on one row
            perform according to design expectations.</p>
 
         <div class="subsection-photo">
-            <img src="<?= BASE_URL ?>/assets/img/concrete/web/site-concrete.jpg" alt="RJ Tide crew pouring site concrete paving" loading="lazy">
+            <img src="<?= BASE_URL ?>/assets/img/concrete/web/site-concrete.webp" alt="RJ Tide crew pouring site concrete paving" loading="lazy">
         </div>
 
         <h3 id="industrial-structural">Industrial / Structural</h3>
@@ -77,7 +77,7 @@ $compactServiceLinks = true; // six buttons, keep them on one row
            management experience, can help ensure the project stays on track and on time.</p>
 
         <div class="subsection-photo">
-            <img src="<?= BASE_URL ?>/assets/img/concrete/web/industrial.jpg" alt="RJ Tide crew finishing an industrial concrete slab" loading="lazy">
+            <img src="<?= BASE_URL ?>/assets/img/concrete/web/industrial.webp" alt="RJ Tide crew finishing an industrial concrete slab" loading="lazy">
         </div>
 
         <h3 id="specialty-concrete">Specialty Concrete</h3>
@@ -87,7 +87,7 @@ $compactServiceLinks = true; // six buttons, keep them on one row
            project, our qualified staff can form your special project into something worth showing off.</p>
 
         <div class="subsection-photo">
-            <img src="<?= BASE_URL ?>/assets/img/special-projects/web/chapel-facade.jpg" alt="Stone-veneer chapel facade with decorative concrete detailing" loading="lazy">
+            <img src="<?= BASE_URL ?>/assets/img/special-projects/web/chapel-facade.webp" alt="Stone-veneer chapel facade with decorative concrete detailing" loading="lazy">
         </div>
 
         <h3 id="decorative-concrete">Decorative Concrete</h3>
@@ -97,7 +97,7 @@ $compactServiceLinks = true; // six buttons, keep them on one row
            concrete as a craft in its own right.</p>
 
         <div class="subsection-photo">
-            <img src="<?= BASE_URL ?>/assets/img/special-projects/web/relief-panel.jpg" alt="Bronze relief memorial panel set in a decorative concrete monument" loading="lazy">
+            <img src="<?= BASE_URL ?>/assets/img/special-projects/web/relief-panel.webp" alt="Bronze relief memorial panel set in a decorative concrete monument" loading="lazy">
         </div>
     </div>
 </section>

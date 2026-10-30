@@ -9,7 +9,7 @@ $subServices = [
 ];
 ?>
 
-<?php page_hero('Industrial Maintenance', 'industrial-maintenance/web/20250108_163555.jpg'); ?>
+<?php page_hero('Industrial Maintenance', 'industrial-maintenance/web/20250108_163555.webp'); ?>
 
 <?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/service-links.php'; ?>
 
@@ -22,10 +22,10 @@ $subServices = [
 
         <div class="showcase-grid">
             <figure>
-                <img src="<?= BASE_URL ?>/assets/img/agriculture/web/distributor-golden-hour.jpg" alt="Distributor and spouting atop grain storage bins" loading="lazy">
+                <img src="<?= BASE_URL ?>/assets/img/agriculture/web/distributor-golden-hour.webp" alt="Distributor and spouting atop grain storage bins" loading="lazy">
             </figure>
             <figure>
-                <img src="<?= BASE_URL ?>/assets/img/agriculture/web/bin-fill-deck.jpg" alt="Bin fill deck and distributor equipment atop a grain facility" loading="lazy">
+                <img src="<?= BASE_URL ?>/assets/img/agriculture/web/bin-fill-deck.webp" alt="Bin fill deck and distributor equipment atop a grain facility" loading="lazy">
             </figure>
         </div>
 
@@ -43,7 +43,7 @@ $subServices = [
            experts will do right by you and help keep you running smoothly.</p>
         <div class="subsection-photo">
             <video src="<?= BASE_URL ?>/assets/img/millwright/web/lincolnway-timelapse.mp4"
-                   poster="<?= BASE_URL ?>/assets/img/millwright/web/lincolnway-timelapse-poster.jpg"
+                   poster="<?= BASE_URL ?>/assets/img/millwright/web/lincolnway-timelapse-poster.webp"
                    controls muted playsinline preload="none" data-play-when-visible>
             </video>
         </div>

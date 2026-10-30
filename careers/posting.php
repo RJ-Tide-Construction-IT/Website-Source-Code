@@ -25,6 +25,7 @@ if (!$posting) {
 }
 
 $pageTitle = $posting['title'];
+$canonicalPath = '/careers/posting.php?id=' . rawurlencode($id);
 $jobMeta = posting_job_meta($posting);
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/job-posting-header.php';
 

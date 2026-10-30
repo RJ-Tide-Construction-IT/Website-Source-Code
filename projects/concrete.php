@@ -11,8 +11,8 @@ $sections = [
         'note'   => '',
         'layout' => 'carousel',
         'photos' => [
-            ['img' => 'concrete/web/flatwork.jpg', 'caption' => 'Finishing an interior concrete flatwork pour'],
-            ['img' => 'concrete/web/interior-slab-pour.jpg', 'caption' => 'Finishing an interior slab pour beside reinforced sections'],
+            ['img' => 'concrete/web/flatwork.webp', 'caption' => 'Finishing an interior concrete flatwork pour'],
+            ['img' => 'concrete/web/interior-slab-pour.webp', 'caption' => 'Finishing an interior slab pour beside reinforced sections'],
         ],
     ],
     [
@@ -20,7 +20,7 @@ $sections = [
         'note'   => '',
         'layout' => 'carousel',
         'photos' => [
-            ['img' => 'concrete/web/foundation.jpg', 'caption' => 'Forming a concrete foundation on-site'],
+            ['img' => 'concrete/web/foundation.webp', 'caption' => 'Forming a concrete foundation on-site'],
         ],
     ],
     [
@@ -28,9 +28,9 @@ $sections = [
         'note'   => '',
         'layout' => 'carousel',
         'photos' => [
-            ['img' => 'concrete/web/site-concrete.jpg', 'caption' => 'Pouring site concrete paving'],
-            ['img' => 'concrete/web/exterior-slab-placement.jpg', 'caption' => 'Crew placing a large exterior slab at a commercial building'],
-            ['img' => 'concrete/web/paving-at-dusk.jpg', 'caption' => 'Fresh concrete paving placed beside a finished slab'],
+            ['img' => 'concrete/web/site-concrete.webp', 'caption' => 'Pouring site concrete paving'],
+            ['img' => 'concrete/web/exterior-slab-placement.webp', 'caption' => 'Crew placing a large exterior slab at a commercial building'],
+            ['img' => 'concrete/web/paving-at-dusk.webp', 'caption' => 'Fresh concrete paving placed beside a finished slab'],
         ],
     ],
     [
@@ -38,7 +38,7 @@ $sections = [
         'note'   => '',
         'layout' => 'carousel',
         'photos' => [
-            ['img' => 'concrete/web/industrial.jpg', 'caption' => 'Finishing an industrial concrete slab'],
+            ['img' => 'concrete/web/industrial.webp', 'caption' => 'Finishing an industrial concrete slab'],
         ],
     ],
     [
@@ -50,7 +50,7 @@ $sections = [
 ];
 ?>
 
-<?php page_hero('Concrete', 'concrete/web/concrete-hero.jpg'); ?>
+<?php page_hero('Concrete', 'concrete/web/concrete-hero.webp'); ?>
 
 <section>
     <div class="container">

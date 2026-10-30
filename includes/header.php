@@ -7,15 +7,26 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/config.php';
 //   $privatePage     (optional) true on Employee Dashboard pages: hides the page
 //                    from search engines and skips Google Analytics / Clarity,
 //                    so employee information is never sent to tracking tools.
+//   $documentTitle   (optional) the whole browser-tab / Google title, used as-is
+//                    instead of "$pageTitle | site name" (the homepage uses it).
+//   $canonicalPath   (optional) this page's address for search engines, e.g.
+//                    '/careers/posting.php?id=foreman'. Defaults to the current
+//                    address without its ?query, so /contact.php?sent=1 and
+//                    www.rjtide.com/contact.php all count as one page.
 if (!isset($pageTitle)) { $pageTitle = SITE_NAME; }
 if (!isset($pageDescription)) { $pageDescription = 'Full-service concrete, millwright, and agricultural/industrial maintenance contractor based in Lawton, Iowa.'; }
+if (!isset($documentTitle)) { $documentTitle = $pageTitle . ' | ' . SITE_NAME; }
+if (!isset($canonicalPath)) {
+    $canonicalPath = preg_replace('#/index\.php$#', '/', strtok($_SERVER['REQUEST_URI'] ?? '/', '?'));
+}
+$canonicalUrl = SITE_URL . '/' . ltrim($canonicalPath, '/');
 $privatePage = !empty($privatePage);
 $loadAnalytics = !$privatePage;
 
 // The title banner at the top of every inner page. Pages call it right after
 // including this file, e.g.:
 //   page_hero('Contact Us');                                        dark banner
-//   page_hero('Agricultural', 'agriculture/web/jobsite-2.jpg');    photo banner
+//   page_hero('Agricultural', 'agriculture/web/jobsite-2.webp');    photo banner
 // $image is relative to assets/img/. $extraHtml (optional) is extra markup shown
 // under the title, written by the page itself, never visitor input.
 function page_hero(string $title, ?string $image = null, string $extraHtml = ''): void {
@@ -31,10 +42,24 @@ function page_hero(string $title, ?string $image = null, string $extraHtml = '')
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?= htmlspecialchars($pageTitle) ?> | <?= htmlspecialchars(SITE_NAME) ?></title>
+<title><?= htmlspecialchars($documentTitle) ?></title>
 <meta name="description" content="<?= htmlspecialchars($pageDescription) ?>">
 <?php if ($privatePage): ?>
 <meta name="robots" content="noindex, nofollow">
+<?php else: ?>
+<?php if (http_response_code() === 200): // not on "not found" pages ?>
+<link rel="canonical" href="<?= htmlspecialchars($canonicalUrl) ?>">
+<?php endif; ?>
+<!-- Link preview card when a page is shared by text, Facebook, LinkedIn, etc. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="<?= htmlspecialchars(SITE_NAME) ?>">
+<meta property="og:title" content="<?= htmlspecialchars($documentTitle) ?>">
+<meta property="og:description" content="<?= htmlspecialchars($pageDescription) ?>">
+<meta property="og:url" content="<?= htmlspecialchars($canonicalUrl) ?>">
+<meta property="og:image" content="<?= SITE_URL ?>/assets/img/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <?php endif; ?>
 <link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="<?= BASE_URL ?>/assets/img/favicon/favicon-16x16.png">
@@ -64,6 +89,7 @@ function page_hero(string $title, ?string $image = null, string $extraHtml = '')
 <?php endif; ?>
 </head>
 <body>
+<a href="#main" class="skip-link">Skip to main content</a>
 
 <header class="site-header">
     <div class="container site-header__inner">
@@ -100,4 +126,4 @@ function page_hero(string $title, ?string $image = null, string $extraHtml = '')
     </div>
 </header>
 
-<main>
+<main id="main" tabindex="-1">

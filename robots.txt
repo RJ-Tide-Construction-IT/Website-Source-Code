@@ -1,0 +1,8 @@
+# Tells search engines what to index. The Employee Dashboard and the folders
+# visitors can't reach anyway are left out.
+User-agent: *
+Disallow: /dashboard/
+Disallow: /includes/
+Disallow: /uploads/
+
+Sitemap: https://rjtide.com/sitemap.php

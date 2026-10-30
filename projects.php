@@ -7,19 +7,19 @@ $markets = [
     [
         'label' => 'Concrete',
         'blurb' => 'Flatwork, foundations, and site concrete for commercial and industrial sites.',
-        'img'   => 'concrete/web/concrete-hero.jpg',
+        'img'   => 'concrete/web/concrete-hero.webp',
         'url'   => '/projects/concrete.php',
     ],
     [
         'label' => 'Agricultural',
         'blurb' => 'Grain handling and storage, plus the industrial maintenance and millwright work that keeps ag facilities running.',
-        'img'   => 'agriculture/web/design-build-reality.jpg',
+        'img'   => 'agriculture/web/design-build-reality.webp',
         'url'   => '/projects/agricultural.php',
     ],
     [
         'label' => 'Specialty Concrete',
         'blurb' => 'Decorative and specialty concrete work, built to a different standard.',
-        'img'   => 'special-projects/web/chapel-facade.jpg',
+        'img'   => 'special-projects/web/chapel-facade.webp',
         'url'   => '/projects/special-projects.php',
     ],
 ];
