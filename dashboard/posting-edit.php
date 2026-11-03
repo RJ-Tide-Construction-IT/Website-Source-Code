@@ -124,11 +124,7 @@ dashboard_page_start($existing ? 'Edit Job Posting' : 'Add a Job Posting', $user
 ?>
 <p><a class="back-link" href="<?= BASE_URL ?>/dashboard/postings.php">&larr; All job postings</a></p>
 
-<?php if ($errors): ?>
-<div class="form-note form-note--error">
-    <?php foreach ($errors as $error): ?><div><?= htmlspecialchars($error) ?></div><?php endforeach; ?>
-</div>
-<?php endif; ?>
+<?php form_errors($errors); ?>
 
 <form method="post" class="dash-form">
     <?= csrf_field() ?>

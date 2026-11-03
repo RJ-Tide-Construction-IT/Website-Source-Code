@@ -17,8 +17,6 @@
 // sends it back to auth-callback.php with a code, which is exchanged
 // server-to-server for the signed-in person's identity.
 
-const GUID_PATTERN = '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i';
-
 // A sign-in has to be finished within this long after clicking the button.
 const SIGN_IN_TIME_LIMIT = 600;
 
@@ -29,10 +27,6 @@ const SIGN_IN_EXPIRED = 1;
 // How many sign-ins one browser can have in progress at once (e.g. a
 // double-clicked button, or the sign-in page open in two tabs).
 const MAX_PENDING_SIGN_INS = 5;
-
-function setting(string $name): string {
-    return defined($name) ? (string) constant($name) : '';
-}
 
 // The sign-in services, keyed by the short name stored on each user.
 //   label      button text and how the Users page names it
@@ -98,7 +92,7 @@ function require_claims(array $checks): void {
 // Where the services send people back to. Must exactly match the redirect
 // address registered with Microsoft and with Google: always SITE_URL's address.
 function sign_in_redirect_uri(): string {
-    return SITE_URL . BASE_URL . '/dashboard/auth-callback.php';
+    return dashboard_url('auth-callback.php');
 }
 
 function base64url(string $bytes): string {

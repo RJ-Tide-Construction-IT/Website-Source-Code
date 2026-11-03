@@ -18,6 +18,7 @@ define('CAREERS_EMAIL', 'tanderson@rjtide.com');            // every job applica
 define('CONTACT_EMAIL_DEFAULT', 'mcross@rjtide.com');       // contact form: no specific-department match
 define('CONTACT_EMAIL_AGRICULTURAL', 'shodgson@rjtide.com'); // contact form: "Agricultural" checked
 define('CONTACT_EMAIL_CONCRETE', 'khodgson@rjtide.com');     // contact form: "Concrete" checked
+define('SAFETY_FORMS_EMAIL', 'tanderson@rjtide.com');       // safety forms filled out on the Employee Dashboard
 
 // The live site's main address (no trailing slash). The Employee Dashboard
 // always uses this address, sending visitors from www.rjtide.com here first,
@@ -67,6 +68,27 @@ function redirect(string $url): void {
 function posted_text(array $source, string $key): string {
     return is_string($source[$key] ?? null) ? trim($source[$key]) : '';
 }
+
+// A setting from includes/secrets.php, or '' when it's missing or blank (which
+// means that feature is switched off).
+function setting(string $name): string {
+    return defined($name) ? (string) constant($name) : '';
+}
+
+// A PHP size setting (e.g. upload_max_filesize = "8M") in bytes. 0 means no limit.
+function ini_bytes(string $name): int {
+    $value = trim((string) ini_get($name));
+    $n = (int) $value;
+    switch (strtolower(substr($value, -1))) {
+        case 'g': return $n * 1073741824;
+        case 'm': return $n * 1048576;
+        case 'k': return $n * 1024;
+    }
+    return $n;
+}
+
+// What Microsoft tenant and client IDs look like (used by sign-in and the setup check).
+define('GUID_PATTERN', '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i');
 
 // Association logos linked from the homepage/about page.
 $GLOBALS['ASSOCIATIONS'] = [
@@ -128,6 +150,17 @@ $GLOBALS['APPLICATION_PHYSICAL_REQUIREMENTS'] = [
     'Lift 20 lbs overhead, 50 times',
     'Ability to work at 100 ft or higher',
 ];
+// The other fixed lists on the application: the form (employment.php), its
+// handler (apply-handler.php) and the printable PDF (includes/application-pdf.php)
+// all read these, so a change here shows up in all three.
+$GLOBALS['APPLICATION_PROFICIENCY_LEVELS'] = ['Fair', 'Good', 'Excellent'];   // speak / read / write
+$GLOBALS['APPLICATION_EXPERIENCE_LEVELS']  = ['None', 'Average', 'Above'];
+// Languages: 'field_name' => 'Label' (the form says "Primary Language", the email and PDF say "Primary").
+$GLOBALS['APPLICATION_LANGUAGES'] = ['primary_language' => 'Primary', 'other_language' => 'Other'];
+// Schools: 'field_name_start' => 'Label' (fields are <start>_city_state and <start>_degree).
+$GLOBALS['APPLICATION_EDUCATION'] = ['high_school' => 'High School', 'college' => 'College', 'other_education' => 'Other'];
+// How many past employers the form asks for.
+define('APPLICATION_EMPLOYERS', 3);
 
 // ---------- Employee Dashboard ----------
 
@@ -144,10 +177,14 @@ define('JOB_POSTINGS_FILE', DASHBOARD_DATA_DIR . '/job-postings.json');
 $GLOBALS['DASHBOARD_ROLES'] = [
     'employee' => ['label' => 'Employee', 'can' => []],
     'office'   => ['label' => 'Office',   'can' => ['manage_jobs']],
-    // HR reviews time off, address and direct deposit requests, including
-    // viewing bank details, so give this role only to people who handle payroll.
-    'hr'       => ['label' => 'HR',       'can' => ['handle_requests']],
-    'admin'    => ['label' => 'Admin',    'can' => ['manage_jobs', 'edit_postings', 'handle_requests', 'manage_users']],
+    // Safety sees uploaded safety forms and certifications, and which
+    // certifications are about to expire.
+    'safety'   => ['label' => 'Safety',   'can' => ['safety_documents']],
+    // HR reviews time off, address and direct deposit requests and uploaded
+    // payroll forms, including bank details and W-4s, so give this role only
+    // to people who handle payroll.
+    'hr'       => ['label' => 'HR',       'can' => ['handle_requests', 'payroll_documents']],
+    'admin'    => ['label' => 'Admin',    'can' => ['manage_jobs', 'edit_postings', 'handle_requests', 'manage_users', 'safety_documents', 'payroll_documents']],
 ];
 
 // These work (Microsoft 365) accounts are always Admins, so the dashboard can

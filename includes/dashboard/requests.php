@@ -76,33 +76,46 @@ function encryption_ready(): bool {
         && in_array('aes-256-gcm', openssl_get_cipher_methods(), true);
 }
 
-function encrypt_sensitive(array $data): string {
+// Encrypts any bytes (bank numbers here, uploaded files in documents.php).
+// Returns the 12-byte IV, 16-byte tag, then the ciphertext, as raw bytes.
+function encrypt_bytes(string $plain): string {
     $key = encryption_key();
     if ($key === null) {
         throw new RuntimeException('DASHBOARD_ENCRYPTION_KEY is missing or invalid');
     }
     $iv = random_bytes(12);
     $tag = '';
-    $ciphertext = openssl_encrypt(json_encode($data), 'aes-256-gcm', $key, OPENSSL_RAW_DATA, $iv, $tag);
+    $ciphertext = openssl_encrypt($plain, 'aes-256-gcm', $key, OPENSSL_RAW_DATA, $iv, $tag);
     if ($ciphertext === false) {
         throw new RuntimeException('Encryption failed');
     }
-    return 'v1:' . base64_encode($iv . $tag . $ciphertext);
+    return $iv . $tag . $ciphertext;
+}
+
+// The original bytes, or null if the key is missing or has changed since
+// they were encrypted (they then can't be read).
+function decrypt_bytes(string $raw): ?string {
+    $key = encryption_key();
+    if ($key === null || strlen($raw) < 28) {
+        return null;
+    }
+    $plain = openssl_decrypt(substr($raw, 28), 'aes-256-gcm', $key, OPENSSL_RAW_DATA, substr($raw, 0, 12), substr($raw, 12, 16));
+    return $plain === false ? null : $plain;
+}
+
+function encrypt_sensitive(array $data): string {
+    return 'v1:' . base64_encode(encrypt_bytes(json_encode($data)));
 }
 
 // The decrypted data, or null if there's nothing stored, the key is missing,
 // or the key has changed since it was stored (it then can't be read).
 function decrypt_sensitive(?string $blob): ?array {
-    $key = encryption_key();
-    if (!$blob || $key === null || !str_starts_with($blob, 'v1:')) {
+    if (!$blob || !str_starts_with($blob, 'v1:')) {
         return null;
     }
     $raw = base64_decode(substr($blob, 3), true);
-    if ($raw === false || strlen($raw) < 29) {
-        return null;
-    }
-    $plain = openssl_decrypt(substr($raw, 28), 'aes-256-gcm', $key, OPENSSL_RAW_DATA, substr($raw, 0, 12), substr($raw, 12, 16));
-    $data = $plain === false ? null : json_decode($plain, true);
+    $plain = $raw === false ? null : decrypt_bytes($raw);
+    $data = $plain === null ? null : json_decode($plain, true);
     return is_array($data) ? $data : null;
 }
 
@@ -217,17 +230,20 @@ function validate_request(string $type, array $post): array {
 
 // ---------- Reading ----------
 
+// Requests matching $sql, with each one's details decoded.
+function load_requests(string $sql, array $params = []): array {
+    $stmt = db()->prepare($sql);
+    $stmt->execute($params);
+    return array_map(function ($r) {
+        $r['details'] = json_decode($r['details'], true) ?: [];
+        return $r;
+    }, $stmt->fetchAll());
+}
+
 // One request, with the employee's name and email, or null.
 function find_request(int $id): ?array {
-    $stmt = db()->prepare('SELECT r.*, u.name AS employee_name, u.email AS employee_email
-                           FROM requests r JOIN users u ON u.id = r.user_id WHERE r.id = ?');
-    $stmt->execute([$id]);
-    $request = $stmt->fetch();
-    if (!$request) {
-        return null;
-    }
-    $request['details'] = json_decode($request['details'], true) ?: [];
-    return $request;
+    return load_requests('SELECT r.*, u.name AS employee_name, u.email AS employee_email
+                          FROM requests r JOIN users u ON u.id = r.user_id WHERE r.id = ?', [$id])[0] ?? null;
 }
 
 // A one-line description, safe for lists and emails (never bank numbers).
@@ -291,30 +307,21 @@ function pending_request_count(): int {
 // ---------- Emails (never include bank numbers) ----------
 // Sent with dashboard_send_email() (accounts.php).
 
-// Everyone whose role can handle requests.
-function request_reviewer_emails(): array {
-    $roles = array_keys(array_filter($GLOBALS['DASHBOARD_ROLES'], fn($r) => in_array('handle_requests', $r['can'], true)));
-    $marks = implode(',', array_fill(0, count($roles), '?'));
-    $stmt = db()->prepare("SELECT email FROM users WHERE active = 1 AND awaiting_approval = 0 AND role IN ($marks)");
-    $stmt->execute($roles);
-    return array_unique($stmt->fetchAll(PDO::FETCH_COLUMN));
-}
-
 function notify_hr_of_request(array $request): void {
     $body = $request['employee_name'] . ' submitted a ' . request_type_label($request['type']) . " request:\n\n"
           . request_summary($request) . "\n\n"
           . ($request['type'] === 'direct_deposit' ? "The bank details are only shown on the dashboard, not in email.\n\n" : '')
-          . "Review it here:\n" . SITE_URL . BASE_URL . '/dashboard/review-request.php?id=' . $request['id'] . "\n";
-    foreach (request_reviewer_emails() as $email) {
+          . "Review it here:\n" . dashboard_url('review-request.php?id=' . $request['id']) . "\n";
+    foreach (capability_emails('handle_requests') as $email) {
         dashboard_send_email($email, 'Employee Dashboard: ' . header_safe($request['employee_name']) . ' - ' . request_type_label($request['type']), $body);
     }
 }
 
 function notify_employee_of_decision(array $request): void {
-    $body = 'Hi ' . (strtok($request['employee_name'], ' ') ?: $request['employee_name']) . ",\n\n"
+    $body = 'Hi ' . first_name($request['employee_name']) . ",\n\n"
           . 'Your ' . request_type_label($request['type']) . ' request (' . request_summary($request) . ') is now: '
           . request_status_label($request['status']) . ".\n"
           . ($request['review_note'] !== '' ? "\nNote from HR: " . $request['review_note'] . "\n" : '')
-          . "\nSee your requests here:\n" . SITE_URL . BASE_URL . "/dashboard/requests.php\n";
+          . "\nSee your requests here:\n" . dashboard_url('requests.php') . "\n";
     dashboard_send_email($request['employee_email'], 'Your ' . request_type_label($request['type']) . ' request: ' . request_status_label($request['status']), $body);
 }

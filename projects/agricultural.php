@@ -6,8 +6,6 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 $sections = [
     [
         'label'  => 'Agricultural / Industrial',
-        'note'   => '',
-        'layout' => 'carousel',
         'photos' => [
             ['img' => 'agriculture/web/scale-house-aerial.webp', 'caption' => 'Aerial view of a completed grain facility scale house and truck scale'],
             ['img' => 'agriculture/web/craig-facility.webp', 'caption' => 'Completed grain elevator and receiving facility'],

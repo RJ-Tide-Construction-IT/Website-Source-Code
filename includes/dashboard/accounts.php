@@ -71,6 +71,26 @@ function sign_in_user(string $method, string $accountId, string $email, string $
     return 'signed_in';
 }
 
+// "Jordan" from "Jordan Smith".
+function first_name(string $name): string {
+    return strtok($name, ' ') ?: $name;
+}
+
+// The full address of a dashboard page, for emails and sign-in services.
+function dashboard_url(string $page = ''): string {
+    return SITE_URL . BASE_URL . '/dashboard/' . $page;
+}
+
+// Emails of the active, approved people whose role has the capability $can,
+// leaving out the user $exceptUserId (0 = nobody).
+function capability_emails(string $can, ?int $exceptUserId = null): array {
+    $roles = array_keys(array_filter($GLOBALS['DASHBOARD_ROLES'], fn($r) => in_array($can, $r['can'], true)));
+    $stmt = db()->prepare('SELECT DISTINCT email FROM users WHERE active = 1 AND awaiting_approval = 0 AND role IN ('
+        . implode(',', array_fill(0, count($roles), '?')) . ') AND id <> ?');
+    $stmt->execute(array_merge($roles, [$exceptUserId ?? 0]));
+    return $stmt->fetchAll(PDO::FETCH_COLUMN);
+}
+
 // Every email the dashboard sends goes through here. Best effort: if email
 // isn't set up or fails, nothing else is affected. When local testing (see
 // local_testing() in auth.php), nothing is sent: the email is added to
@@ -78,18 +98,21 @@ function sign_in_user(string $method, string $accountId, string $email, string $
 // sign-in page, so you can see exactly what would have gone out.
 const LOCAL_TEST_EMAIL_LOG = DASHBOARD_DATA_DIR . '/local-test-emails.log';
 
-function dashboard_send_email(string $to, string $subject, string $body): void {
+// $attachments: optional files, each ['name' => 'file.pdf', 'content' => raw bytes].
+// Returns false only if sending was attempted and failed.
+function dashboard_send_email(string $to, string $subject, string $body, array $attachments = [], ?string $replyTo = null): bool {
     if (local_testing()) {
         dashboard_ensure_dir(DASHBOARD_DATA_DIR);
-        $entry = ['sent_at' => db_now(), 'to' => $to, 'subject' => $subject, 'body' => $body];
+        $entry = ['sent_at' => db_now(), 'to' => $to, 'subject' => $subject, 'body' => $body,
+                  'attachments' => array_column($attachments, 'name')];
         file_put_contents(LOCAL_TEST_EMAIL_LOG, json_encode($entry) . "\n", FILE_APPEND | LOCK_EX);
-        return;
+        return true;
     }
     if (!is_file(dirname(__DIR__) . '/secrets.php')) {
-        return;
+        return false;
     }
     require_once dirname(__DIR__) . '/mailer.php';
-    send_email($to, $subject, $body);
+    return send_email($to, $subject, $body, $replyTo, null, $attachments);
 }
 
 // Emails the Admins that someone new is waiting for approval. Best effort:
@@ -99,7 +122,7 @@ function notify_admins_of_new_sign_in(string $name, string $email): void {
     $admins = array_unique(array_merge($admins, $GLOBALS['DASHBOARD_ADMIN_EMAILS']));
     $body = "$name ($email) signed in to the Employee Dashboard with Google for the first time.\n\n"
           . "They can't see anything until an Admin approves them. To approve or decline, go to:\n"
-          . SITE_URL . BASE_URL . "/dashboard/users.php\n";
+          . dashboard_url('users.php') . "\n";
     foreach ($admins as $admin) {
         dashboard_send_email($admin, 'Employee Dashboard: ' . header_safe($name) . ' is waiting for approval', $body);
     }

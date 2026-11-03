@@ -23,13 +23,15 @@ exactly which file to open for common edits.
 | Give an employee more dashboard access, or turn off someone's access | Employee Dashboard > **Users** (Admins only) |
 | Change what each dashboard role can do, or who is always an Admin | `DASHBOARD_ROLES` / `DASHBOARD_ADMIN_EMAILS` in [includes/config.php](includes/config.php) |
 | Change the EEO / Work Authorization / Other Duties wording on job postings | [includes/job-posting-standard-sections.php](includes/job-posting-standard-sections.php) (shared by every posting that shows them) |
-| Add/remove a checkbox on the job application (licenses, physical requirements, experience) | the `APPLICATION_...` lists in [includes/config.php](includes/config.php) |
+| Add/remove a checkbox on the job application (licenses, physical requirements, experience), or change its answer levels, languages, education rows, or number of employers | the `APPLICATION_...` lists in [includes/config.php](includes/config.php) |
 | Change the layout of the printable PDF attached to each job application email | [includes/application-pdf.php](includes/application-pdf.php), see "Printable application PDF" below |
 | Add, remove, or edit a photo on the Projects page | the `$sections` array at the top of the matching file in [projects/](projects/), see below |
 | Change colors, fonts, or overall look | [assets/css/style.css](assets/css/style.css) |
 | Change the mobile menu, slideshow, or image lightbox behavior | [assets/js/main.js](assets/js/main.js) |
 | Change what's in the top menu bar on every page | `$GLOBALS['MAIN_NAV']` inside [includes/config.php](includes/config.php) |
 | Change who receives contact form emails (by department) | the `CONTACT_EMAIL_...` settings in [includes/config.php](includes/config.php) |
+| Change who receives safety forms | `SAFETY_FORMS_EMAIL` in [includes/config.php](includes/config.php) |
+| Add a safety form, or change a form's questions | the `SAFETY_FORMS` list in [includes/dashboard/safety-forms.php](includes/dashboard/safety-forms.php) |
 | Change the very top or bottom of every page (logo bar, menu, footer links) | [includes/header.php](includes/header.php) / [includes/footer.php](includes/footer.php) |
 | Swap out a photo or logo | replace the file in [assets/img/](assets/img/) (keep the same filename so nothing breaks) |
 
@@ -114,6 +116,8 @@ includes/              shared pieces every page uses
   http.php                 sends requests to outside services (Brevo email,
                             Cloudflare, Microsoft/Google sign-in)
   application-pdf.php      builds the printable PDF of each job application
+  pdf.php                   the shared PDF maker (dompdf setup) used by that
+                            PDF and the dashboard's safety form PDFs
   pdf-logo.jpg              the logo used on that PDF
   vendor/, composer.json    the dompdf library that makes the PDF, see
                             "Printable application PDF" below, don't edit
@@ -171,12 +175,13 @@ then hand off to the shared [includes/photo-sections.php](includes/photo-section
 remove, or re-caption a photo, edit that page's `$sections` array, nothing
 else needs to change:
 
-- A category with 2+ photos and `'layout' => 'carousel'` renders as an
-  auto-advancing slideshow with arrows and dots.
+- A category with 2+ photos renders as an auto-advancing slideshow with
+  arrows and dots.
 - A category with exactly 1 photo renders as a single enlarged photo, no
   controls (there'd be nothing to navigate to).
 - A category with 0 photos (`'photos' => []`) renders just its `'note'` text,
   e.g. "Photos for this section are coming soon."
+- `'note'` is optional on any category (a short line shown under its title).
 
 ## Employee Dashboard
 
@@ -199,9 +204,9 @@ Either button only appears once its settings are filled in on the server.
 **Built so far:** sign-in, roles, **My Requests** and **Review Requests** (see
 below), the **Job Openings** page (check the positions you're hiring for, the
 Careers page updates immediately), the **Job Postings** page (Admins add and
-edit postings, see below), and the **Users** page (Admins change roles or turn off
-access). Document uploads are shown as "Coming soon" and come next. Timecards
-aren't part of the dashboard, they're handled by a separate service.
+edit postings, see below), **Safety Forms**, **My Documents** and **Employee
+Documents** (see below), and the **Users** page (Admins change roles or turn off access).
+Timecards aren't part of the dashboard, they're handled by a separate service.
 
 **Employee requests:** every employee can send HR a **Time Off** request
 (Vacation/PTO, Sick, Unpaid, or Other with a note), an **Address Change**, or a
@@ -236,16 +241,49 @@ The originals' starting text lives in
 posting is saved or deleted on the dashboard, that saved version is used
 instead, so editing the file afterwards has no effect on that posting.
 
+**Safety Forms:** every employee can fill out an **Incident Report**, a
+**Near-Miss Report**, or a **Toolbox Talk Sign-In** on the dashboard. Each one
+is emailed as a PDF (laid out with the RJ Tide logo and a "submitted
+electronically by" line) to `SAFETY_FORMS_EMAIL` in
+[includes/config.php](includes/config.php), currently tanderson@rjtide.com,
+with the answers also in the email itself. A copy is saved as a Safety Form
+under Employee Documents, and the employee sees it on My Documents. To add a
+form or change its questions, edit the `SAFETY_FORMS` list in
+[includes/dashboard/safety-forms.php](includes/dashboard/safety-forms.php):
+the page, the PDF, and the email all follow it.
+
+**Documents:** on **My Documents**, every employee can upload a **Safety Form**,
+a **Certification** (with its expiration date), or a **Payroll Form** such as a
+W-4, as a PDF or a phone photo up to 10MB, and remove their own while they're
+still there. On **Employee Documents**:
+
+- the **Safety** role (and Admins) sees safety forms and certifications, plus a
+  list of certifications that have expired or expire within 30 days (also
+  flagged on the dashboard home page). When the employee uploads the renewed
+  certification under the same name, the old one drops off that list.
+- **HR** (and Admins) sees payroll forms, and marks each one **processed** once
+  it's entered into payroll: the file is then permanently deleted and the
+  employee is emailed.
+
+Because these can contain Social Security numbers, every file is stored
+encrypted with `DASHBOARD_ENCRYPTION_KEY` (uploads stay switched off until it's
+set), each time someone opens another person's payroll form it's recorded in
+"Recent activity", and emails only say that something was uploaded, never
+what's in it. The rules are in
+[includes/dashboard/documents.php](includes/dashboard/documents.php).
+
 **Roles** (set in `DASHBOARD_ROLES` in [includes/config.php](includes/config.php)):
 
 | Role | Can do |
 |---|---|
-| Employee | My Requests (time off, address, direct deposit) |
+| Employee | My Requests (time off, address, direct deposit), My Documents |
 | Office | + manage Job Openings |
-| HR | + Review Requests, including viewing direct deposit bank details |
-| Admin | everything: Job Openings, Job Postings, Review Requests, and the Users page |
+| Safety | + safety forms and certifications on Employee Documents |
+| HR | + Review Requests, including viewing direct deposit bank details, and payroll forms on Employee Documents |
+| Admin | everything: Job Openings, Job Postings, Review Requests, all Employee Documents, and the Users page |
 
-Only give the HR role to people who handle payroll, since it can see bank details.
+Only give the HR role to people who handle payroll, since it can see bank
+details and W-4s.
 
 To let Office add postings too, add `'edit_postings'` to the Office line in
 `DASHBOARD_ROLES`.
@@ -262,10 +300,12 @@ Google sign-in, `accounts.php` for creating accounts and approvals, `auth.php`
 for sessions, roles and form protection), job listing logic (openings,
 postings, the description format) in
 [includes/job-postings.php](includes/job-postings.php), and the server-written
-data (database, sign-in sessions, `job-openings.json`, `job-postings.json`) in
-`uploads/dashboard/`, which visitors can't reach, git ignores, and the deploy
-never overwrites. Back up that folder along with `uploads/resumes/`, since
-postings added or edited on the dashboard live only there.
+data (database, sign-in sessions, `job-openings.json`, `job-postings.json`,
+and the encrypted uploaded documents in `documents/`) in `uploads/dashboard/`,
+which visitors can't reach, git ignores, and the deploy never overwrites. Back
+up that folder along with `uploads/resumes/`, since postings added or edited on
+the dashboard and uploaded documents live only there (the backup is useless
+without the encryption key, so keep the key somewhere safe too).
 
 ### Employee Dashboard setup (one time)
 
@@ -313,7 +353,8 @@ so the sign-in page is never live half set up. See
 `MS_TENANT_ID`, `MS_CLIENT_ID`, `MS_CLIENT_SECRET` for Microsoft, and
 `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` for Google.
 
-Also add `DASHBOARD_ENCRYPTION_KEY`, which encrypts direct deposit bank numbers.
+Also add `DASHBOARD_ENCRYPTION_KEY`, which encrypts direct deposit bank numbers
+and uploaded documents.
 Make one by running this once on your computer and pasting the result between
 the quotes (treat it like a password; don't email it or put it anywhere else):
 
@@ -322,16 +363,17 @@ php -r "echo base64_encode(random_bytes(32)), PHP_EOL;"
 ```
 
 Keep the same key from then on: if it ever changes, direct deposit requests
-still waiting for review can't be read, so HR would reject them and the
-employees would send them again.
+still waiting for review and every uploaded document can't be read anymore, so
+HR would reject the requests and employees would have to upload their documents
+again.
 
 **4. Deploy:** merge the dashboard work into `master` and push. The deploy
 only runs for `master`.
 
 **5. Run the setup check:** open **https://rjtide.com/dashboard/setup-check.php**.
 It checks the PHP version (8.1+ needed), database support, write permission
-for `uploads/dashboard/`, the Microsoft and Google settings, and that the
-server can reach both, each with how to fix it. It shows pass/fail only, never secrets.
+for `uploads/dashboard/`, the Microsoft and Google settings, that the server
+can reach both, and that uploads up to 10MB are allowed, each with how to fix it. It shows pass/fail only, never secrets.
 If SQLite isn't available, either ask HostPapa to enable `pdo_sqlite`, or
 create a MySQL database in the control panel and fill in the three
 `DASHBOARD_DB_...` lines in `secrets.php`.

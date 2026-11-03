@@ -1,21 +1,20 @@
 <?php
 // Renders a series of labeled photo sections for a project gallery page.
-// Expects $sections, each: ['label', 'note', 'photos' => [...], 'layout' => 'carousel' (optional)].
+// Expects $sections, each: ['label', 'note' (optional), 'photos' => [...]].
 //
-// A section only becomes an actual carousel when it has 2+ photos, with
+// A section only gets arrows and dots when it has 2+ photos, with
 // just one photo there'd be nothing to navigate to, so it renders as a
 // single enlarged photo instead (same box size, no dead arrow/dot buttons).
 // A section with no photos yet renders just its note, no photo box.
 foreach ($sections as $section):
     $photoCount = count($section['photos']);
-    $isCarousel = ($section['layout'] ?? '') === 'carousel' && $photoCount > 0;
-    $isMultiSlide = $isCarousel && $photoCount > 1;
+    $isMultiSlide = $photoCount > 1;
 ?>
 <h2 class="section-title section-title--gallery"><?= htmlspecialchars($section['label']) ?></h2>
 <?php if (!empty($section['note'])): ?>
 <p class="section-note"><?= htmlspecialchars($section['note']) ?></p>
 <?php endif; ?>
-<?php if ($isCarousel): ?>
+<?php if ($photoCount > 0): ?>
     <div class="slideshow">
         <?php foreach ($section['photos'] as $idx => $p): ?>
         <img class="slideshow__slide<?= $idx === 0 ? ' is-active' : '' ?>" src="<?= BASE_URL ?>/assets/img/<?= htmlspecialchars($p['img']) ?>" alt="<?= htmlspecialchars($p['caption']) ?>" loading="lazy">
@@ -29,14 +28,6 @@ foreach ($sections as $section):
             <?php endforeach; ?>
         </div>
         <?php endif; ?>
-    </div>
-<?php elseif ($photoCount > 0): ?>
-    <div class="showcase-grid">
-        <?php foreach ($section['photos'] as $p): ?>
-        <figure>
-            <img src="<?= BASE_URL ?>/assets/img/<?= htmlspecialchars($p['img']) ?>" alt="<?= htmlspecialchars($p['caption']) ?>" loading="lazy">
-        </figure>
-        <?php endforeach; ?>
     </div>
 <?php endif; ?>
 <?php endforeach; ?>

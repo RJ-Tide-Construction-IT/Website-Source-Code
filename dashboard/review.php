@@ -4,15 +4,9 @@
 require_once dirname(__DIR__) . '/includes/dashboard/bootstrap.php';
 $user = require_capability('handle_requests');
 
-$load = function (string $sql): array {
-    return array_map(function ($r) {
-        $r['details'] = json_decode($r['details'], true) ?: [];
-        return $r;
-    }, db()->query($sql)->fetchAll());
-};
 $base = 'SELECT r.*, u.name AS employee_name FROM requests r JOIN users u ON u.id = r.user_id';
-$pending = $load("$base WHERE r.status = 'pending' ORDER BY r.id");
-$recent  = $load("$base WHERE r.status <> 'pending' ORDER BY r.id DESC LIMIT 30");
+$pending = load_requests("$base WHERE r.status = 'pending' ORDER BY r.id");
+$recent  = load_requests("$base WHERE r.status <> 'pending' ORDER BY r.id DESC LIMIT 30");
 
 $table = function (array $rows, bool $showStatus) { ?>
 <div class="dash-table-wrap">

@@ -8,7 +8,7 @@ $tiles = array_filter(dashboard_pages_for($user), fn($page) => isset($page['text
 
 dashboard_page_start('Employee Dashboard', $user);
 ?>
-<p class="dash-welcome">Welcome, <?= htmlspecialchars(strtok($user['name'], ' ') ?: $user['name']) ?>.</p>
+<p class="dash-welcome">Welcome, <?= htmlspecialchars(first_name($user['name'])) ?>.</p>
 
 <?php if (user_can($user, 'manage_users')):
     $waitingCount = (int) db()->query('SELECT COUNT(*) FROM users WHERE awaiting_approval = 1')->fetchColumn();
@@ -26,19 +26,26 @@ dashboard_page_start('Employee Dashboard', $user);
 </div>
 <?php endif; ?>
 
+<?php if (user_can($user, 'safety_documents') && ($certCount = count(expiring_certifications()))): ?>
+<div class="form-note dash-notice">
+    <?= $certCount === 1 ? '1 certification has' : $certCount . ' certifications have' ?> expired or will expire within <?= CERT_WARNING_DAYS ?> days.
+    <a href="<?= BASE_URL ?>/dashboard/documents-review.php">See which</a>
+</div>
+<?php endif; ?>
+
+<?php if (user_can($user, 'payroll_documents') && ($payrollCount = waiting_payroll_document_count())): ?>
+<div class="form-note dash-notice">
+    <?= $payrollCount === 1 ? '1 payroll form is' : $payrollCount . ' payroll forms are' ?> waiting to be processed.
+    <a href="<?= BASE_URL ?>/dashboard/documents-review.php">Employee Documents</a>
+</div>
+<?php endif; ?>
+
 <div class="dash-tiles">
     <?php foreach ($tiles as $tile): ?>
-    <?php if ($tile['href'] !== null): ?>
     <a class="dash-tile" href="<?= BASE_URL . $tile['href'] ?>">
         <h3><?= htmlspecialchars($tile['label']) ?></h3>
         <p><?= htmlspecialchars($tile['text']) ?></p>
     </a>
-    <?php else: ?>
-    <div class="dash-tile dash-tile--soon">
-        <h3><?= htmlspecialchars($tile['label']) ?> <span class="badge">Coming soon</span></h3>
-        <p><?= htmlspecialchars($tile['text']) ?></p>
-    </div>
-    <?php endif; ?>
     <?php endforeach; ?>
 </div>
 <?php dashboard_page_end(); ?>

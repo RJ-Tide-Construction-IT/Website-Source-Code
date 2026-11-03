@@ -6,16 +6,7 @@
 // To change the layout, edit the HTML/CSS inside render_application_pdf() below,
 // it's regular HTML that the dompdf library (includes/vendor/) turns into a PDF.
 require_once __DIR__ . '/config.php';
-require_once __DIR__ . '/vendor/autoload.php';
-
-use Dompdf\Dompdf;
-use Dompdf\Options;
-
-// A single text answer from the form. Anything that isn't a plain string
-// (e.g. an array POSTed by a bot) is treated as blank.
-function app_pdf_text(array $data, string $key): string {
-    return is_string($data[$key] ?? null) ? trim($data[$key]) : '';
-}
+require_once __DIR__ . '/pdf.php';
 
 function app_pdf_e(string $value): string {
     return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
@@ -44,7 +35,7 @@ function app_pdf_yes_no(string $answer): string {
  * @return string The PDF file contents.
  */
 function render_application_pdf(array $data, string $resumeNote): string {
-    $t = fn(string $key) => app_pdf_text($data, $key);
+    $t = fn(string $key) => posted_text($data, $key);
 
     $startDate = $t('start_date');
     if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $startDate)) {
@@ -54,8 +45,8 @@ function render_application_pdf(array $data, string $resumeNote): string {
     $licenses = array_filter((array) ($data['licenses'] ?? []), 'is_string');
     $physical = array_filter((array) ($data['physical'] ?? []), 'is_string');
     $employers = is_array($data['employer'] ?? null) ? $data['employer'] : [];
-    $proficiencyLevels = ['Fair', 'Good', 'Excellent'];
-    $experienceLevels  = ['None', 'Average', 'Above'];
+    $proficiencyLevels = $GLOBALS['APPLICATION_PROFICIENCY_LEVELS'];
+    $experienceLevels  = $GLOBALS['APPLICATION_EXPERIENCE_LEVELS'];
     $logoPath = __DIR__ . '/pdf-logo.jpg';
     // The office is in Iowa, so stamp Central time regardless of the server's timezone.
     $submitted = new DateTime('now', new DateTimeZone('America/Chicago'));
@@ -147,7 +138,7 @@ function render_application_pdf(array $data, string $resumeNote): string {
 </table>
 <table class="grid">
     <tr><th style="width:28%">Language</th><th style="width:24%">Speak</th><th style="width:24%">Read</th><th style="width:24%">Write</th></tr>
-    <?php foreach (['primary_language' => 'Primary', 'other_language' => 'Other'] as $prefix => $kind): ?>
+    <?php foreach ($GLOBALS['APPLICATION_LANGUAGES'] as $prefix => $kind): ?>
     <tr>
         <td><span class="lbl"><?= $kind ?></span><span class="val"><?= app_pdf_e($t($prefix)) ?>&nbsp;</span></td>
         <?php foreach (['speak', 'read', 'write'] as $skill): ?>
@@ -161,7 +152,7 @@ function render_application_pdf(array $data, string $resumeNote): string {
 <h2>Education</h2>
 <table class="grid">
     <tr><th style="width:20%">School</th><th style="width:45%">City / State</th><th style="width:35%">Graduate / Degree</th></tr>
-    <?php foreach (['high_school' => 'High School', 'college' => 'College', 'other_education' => 'Other'] as $key => $label): ?>
+    <?php foreach ($GLOBALS['APPLICATION_EDUCATION'] as $key => $label): ?>
     <tr><td><?= $label ?></td><td><?= app_pdf_e($t($key . '_city_state')) ?>&nbsp;</td><td><?= app_pdf_e($t($key . '_degree')) ?>&nbsp;</td></tr>
     <?php endforeach; ?>
 </table>
@@ -201,9 +192,9 @@ function render_application_pdf(array $data, string $resumeNote): string {
 </div>
 
 <h2>Employment History <span style="text-transform:none;font-weight:normal;">(most recent first)</span></h2>
-<?php for ($i = 1; $i <= 3; $i++):
+<?php for ($i = 1; $i <= APPLICATION_EMPLOYERS; $i++):
     $job = is_array($employers[$i] ?? null) ? $employers[$i] : [];
-    $j = fn(string $key) => app_pdf_text($job, $key); ?>
+    $j = fn(string $key) => posted_text($job, $key); ?>
 <table class="grid keep" style="margin-top:<?= $i === 1 ? 0 : 5 ?>pt">
     <tr><?= app_pdf_box("Employer #$i, Name & Address of Company", $j('company'), 60, 2) ?><?= app_pdf_box('Employed From', $j('from'), 20) ?><?= app_pdf_box('Employed To', $j('to'), 20) ?></tr>
     <tr><?= app_pdf_box('Title & Duties', $j('title'), 60, 2) ?><?= app_pdf_box('Starting Wage', $j('starting_wage'), 20) ?><?= app_pdf_box('Final Wage', $j('final_wage'), 20) ?></tr>
@@ -241,16 +232,7 @@ function render_application_pdf(array $data, string $resumeNote): string {
 <?php
     $html = ob_get_clean();
 
-    $options = new Options();
-    $options->set('isRemoteEnabled', false);   // never fetch URLs, only the local logo
-    $options->set('isPhpEnabled', false);
-    $options->setChroot([__DIR__]);            // may only read files inside includes/
-    $options->set('defaultFont', 'DejaVu Sans');
-
-    $dompdf = new Dompdf($options);
-    $dompdf->loadHtml($html, 'UTF-8');
-    $dompdf->setPaper('letter', 'portrait');
-    $dompdf->render();
+    $dompdf = render_pdf($html);
 
     // "Page X of Y" in the bottom margin of every page.
     $canvas = $dompdf->getCanvas();
@@ -261,7 +243,7 @@ function render_application_pdf(array $data, string $resumeNote): string {
     );
     $canvas->page_text(
         36, $canvas->get_height() - 28,
-        'Application: ' . app_pdf_text($data, 'name') . ', ' . app_pdf_text($data, 'position'), $font, 7, [0.35, 0.35, 0.35]
+        'Application: ' . posted_text($data, 'name') . ', ' . posted_text($data, 'position'), $font, 7, [0.35, 0.35, 0.35]
     );
 
     return $dompdf->output();

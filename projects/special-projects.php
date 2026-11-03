@@ -8,7 +8,6 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 $sections = [
     [
         'label'  => 'Specialty Concrete',
-        'layout' => 'carousel',
         'photos' => [
             ['img' => 'special-projects/web/chapel-facade.webp', 'caption' => 'Stone-veneer Chapel Facade with Decorative Concrete Detailing', 'location' => 'Trinity Heights'],
             ['img' => 'special-projects/web/chapel-polished-floor.webp', 'caption' => 'Polished Decorative Concrete Floor in a Stone Chapel'],
@@ -16,7 +15,6 @@ $sections = [
     ],
     [
         'label'  => 'Decorative Concrete',
-        'layout' => 'carousel',
         'photos' => [
             ['img' => 'special-projects/web/relief-panel.webp', 'caption' => 'Custom Statue of Saint Joseph', 'location' => 'Trinity Heights'],
             ['img' => 'special-projects/web/chapel-engraved-floor.webp', 'caption' => 'Engraved Decorative Concrete Floor Around a Baptismal Font'],

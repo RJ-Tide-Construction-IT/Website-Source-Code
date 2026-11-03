@@ -12,8 +12,7 @@ if (is_file(__DIR__ . '/secrets.php')) {
 require_once __DIR__ . '/http.php';
 
 function turnstile_enabled(): bool {
-    return defined('TURNSTILE_SITE_KEY') && TURNSTILE_SITE_KEY !== ''
-        && defined('TURNSTILE_SECRET_KEY') && TURNSTILE_SECRET_KEY !== '';
+    return setting('TURNSTILE_SITE_KEY') !== '' && setting('TURNSTILE_SECRET_KEY') !== '';
 }
 
 // The checkbox widget plus Cloudflare's script. Prints nothing when switched off.
