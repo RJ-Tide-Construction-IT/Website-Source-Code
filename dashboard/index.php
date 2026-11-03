@@ -26,6 +26,20 @@ dashboard_page_start('Employee Dashboard', $user);
 </div>
 <?php endif; ?>
 
+<?php if (user_can($user, 'safety_documents') && ($certCount = count(expiring_certifications()))): ?>
+<div class="form-note dash-notice">
+    <?= $certCount === 1 ? '1 certification has' : $certCount . ' certifications have' ?> expired or will expire within <?= CERT_WARNING_DAYS ?> days.
+    <a href="<?= BASE_URL ?>/dashboard/documents-review.php">See which</a>
+</div>
+<?php endif; ?>
+
+<?php if (user_can($user, 'payroll_documents') && ($payrollCount = waiting_payroll_document_count())): ?>
+<div class="form-note dash-notice">
+    <?= $payrollCount === 1 ? '1 payroll form is' : $payrollCount . ' payroll forms are' ?> waiting to be processed.
+    <a href="<?= BASE_URL ?>/dashboard/documents-review.php">Employee Documents</a>
+</div>
+<?php endif; ?>
+
 <div class="dash-tiles">
     <?php foreach ($tiles as $tile): ?>
     <?php if ($tile['href'] !== null): ?>

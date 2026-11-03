@@ -758,12 +758,16 @@ a.dash-tile:hover { border-color: var(--color-red); text-decoration: none; }
 
 /* Employee requests (dashboard/requests.php, request-new.php, review*.php) */
 .request-actions { margin-bottom: 1.75rem; }
-.badge.status--pending   { background: #fff6e0; color: #6b4a00; margin-left: 0; }
+.badge.status--pending,
+.badge.status--received,
+.badge.status--expiring  { background: #fff6e0; color: #6b4a00; margin-left: 0; }
 .badge.status--approved,
 .badge.status--done      { background: #e6f6ec; color: #1a7a3d; margin-left: 0; }
 .badge.status--denied,
-.badge.status--rejected  { background: #fde8ea; color: var(--color-red-dark); margin-left: 0; }
-.badge.status--cancelled { margin-left: 0; }
+.badge.status--rejected,
+.badge.status--expired   { background: #fde8ea; color: var(--color-red-dark); margin-left: 0; }
+.badge.status--cancelled,
+.badge.status--removed   { margin-left: 0; }
 .dash-link-button {
   padding: 0;
   border: none;

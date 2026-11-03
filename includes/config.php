@@ -144,10 +144,14 @@ define('JOB_POSTINGS_FILE', DASHBOARD_DATA_DIR . '/job-postings.json');
 $GLOBALS['DASHBOARD_ROLES'] = [
     'employee' => ['label' => 'Employee', 'can' => []],
     'office'   => ['label' => 'Office',   'can' => ['manage_jobs']],
-    // HR reviews time off, address and direct deposit requests, including
-    // viewing bank details, so give this role only to people who handle payroll.
-    'hr'       => ['label' => 'HR',       'can' => ['handle_requests']],
-    'admin'    => ['label' => 'Admin',    'can' => ['manage_jobs', 'edit_postings', 'handle_requests', 'manage_users']],
+    // Safety sees uploaded safety forms and certifications, and which
+    // certifications are about to expire.
+    'safety'   => ['label' => 'Safety',   'can' => ['safety_documents']],
+    // HR reviews time off, address and direct deposit requests and uploaded
+    // payroll forms, including bank details and W-4s, so give this role only
+    // to people who handle payroll.
+    'hr'       => ['label' => 'HR',       'can' => ['handle_requests', 'payroll_documents']],
+    'admin'    => ['label' => 'Admin',    'can' => ['manage_jobs', 'edit_postings', 'handle_requests', 'manage_users', 'safety_documents', 'payroll_documents']],
 ];
 
 // These work (Microsoft 365) accounts are always Admins, so the dashboard can

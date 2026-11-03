@@ -260,24 +260,25 @@ document.addEventListener('DOMContentLoaded', function () {
   videos.forEach(function (video) { observer.observe(video); });
 });
 
-// Job application resume: catch a too-big or wrong-type file as soon as it's
-// picked. apply-handler.php rejects these too, but by then the applicant is
-// sent back to an empty form and loses everything they typed.
+// File uploads (job application resume, dashboard documents): catch a
+// too-big or wrong-type file as soon as it's picked, using the input's
+// data-max-bytes and data-extensions (e.g. "pdf,doc,docx"). The server rejects
+// these too, but by then the person is sent back and loses what they typed.
 document.addEventListener('DOMContentLoaded', function () {
-  var input = document.getElementById('resume');
-  if (!input || !input.dataset.maxBytes) return;
-
-  input.addEventListener('change', function () {
-    var file = input.files[0];
-    var message = '';
-    if (file && !/\.(pdf|doc|docx)$/i.test(file.name)) {
-      message = 'Your resume must be a PDF or Word document.';
-    } else if (file && file.size > Number(input.dataset.maxBytes)) {
-      message = 'Your resume is too large (' + (file.size / 1048576).toFixed(1) + 'MB). The limit is '
-        + Math.round(input.dataset.maxBytes / 1048576) + 'MB.';
-    }
-    input.setCustomValidity(message);
-    if (message) input.reportValidity();
+  document.querySelectorAll('input[type="file"][data-max-bytes]').forEach(function (input) {
+    var extensions = (input.dataset.extensions || '').split(',');
+    input.addEventListener('change', function () {
+      var file = input.files[0];
+      var message = '';
+      if (file && extensions[0] && extensions.indexOf(file.name.split('.').pop().toLowerCase()) === -1) {
+        message = 'That type of file can\'t be uploaded here. Allowed: ' + extensions.join(', ').toUpperCase() + '.';
+      } else if (file && file.size > Number(input.dataset.maxBytes)) {
+        message = 'That file is too large (' + (file.size / 1048576).toFixed(1) + 'MB). The limit is '
+          + Math.round(input.dataset.maxBytes / 1048576) + 'MB.';
+      }
+      input.setCustomValidity(message);
+      if (message) input.reportValidity();
+    });
   });
 });
 

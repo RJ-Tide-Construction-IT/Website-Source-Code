@@ -76,33 +76,46 @@ function encryption_ready(): bool {
         && in_array('aes-256-gcm', openssl_get_cipher_methods(), true);
 }
 
-function encrypt_sensitive(array $data): string {
+// Encrypts any bytes (bank numbers here, uploaded files in documents.php).
+// Returns the 12-byte IV, 16-byte tag, then the ciphertext, as raw bytes.
+function encrypt_bytes(string $plain): string {
     $key = encryption_key();
     if ($key === null) {
         throw new RuntimeException('DASHBOARD_ENCRYPTION_KEY is missing or invalid');
     }
     $iv = random_bytes(12);
     $tag = '';
-    $ciphertext = openssl_encrypt(json_encode($data), 'aes-256-gcm', $key, OPENSSL_RAW_DATA, $iv, $tag);
+    $ciphertext = openssl_encrypt($plain, 'aes-256-gcm', $key, OPENSSL_RAW_DATA, $iv, $tag);
     if ($ciphertext === false) {
         throw new RuntimeException('Encryption failed');
     }
-    return 'v1:' . base64_encode($iv . $tag . $ciphertext);
+    return $iv . $tag . $ciphertext;
+}
+
+// The original bytes, or null if the key is missing or has changed since
+// they were encrypted (they then can't be read).
+function decrypt_bytes(string $raw): ?string {
+    $key = encryption_key();
+    if ($key === null || strlen($raw) < 28) {
+        return null;
+    }
+    $plain = openssl_decrypt(substr($raw, 28), 'aes-256-gcm', $key, OPENSSL_RAW_DATA, substr($raw, 0, 12), substr($raw, 12, 16));
+    return $plain === false ? null : $plain;
+}
+
+function encrypt_sensitive(array $data): string {
+    return 'v1:' . base64_encode(encrypt_bytes(json_encode($data)));
 }
 
 // The decrypted data, or null if there's nothing stored, the key is missing,
 // or the key has changed since it was stored (it then can't be read).
 function decrypt_sensitive(?string $blob): ?array {
-    $key = encryption_key();
-    if (!$blob || $key === null || !str_starts_with($blob, 'v1:')) {
+    if (!$blob || !str_starts_with($blob, 'v1:')) {
         return null;
     }
     $raw = base64_decode(substr($blob, 3), true);
-    if ($raw === false || strlen($raw) < 29) {
-        return null;
-    }
-    $plain = openssl_decrypt(substr($raw, 28), 'aes-256-gcm', $key, OPENSSL_RAW_DATA, substr($raw, 0, 12), substr($raw, 12, 16));
-    $data = $plain === false ? null : json_decode($plain, true);
+    $plain = $raw === false ? null : decrypt_bytes($raw);
+    $data = $plain === null ? null : json_decode($plain, true);
     return is_array($data) ? $data : null;
 }
 

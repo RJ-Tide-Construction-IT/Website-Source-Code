@@ -199,9 +199,9 @@ Either button only appears once its settings are filled in on the server.
 **Built so far:** sign-in, roles, **My Requests** and **Review Requests** (see
 below), the **Job Openings** page (check the positions you're hiring for, the
 Careers page updates immediately), the **Job Postings** page (Admins add and
-edit postings, see below), and the **Users** page (Admins change roles or turn off
-access). Document uploads are shown as "Coming soon" and come next. Timecards
-aren't part of the dashboard, they're handled by a separate service.
+edit postings, see below), **My Documents** and **Employee Documents** (see
+below), and the **Users** page (Admins change roles or turn off access).
+Timecards aren't part of the dashboard, they're handled by a separate service.
 
 **Employee requests:** every employee can send HR a **Time Off** request
 (Vacation/PTO, Sick, Unpaid, or Other with a note), an **Address Change**, or a
@@ -236,16 +236,38 @@ The originals' starting text lives in
 posting is saved or deleted on the dashboard, that saved version is used
 instead, so editing the file afterwards has no effect on that posting.
 
+**Documents:** on **My Documents**, every employee can upload a **Safety Form**,
+a **Certification** (with its expiration date), or a **Payroll Form** such as a
+W-4, as a PDF or a phone photo up to 10MB, and remove their own while they're
+still there. On **Employee Documents**:
+
+- the **Safety** role (and Admins) sees safety forms and certifications, plus a
+  list of certifications that have expired or expire within 30 days (also
+  flagged on the dashboard home page). When the employee uploads the renewed
+  certification under the same name, the old one drops off that list.
+- **HR** (and Admins) sees payroll forms, and marks each one **processed** once
+  it's entered into payroll: the file is then permanently deleted and the
+  employee is emailed.
+
+Because these can contain Social Security numbers, every file is stored
+encrypted with `DASHBOARD_ENCRYPTION_KEY` (uploads stay switched off until it's
+set), each time someone opens another person's payroll form it's recorded in
+"Recent activity", and emails only say that something was uploaded, never
+what's in it. The rules are in
+[includes/dashboard/documents.php](includes/dashboard/documents.php).
+
 **Roles** (set in `DASHBOARD_ROLES` in [includes/config.php](includes/config.php)):
 
 | Role | Can do |
 |---|---|
-| Employee | My Requests (time off, address, direct deposit) |
+| Employee | My Requests (time off, address, direct deposit), My Documents |
 | Office | + manage Job Openings |
-| HR | + Review Requests, including viewing direct deposit bank details |
-| Admin | everything: Job Openings, Job Postings, Review Requests, and the Users page |
+| Safety | + safety forms and certifications on Employee Documents |
+| HR | + Review Requests, including viewing direct deposit bank details, and payroll forms on Employee Documents |
+| Admin | everything: Job Openings, Job Postings, Review Requests, all Employee Documents, and the Users page |
 
-Only give the HR role to people who handle payroll, since it can see bank details.
+Only give the HR role to people who handle payroll, since it can see bank
+details and W-4s.
 
 To let Office add postings too, add `'edit_postings'` to the Office line in
 `DASHBOARD_ROLES`.
@@ -262,10 +284,12 @@ Google sign-in, `accounts.php` for creating accounts and approvals, `auth.php`
 for sessions, roles and form protection), job listing logic (openings,
 postings, the description format) in
 [includes/job-postings.php](includes/job-postings.php), and the server-written
-data (database, sign-in sessions, `job-openings.json`, `job-postings.json`) in
-`uploads/dashboard/`, which visitors can't reach, git ignores, and the deploy
-never overwrites. Back up that folder along with `uploads/resumes/`, since
-postings added or edited on the dashboard live only there.
+data (database, sign-in sessions, `job-openings.json`, `job-postings.json`,
+and the encrypted uploaded documents in `documents/`) in `uploads/dashboard/`,
+which visitors can't reach, git ignores, and the deploy never overwrites. Back
+up that folder along with `uploads/resumes/`, since postings added or edited on
+the dashboard and uploaded documents live only there (the backup is useless
+without the encryption key, so keep the key somewhere safe too).
 
 ### Employee Dashboard setup (one time)
 
@@ -313,7 +337,8 @@ so the sign-in page is never live half set up. See
 `MS_TENANT_ID`, `MS_CLIENT_ID`, `MS_CLIENT_SECRET` for Microsoft, and
 `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` for Google.
 
-Also add `DASHBOARD_ENCRYPTION_KEY`, which encrypts direct deposit bank numbers.
+Also add `DASHBOARD_ENCRYPTION_KEY`, which encrypts direct deposit bank numbers
+and uploaded documents.
 Make one by running this once on your computer and pasting the result between
 the quotes (treat it like a password; don't email it or put it anywhere else):
 
@@ -322,16 +347,17 @@ php -r "echo base64_encode(random_bytes(32)), PHP_EOL;"
 ```
 
 Keep the same key from then on: if it ever changes, direct deposit requests
-still waiting for review can't be read, so HR would reject them and the
-employees would send them again.
+still waiting for review and every uploaded document can't be read anymore, so
+HR would reject the requests and employees would have to upload their documents
+again.
 
 **4. Deploy:** merge the dashboard work into `master` and push. The deploy
 only runs for `master`.
 
 **5. Run the setup check:** open **https://rjtide.com/dashboard/setup-check.php**.
 It checks the PHP version (8.1+ needed), database support, write permission
-for `uploads/dashboard/`, the Microsoft and Google settings, and that the
-server can reach both, each with how to fix it. It shows pass/fail only, never secrets.
+for `uploads/dashboard/`, the Microsoft and Google settings, that the server
+can reach both, and that uploads up to 10MB are allowed, each with how to fix it. It shows pass/fail only, never secrets.
 If SQLite isn't available, either ask HostPapa to enable `pdo_sqlite`, or
 create a MySQL database in the control panel and fill in the three
 `DASHBOARD_DB_...` lines in `secrets.php`.

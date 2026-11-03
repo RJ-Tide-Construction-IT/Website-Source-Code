@@ -91,6 +91,28 @@ function db_migrations(bool $mysql): array {
                 created_at  VARCHAR(19)  NOT NULL
             )$engine",
         ],
+        3 => [
+            // Employee documents (see includes/dashboard/documents.php).
+            //   stored_name  the encrypted file in uploads/dashboard/documents/,
+            //                NULL once it's been erased (processed or removed)
+            //   expires_on   'Y-m-d', certifications only
+            "CREATE TABLE documents (
+                id          $id,
+                user_id     INT          NOT NULL,
+                type        VARCHAR(20)  NOT NULL,
+                title       VARCHAR(150) NOT NULL,
+                note        TEXT         NOT NULL,
+                file_name   VARCHAR(120) NOT NULL,
+                mime        VARCHAR(50)  NOT NULL,
+                size        INT          NOT NULL,
+                stored_name VARCHAR(32)  NULL,
+                expires_on  VARCHAR(10)  NULL,
+                status      VARCHAR(20)  NOT NULL DEFAULT 'received',
+                reviewed_by INT          NULL,
+                reviewed_at VARCHAR(19)  NULL,
+                created_at  VARCHAR(19)  NOT NULL
+            )$engine",
+        ],
     ];
 }
 

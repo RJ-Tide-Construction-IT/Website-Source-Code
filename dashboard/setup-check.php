@@ -149,6 +149,16 @@ if (setup_check($checks, 'Direct deposit: encryption is available (openssl, AES-
         'Add DASHBOARD_ENCRYPTION_KEY to includes/secrets.php on the server (see includes/secrets.example.php for the one-line command that makes one). Until then the direct deposit form is switched off.');
 }
 
+// Documents and resumes: the server's PHP upload limits cap how big a file
+// can be. The dashboard allows up to 10MB.
+$uploadLimit = min(array_map(function ($v) {
+    $n = (int) $v;
+    $unit = strtolower(substr(trim((string) $v), -1));
+    return $unit === 'g' ? $n * 1073741824 : ($unit === 'm' ? $n * 1048576 : ($unit === 'k' ? $n * 1024 : $n));
+}, [ini_get('upload_max_filesize'), ini_get('post_max_size')]));
+setup_check($checks, 'Uploads up to 10MB are allowed (currently ' . round($uploadLimit / 1048576, 1) . 'MB)', $uploadLimit >= 10 * 1048576,
+    'Ask the host to set upload_max_filesize and post_max_size to at least 12M. Until then, documents and resumes larger than the current limit can\'t be uploaded.');
+
 // Local testing is for your own computer (php -S) only. It can't switch on for
 // the live site anyway, but the setting shouldn't be in the server's secrets.php.
 if (PHP_SAPI !== 'cli-server') {
