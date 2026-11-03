@@ -30,6 +30,8 @@ exactly which file to open for common edits.
 | Change the mobile menu, slideshow, or image lightbox behavior | [assets/js/main.js](assets/js/main.js) |
 | Change what's in the top menu bar on every page | `$GLOBALS['MAIN_NAV']` inside [includes/config.php](includes/config.php) |
 | Change who receives contact form emails (by department) | the `CONTACT_EMAIL_...` settings in [includes/config.php](includes/config.php) |
+| Change who receives safety forms | `SAFETY_FORMS_EMAIL` in [includes/config.php](includes/config.php) |
+| Add a safety form, or change a form's questions | the `SAFETY_FORMS` list in [includes/dashboard/safety-forms.php](includes/dashboard/safety-forms.php) |
 | Change the very top or bottom of every page (logo bar, menu, footer links) | [includes/header.php](includes/header.php) / [includes/footer.php](includes/footer.php) |
 | Swap out a photo or logo | replace the file in [assets/img/](assets/img/) (keep the same filename so nothing breaks) |
 
@@ -199,8 +201,8 @@ Either button only appears once its settings are filled in on the server.
 **Built so far:** sign-in, roles, **My Requests** and **Review Requests** (see
 below), the **Job Openings** page (check the positions you're hiring for, the
 Careers page updates immediately), the **Job Postings** page (Admins add and
-edit postings, see below), **My Documents** and **Employee Documents** (see
-below), and the **Users** page (Admins change roles or turn off access).
+edit postings, see below), **Safety Forms**, **My Documents** and **Employee
+Documents** (see below), and the **Users** page (Admins change roles or turn off access).
 Timecards aren't part of the dashboard, they're handled by a separate service.
 
 **Employee requests:** every employee can send HR a **Time Off** request
@@ -235,6 +237,17 @@ The originals' starting text lives in
 [includes/default-job-postings.php](includes/default-job-postings.php). Once a
 posting is saved or deleted on the dashboard, that saved version is used
 instead, so editing the file afterwards has no effect on that posting.
+
+**Safety Forms:** every employee can fill out an **Incident Report**, a
+**Near-Miss Report**, or a **Toolbox Talk Sign-In** on the dashboard. Each one
+is emailed as a PDF (laid out with the RJ Tide logo and a "submitted
+electronically by" line) to `SAFETY_FORMS_EMAIL` in
+[includes/config.php](includes/config.php), currently tanderson@rjtide.com,
+with the answers also in the email itself. A copy is saved as a Safety Form
+under Employee Documents, and the employee sees it on My Documents. To add a
+form or change its questions, edit the `SAFETY_FORMS` list in
+[includes/dashboard/safety-forms.php](includes/dashboard/safety-forms.php):
+the page, the PDF, and the email all follow it.
 
 **Documents:** on **My Documents**, every employee can upload a **Safety Form**,
 a **Certification** (with its expiration date), or a **Payroll Form** such as a

@@ -147,23 +147,29 @@ function upload_document(array $user, array $post, array $file): array {
         return $errors;
     }
 
-    $mime   = (new finfo(FILEINFO_MIME_TYPE))->file($file['tmp_name']);
-    $stored = bin2hex(random_bytes(16));
-    dashboard_ensure_dir(DOCUMENTS_DIR);
-    if (file_put_contents(DOCUMENTS_DIR . '/' . $stored, encrypt_bytes((string) file_get_contents($file['tmp_name'])), LOCK_EX) === false) {
-        throw new RuntimeException('Could not save the uploaded document');
-    }
-
-    // The original name is only used to name the download, keep it tidy.
-    $name = preg_replace('/[^\p{L}\p{N} ._()-]/u', '', pathinfo((string) $file['name'], PATHINFO_FILENAME)) ?: 'document';
-    db()->prepare('INSERT INTO documents (user_id, type, title, note, file_name, mime, size, stored_name, expires_on, status, created_at)
-                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
-        ->execute([$user['id'], $type, $title, $note, preg_replace('/^(.{100}).+$/us', '$1', $name) . '.' . DOCUMENT_FILE_TYPES[$mime], $mime,
-                   (int) $file['size'], $stored, $type === 'certification' ? $expires : null, 'received', db_now()]);
-    $doc = find_document((int) db()->lastInsertId());
+    $mime = (new finfo(FILEINFO_MIME_TYPE))->file($file['tmp_name']);
+    $doc  = store_document($user, $type, $title, $note, (string) file_get_contents($file['tmp_name']), $mime,
+                           (string) $file['name'], $type === 'certification' ? $expires : null);
     audit((int) $user['id'], 'document_uploaded', $user['name'] . ' uploaded a ' . document_type_label($type) . ': ' . $title);
     notify_reviewers_of_document($doc);
     return [];
+}
+
+// Encrypts and saves a file (an upload, or a filled-out safety form's PDF) and
+// returns its documents row.
+function store_document(array $user, string $type, string $title, string $note, string $bytes, string $mime, string $fileName, ?string $expires): array {
+    $stored = bin2hex(random_bytes(16));
+    dashboard_ensure_dir(DOCUMENTS_DIR);
+    if (file_put_contents(DOCUMENTS_DIR . '/' . $stored, encrypt_bytes($bytes), LOCK_EX) === false) {
+        throw new RuntimeException('Could not save the document');
+    }
+    // The original name is only used to name the download, keep it tidy.
+    $name = preg_replace('/[^\p{L}\p{N} ._()-]/u', '', pathinfo($fileName, PATHINFO_FILENAME)) ?: 'document';
+    db()->prepare('INSERT INTO documents (user_id, type, title, note, file_name, mime, size, stored_name, expires_on, status, created_at)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
+        ->execute([$user['id'], $type, $title, $note, preg_replace('/^(.{100}).+$/us', '$1', $name) . '.' . DOCUMENT_FILE_TYPES[$mime], $mime,
+                   strlen($bytes), $stored, $expires, 'received', db_now()]);
+    return find_document((int) db()->lastInsertId());
 }
 
 // ---------- Opening, processing, removing ----------

@@ -78,18 +78,21 @@ function sign_in_user(string $method, string $accountId, string $email, string $
 // sign-in page, so you can see exactly what would have gone out.
 const LOCAL_TEST_EMAIL_LOG = DASHBOARD_DATA_DIR . '/local-test-emails.log';
 
-function dashboard_send_email(string $to, string $subject, string $body): void {
+// $attachments: optional files, each ['name' => 'file.pdf', 'content' => raw bytes].
+// Returns false only if sending was attempted and failed.
+function dashboard_send_email(string $to, string $subject, string $body, array $attachments = [], ?string $replyTo = null): bool {
     if (local_testing()) {
         dashboard_ensure_dir(DASHBOARD_DATA_DIR);
-        $entry = ['sent_at' => db_now(), 'to' => $to, 'subject' => $subject, 'body' => $body];
+        $entry = ['sent_at' => db_now(), 'to' => $to, 'subject' => $subject, 'body' => $body,
+                  'attachments' => array_column($attachments, 'name')];
         file_put_contents(LOCAL_TEST_EMAIL_LOG, json_encode($entry) . "\n", FILE_APPEND | LOCK_EX);
-        return;
+        return true;
     }
     if (!is_file(dirname(__DIR__) . '/secrets.php')) {
-        return;
+        return false;
     }
     require_once dirname(__DIR__) . '/mailer.php';
-    send_email($to, $subject, $body);
+    return send_email($to, $subject, $body, $replyTo, null, $attachments);
 }
 
 // Emails the Admins that someone new is waiting for approval. Best effort:

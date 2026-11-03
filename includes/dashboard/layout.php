@@ -24,6 +24,8 @@ function dashboard_pages(): array {
         ['label' => 'Review Requests', 'href' => '/dashboard/review.php', 'can' => 'handle_requests',
          'text'  => 'Approve time off, and process address and direct deposit changes.',
          'also'  => ['/dashboard/review-request.php']],
+        ['label' => 'Safety Forms', 'href' => '/dashboard/safety-form.php', 'can' => null,
+         'text'  => 'Fill out safety forms like incident and near-miss reports, sent straight to the safety team.'],
         ['label' => 'My Documents', 'href' => '/dashboard/documents.php', 'can' => null,
          'text'  => 'Upload safety forms, certifications, and payroll forms like a W-4.'],
         ['label' => 'Employee Documents', 'href' => '/dashboard/documents-review.php', 'can' => ['safety_documents', 'payroll_documents'],

@@ -18,6 +18,7 @@ define('CAREERS_EMAIL', 'tanderson@rjtide.com');            // every job applica
 define('CONTACT_EMAIL_DEFAULT', 'mcross@rjtide.com');       // contact form: no specific-department match
 define('CONTACT_EMAIL_AGRICULTURAL', 'shodgson@rjtide.com'); // contact form: "Agricultural" checked
 define('CONTACT_EMAIL_CONCRETE', 'khodgson@rjtide.com');     // contact form: "Concrete" checked
+define('SAFETY_FORMS_EMAIL', 'tanderson@rjtide.com');       // safety forms filled out on the Employee Dashboard
 
 // The live site's main address (no trailing slash). The Employee Dashboard
 // always uses this address, sending visitors from www.rjtide.com here first,
