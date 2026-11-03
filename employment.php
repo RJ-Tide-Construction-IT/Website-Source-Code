@@ -229,7 +229,7 @@ $errorMessages = [
             <h2 class="form-section-title">Employment History</h2>
             <p class="form-field-hint">Begin with the most recent. Optional if you're attaching a resume below.</p>
             <?php for ($i = 1; $i <= 3; $i++): ?>
-            <div style="padding:16px 0;<?= $i < 3 ? 'border-bottom:1px solid #eee;margin-bottom:8px;' : '' ?>">
+            <div class="employer-entry">
                 <div class="form-field">
                     <label for="employer<?= $i ?>_company">Employer #<?= $i ?>, Name &amp; Address of Company</label>
                     <input type="text" id="employer<?= $i ?>_company" name="employer[<?= $i ?>][company]">
@@ -281,7 +281,7 @@ $errorMessages = [
             </div>
 
             <div class="form-field">
-                <label class="checkbox-option" style="font-weight:600;">
+                <label class="checkbox-option checkbox-option--strong">
                     <input type="checkbox" name="certify" value="1" required>
                     I certify that the information provided in this application is complete and true
                     to the best of my knowledge, and I authorize RJ Tide Construction to verify it with

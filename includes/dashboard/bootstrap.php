@@ -5,6 +5,7 @@ require_once dirname(__DIR__) . '/config.php';
 if (is_file(dirname(__DIR__) . '/secrets.php')) {
     require_once dirname(__DIR__) . '/secrets.php';
 }
+require_once dirname(__DIR__) . '/http.php';
 require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/accounts.php';

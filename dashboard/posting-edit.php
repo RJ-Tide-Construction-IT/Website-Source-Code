@@ -5,7 +5,7 @@
 require_once dirname(__DIR__) . '/includes/dashboard/bootstrap.php';
 $user = require_capability('edit_postings');
 
-$postings = custom_job_postings();
+$postings = job_postings();
 $id = is_string($_GET['id'] ?? null) ? $_GET['id'] : null;
 if ($id !== null && !isset($postings[$id])) {
     flash('error', 'That posting wasn\'t found, it may have been deleted.');
@@ -48,7 +48,7 @@ if (form_submitted()) {
 
     if ($action === 'delete' && $existing) {
         unset($postings[$id]);
-        save_custom_job_postings($postings);
+        save_job_postings($postings);
         save_job_openings(array_diff($openTitles, [$existing['title']]), $user['name']);
         audit((int) $user['id'], 'posting_deleted', $user['name'] . ' deleted the job posting ' . $existing['title']);
         flash('success', 'Deleted the ' . $existing['title'] . ' posting.');
@@ -98,7 +98,7 @@ if (form_submitted()) {
             'updated_by'        => $user['name'],
             'updated_at'        => db_now(),
         ];
-        save_custom_job_postings($postings);
+        save_job_postings($postings);
 
         // Keep "hiring now" in step, including if the title changed.
         $open = array_diff($openTitles, [$existing['title'] ?? null]);
@@ -155,7 +155,8 @@ dashboard_page_start($existing ? 'Edit Job Posting' : 'Add a Job Posting', $user
         <label for="body">Job description *</label>
         <div class="dash-help">
             <strong>Formatting:</strong> start a line with <code># </code> for a section heading,
-            <code>- </code> for a bullet point. Leave a blank line between paragraphs.
+            <code>## </code> for a smaller heading inside a section, <code>- </code> for a bullet point.
+            Leave a blank line between paragraphs.
         </div>
         <textarea id="body" name="body" class="dash-posting-body" required><?= htmlspecialchars($form['body']) ?></textarea>
     </div>

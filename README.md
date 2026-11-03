@@ -18,7 +18,7 @@ exactly which file to open for common edits.
 | Change the Privacy Policy (e.g. after adding a new tracking or form service) | [privacy.php](privacy.php), and update its "Last updated" date at the top |
 | Change a service page (Concrete, Agricultural, Industrial Maintenance) | the matching file in [services/](services/) |
 | Add a new job posting | Employee Dashboard > **Job Postings** > **Add a job posting** (Admins), no code changes needed |
-| Edit one of the 11 original job postings | the matching file in [careers/](careers/) (these are built into the site; the list of them is `$GLOBALS['JOBS']` in [includes/config.php](includes/config.php)) |
+| Edit or delete any job posting | Employee Dashboard > **Job Postings** > **Edit** (Admins), no code changes needed |
 | Stop listing a position you're not hiring for right now | Sign in to the Employee Dashboard (`/dashboard/`) and use **Job Openings**, no code changes needed |
 | Give an employee more dashboard access, or turn off someone's access | Employee Dashboard > **Users** (Admins only) |
 | Change what each dashboard role can do, or who is always an Admin | `DASHBOARD_ROLES` / `DASHBOARD_ADMIN_EMAILS` in [includes/config.php](includes/config.php) |
@@ -100,14 +100,19 @@ includes/              shared pieces every page uses
   photo-sections.php       shared renderer for the photo galleries on the
                             Projects sub-pages, see "Editing the project
                             galleries" below
-  job-posting-header.php    shared hero + back-link/Apply-Now/job-meta markup
-  job-posting-footer.php    for every page in careers/, see below
+  default-job-postings.php the 11 original job postings, the starting point
+                            for the dashboard's Job Postings page, see
+                            "Employee Dashboard" below
+  job-posting-header.php    hero + back-link/Apply-Now/job-meta markup and
+  job-posting-footer.php    closing Apply button for a job posting page
   build-right-way.php      "We Build the Right Way" section, shared by the
                             homepage and About page
   associations.php         "Associations" logo strip, shared by the same two
   job-posting-standard-sections.php
                             the Work Authorization / EEO / Other Duties text
-                            shared by the full-format postings
+                            added to postings that have it switched on
+  http.php                 sends requests to outside services (Brevo email,
+                            Cloudflare, Microsoft/Google sign-in)
   application-pdf.php      builds the printable PDF of each job application
   pdf-logo.jpg              the logo used on that PDF
   vendor/, composer.json    the dompdf library that makes the PDF, see
@@ -117,10 +122,10 @@ includes/              shared pieces every page uses
 services/              one file per service page (Concrete, Agricultural,
                         Ag/Industrial Maintenance)
 
-careers/                one file per job posting. To stop listing one without
-                        deleting it, use the 'open' flag in the
-                        $GLOBALS['JOBS'] list in includes/config.php (see
-                        the quick-lookup table above)
+careers/                posting.php shows every job posting. The other files
+                        are the original postings' old addresses, kept so
+                        links already shared still work; each just redirects
+                        to posting.php
 
 projects/               supporting pages for the Projects section
                         (agricultural.php, concrete.php, special-projects.php)
@@ -193,8 +198,8 @@ Either button only appears once its settings are filled in on the server.
 
 **Built so far:** sign-in, roles, **My Requests** and **Review Requests** (see
 below), the **Job Openings** page (check the positions you're hiring for, the
-Careers page updates immediately), the **Job Postings** page (Admins add new
-postings, see below), and the **Users** page (Admins change roles or turn off
+Careers page updates immediately), the **Job Postings** page (Admins add and
+edit postings, see below), and the **Users** page (Admins change roles or turn off
 access). Document uploads are shown as "Coming soon" and come next. Timecards
 aren't part of the dashboard, they're handled by a separate service.
 
@@ -216,15 +221,20 @@ done, rejected, or cancelled. Until the key is set, the direct deposit form is
 switched off (time off and address changes still work). The logic for all
 three is in [includes/dashboard/requests.php](includes/dashboard/requests.php).
 
-**Job postings added on the dashboard** get their own page
-(`careers/posting.php?id=...`) that looks just like the built-in ones, and
-appear on Job Openings, the Careers page, and the application's position list
-like any other job. The description box uses a simple format: a line starting
-with `# ` is a heading, `- ` is a bullet point, and a blank line starts a new
-paragraph. **Preview** shows exactly how it will look before saving. Job titles
-must be unique (they're how the openings list and the application tell jobs
-apart). Changing a title keeps the same web address. The 11 original postings
-are built into the site and are still edited in [careers/](careers/).
+**Job postings**, including the 11 originals, are all added, edited, and
+deleted on the **Job Postings** page. Each has its own page
+(`careers/posting.php?id=...`) and appears on Job Openings, the Careers page,
+and the application's position list. The description box uses a simple format:
+a line starting with `# ` is a heading, `## ` a smaller heading inside a
+section, `- ` a bullet point, and a blank line starts a new paragraph.
+**Preview** shows exactly how it will look before saving. Job titles must be
+unique (they're how the openings list and the application tell jobs apart).
+Changing a title keeps the same web address.
+
+The originals' starting text lives in
+[includes/default-job-postings.php](includes/default-job-postings.php). Once a
+posting is saved or deleted on the dashboard, that saved version is used
+instead, so editing the file afterwards has no effect on that posting.
 
 **Roles** (set in `DASHBOARD_ROLES` in [includes/config.php](includes/config.php)):
 
@@ -250,12 +260,12 @@ engines and never load Google Analytics or Clarity.
 [includes/dashboard/](includes/dashboard/) (`sign-in.php` for Microsoft and
 Google sign-in, `accounts.php` for creating accounts and approvals, `auth.php`
 for sessions, roles and form protection), job listing logic (openings,
-added postings, the description format) in
+postings, the description format) in
 [includes/job-postings.php](includes/job-postings.php), and the server-written
 data (database, sign-in sessions, `job-openings.json`, `job-postings.json`) in
 `uploads/dashboard/`, which visitors can't reach, git ignores, and the deploy
 never overwrites. Back up that folder along with `uploads/resumes/`, since
-added postings live only there.
+postings added or edited on the dashboard live only there.
 
 ### Employee Dashboard setup (one time)
 

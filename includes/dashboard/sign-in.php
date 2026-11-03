@@ -190,31 +190,21 @@ function finish_sign_in(): array {
 
 // Trades the one-time code for the person's ID token, server-to-server.
 function exchange_code(array $service, string $code, string $verifier): string {
-    $ch = curl_init($service['token']);
-    curl_setopt_array($ch, [
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_POST           => true,
-        CURLOPT_POSTFIELDS     => http_build_query([
-            'client_id'     => $service['client_id'],
-            'client_secret' => $service['client_secret'],
-            'grant_type'    => 'authorization_code',
-            'code'          => $code,
-            'redirect_uri'  => sign_in_redirect_uri(),
-            'code_verifier' => $verifier,
-        ]),
-        CURLOPT_TIMEOUT        => 15,
-    ]);
-    $response = curl_exec($ch);
-    $status   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $curlErr  = curl_error($ch);
-    curl_close($ch);
+    $result = http_post($service['token'], [
+        'client_id'     => $service['client_id'],
+        'client_secret' => $service['client_secret'],
+        'grant_type'    => 'authorization_code',
+        'code'          => $code,
+        'redirect_uri'  => sign_in_redirect_uri(),
+        'code_verifier' => $verifier,
+    ], [], 15);
 
-    if ($curlErr) {
-        throw new RuntimeException('Token request failed: ' . $curlErr);
+    if ($result['error']) {
+        throw new RuntimeException('Token request failed: ' . $result['error']);
     }
-    $tokens = json_decode((string) $response, true);
-    if ($status !== 200 || !is_string($tokens['id_token'] ?? null)) {
-        throw new RuntimeException('Token request returned HTTP ' . $status . ': ' . substr((string) ($tokens['error_description'] ?? $response), 0, 300));
+    $tokens = json_decode($result['body'], true);
+    if ($result['status'] !== 200 || !is_string($tokens['id_token'] ?? null)) {
+        throw new RuntimeException('Token request returned HTTP ' . $result['status'] . ': ' . substr((string) ($tokens['error_description'] ?? $result['body']), 0, 300));
     }
     return $tokens['id_token'];
 }

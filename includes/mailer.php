@@ -3,6 +3,7 @@
 // can't be tested locally, depends on the host having sendmail configured, and
 // tends to land in spam with no SPF/DKIM alignment.
 require_once __DIR__ . '/secrets.php';
+require_once __DIR__ . '/http.php';
 
 /**
  * @param array $attachments Optional files, each ['name' => 'file.pdf', 'content' => raw file bytes].
@@ -30,29 +31,18 @@ function send_email(string $toEmail, string $subject, string $textBody, ?string 
         $payload['attachment'][] = ['name' => $file['name'], 'content' => base64_encode($file['content'])];
     }
 
-    $ch = curl_init('https://api.brevo.com/v3/smtp/email');
-    curl_setopt_array($ch, [
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_POST           => true,
-        CURLOPT_HTTPHEADER     => [
-            'api-key: ' . BREVO_API_KEY,
-            'Content-Type: application/json',
-            'Accept: application/json',
-        ],
-        CURLOPT_POSTFIELDS => json_encode($payload),
-        CURLOPT_TIMEOUT    => 10,
+    $result = http_post('https://api.brevo.com/v3/smtp/email', json_encode($payload), [
+        'api-key: ' . BREVO_API_KEY,
+        'Content-Type: application/json',
+        'Accept: application/json',
     ]);
-    $response = curl_exec($ch);
-    $status   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $curlErr  = curl_error($ch);
-    curl_close($ch);
 
-    if ($curlErr) {
-        error_log('send_email: cURL error, ' . $curlErr);
+    if ($result['error']) {
+        error_log('send_email: cURL error, ' . $result['error']);
         return false;
     }
-    if ($status < 200 || $status >= 300) {
-        error_log('send_email: Brevo returned HTTP ' . $status . ', ' . $response);
+    if ($result['status'] < 200 || $result['status'] >= 300) {
+        error_log('send_email: Brevo returned HTTP ' . $result['status'] . ', ' . $result['body']);
         return false;
     }
     return true;

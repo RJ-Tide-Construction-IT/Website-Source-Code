@@ -79,9 +79,14 @@ ul { padding-left: 1.25em; }
 .container--narrow { max-width: 800px; }
 
 /* Small shared helpers, used instead of repeating the same inline styles. */
+.container--wide { max-width: 1100px; }
 .text-center { text-align: center; }
+.spaced-top { margin-top: 2.5rem; }
 .heading--spaced { margin-top: 3rem; }
 .muted-note { text-align: center; color: var(--color-text-muted); }
+.muted-note--intro { max-width: 640px; margin: 0 auto 1rem; }
+.list-narrow { max-width: 700px; margin: 0 auto; }
+.about-logo { max-width: 320px; width: 100%; margin: 0 auto 2rem; }
 /* Larger centered intro paragraph under a section title. */
 .lead { max-width: 760px; margin: 0 auto 2rem; text-align: center; font-size: 1.15rem; }
 .lead--tight { margin-bottom: 1.5rem; }
@@ -629,6 +634,10 @@ section { padding: 64px 0; }
 .checkbox-option input { width: auto; }
 .form-row { display: flex; flex-wrap: wrap; gap: 0 20px; }
 .form-row .form-field { flex: 1; min-width: 160px; }
+/* The three Employer blocks on the job application, with a divider between. */
+.employer-entry { padding: 16px 0; }
+.employer-entry + .employer-entry { border-top: 1px solid #eee; margin-top: 8px; }
+.form-field .checkbox-option--strong { font-weight: 600; }
 .form-section-title { margin: 2.5rem 0 1rem; padding-bottom: 8px; border-bottom: 2px solid var(--color-navy); }
 .form-section-title:first-of-type { margin-top: 0; }
 .form-field-hint { font-size: 0.85rem; color: var(--color-text-muted); margin-top: -4px; margin-bottom: 8px; }

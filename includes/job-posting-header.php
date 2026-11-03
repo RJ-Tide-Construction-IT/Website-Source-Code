@@ -1,7 +1,6 @@
 <?php
-// Shared opening markup for career posting pages (careers/*.php), every
-// posting repeats the same hero, back-link/Apply-Now row, and job-meta box,
-// so it lives here once instead of copy-pasted into all nine files.
+// Opening markup for a job posting page (used by careers/posting.php): the
+// hero, back-link/Apply-Now row, and job-meta box.
 //
 // Expects, set by the calling page before requiring this file:
 //   $pageTitle (required), used for both the browser title (via header.php)
@@ -9,8 +8,7 @@
 //               job title.
 //   $jobMeta   (optional), ordered ['Label' => 'Value', ...] shown as the
 //               salary/reports-to row under the Apply Now button. Omit it
-//               (or leave it empty) to skip that row entirely, the Project
-//               Manager / Estimator posting has none.
+//               (or leave it empty) to skip that row entirely.
 //   $pageDescription (optional), a per-posting meta description. Omit it to
 //               get a sensible generated default instead of every posting
 //               falling back to the generic site-wide description.

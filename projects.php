@@ -28,8 +28,8 @@ $markets = [
 <?php page_hero('Project History', null, '<p class="page-hero__subtitle">Building Siouxland since 2010</p>'); ?>
 
 <section>
-    <div class="container" style="max-width:1100px;">
-        <p style="text-align:center;color:var(--color-text-muted);max-width:640px;margin:0 auto 1rem;">
+    <div class="container container--wide">
+        <p class="muted-note muted-note--intro">
             A look at our Concrete, Agricultural, and Specialty Concrete work across the Midwest.
         </p>
         <div class="market-grid">

@@ -1,8 +1,8 @@
 <?php
 // Everything about job listings, loaded by includes/config.php:
-//   - the full job list: the built-in postings ($GLOBALS['JOBS'] in config.php,
-//     each a hand-written page in careers/) plus postings added on the Employee
-//     Dashboard's Job Postings page (shown by careers/posting.php)
+//   - every job posting: the 11 originals (includes/default-job-postings.php)
+//     plus any added on the Employee Dashboard's Job Postings page, all edited
+//     there and shown publicly by careers/posting.php
 //   - which jobs are open (the dashboard's Job Openings page)
 // Both are saved as small files in uploads/dashboard/, not the database, so the
 // public Careers page keeps working even if the dashboard's database doesn't.
@@ -27,27 +27,45 @@ function read_json_file(string $file): ?array {
     return is_array($data) ? $data : null;
 }
 
-// ---------- Postings added on the dashboard ----------
+// ---------- Job postings ----------
 
-// Keyed by id (the posting's web address, careers/posting.php?id=...). Each:
+// The original postings, before any dashboard edits. Each also has 'open',
+// whether it's listed as hiring until someone changes that on Job Openings.
+function default_job_postings(): array {
+    static $defaults = null;
+    return $defaults ?? ($defaults = require __DIR__ . '/default-job-postings.php');
+}
+
+// Every posting, keyed by id (its web address, careers/posting.php?id=...). Each:
 //   title, salary, classification, reports_to   (all but title may be '')
 //   body               description in the simple format, see render_posting_body()
 //   standard_sections  true to add the shared EEO / Work Authorization / Other Duties text
-//   updated_by, updated_at (UTC)
-function custom_job_postings(): array {
-    $postings = read_json_file(JOB_POSTINGS_FILE)['postings'] ?? [];
-    return is_array($postings) ? $postings : [];
+//   updated_by, updated_at (UTC)   only once it's been saved on the dashboard
+// The saved file holds every posting saved on the dashboard, plus 'deleted', the
+// ids of original postings that were deleted there. A saved posting replaces
+// the original with the same id.
+function job_postings(): array {
+    $saved    = read_json_file(JOB_POSTINGS_FILE) ?? [];
+    $postings = is_array($saved['postings'] ?? null) ? $saved['postings'] : [];
+    $deleted  = is_array($saved['deleted'] ?? null) ? $saved['deleted'] : [];
+    $defaults = array_diff_key(default_job_postings(), array_flip($deleted));
+    return array_replace($defaults, $postings);
 }
 
-function save_custom_job_postings(array $postings): void {
-    write_json_file(JOB_POSTINGS_FILE, ['postings' => $postings]);
+// Saves the full set of postings (job_postings() with changes made). Any
+// original posting missing from $postings is remembered as deleted.
+function save_job_postings(array $postings): void {
+    write_json_file(JOB_POSTINGS_FILE, [
+        'postings' => $postings,
+        'deleted'  => array_values(array_diff(array_keys(default_job_postings()), array_keys($postings))),
+    ]);
 }
 
 // A web-address-friendly id from a title, e.g. "Shop Welder II" => "shop-welder-ii",
 // with -2, -3... added if it's already taken.
 function new_posting_id(string $title): string {
     $base = trim(preg_replace('/[^a-z0-9]+/', '-', strtolower($title)), '-') ?: 'job';
-    $taken = array_keys(custom_job_postings());
+    $taken = array_merge(array_keys(job_postings()), array_keys(default_job_postings()));
     $id = $base;
     for ($n = 2; in_array($id, $taken, true); $n++) {
         $id = "$base-$n";
@@ -55,17 +73,17 @@ function new_posting_id(string $title): string {
     return $id;
 }
 
-// Every job, built-in and dashboard-added, as ['title', 'href', 'open'] like
-// $GLOBALS['JOBS']. Dashboard-added ones also have 'posting_id', and start out
-// not open until someone marks them as hiring.
+// Every job as ['title', 'href', 'open'], where 'open' is its default (the
+// original postings' 'open' setting; added postings start out not open).
+// jobs_with_status() applies what's been saved on Job Openings.
 function all_jobs(): array {
-    $jobs = $GLOBALS['JOBS'];
-    foreach (custom_job_postings() as $id => $posting) {
+    $defaults = default_job_postings();
+    $jobs = [];
+    foreach (job_postings() as $id => $posting) {
         $jobs[] = [
-            'title'      => $posting['title'],
-            'href'       => '/careers/posting.php?id=' . rawurlencode($id),
-            'open'       => false,
-            'posting_id' => $id,
+            'title' => $posting['title'],
+            'href'  => '/careers/posting.php?id=' . rawurlencode((string) $id),
+            'open'  => !empty($defaults[$id]['open']),
         ];
     }
     return $jobs;
@@ -92,7 +110,7 @@ function save_job_openings(array $openTitles, string $updatedBy): void {
 
 // all_jobs() with each job's 'open' value as last saved on the dashboard.
 // Uses each job's default for any job the dashboard hasn't saved a choice for
-// yet (nothing saved so far, or a job added to config.php since), and if the
+// yet (nothing saved so far, or an original posting added since), and if the
 // saved file can't be read, so the public Careers page never breaks over it.
 function jobs_with_status(): array {
     $saved = saved_job_openings();
@@ -110,7 +128,7 @@ function open_job_titles(): array {
     return array_column(array_filter(jobs_with_status(), fn($job) => $job['open']), 'title');
 }
 
-// The salary / classification / reports-to row for a dashboard-added posting,
+// The salary / classification / reports-to row for a posting,
 // in the $jobMeta format includes/job-posting-header.php expects. Blank ones are left out.
 function posting_job_meta(array $posting): array {
     return array_filter([
@@ -125,6 +143,7 @@ function posting_job_meta(array $posting): array {
 // Turns a posting description into HTML, using a deliberately simple format
 // anyone can type in a plain text box:
 //   # Heading          a line starting with "# " is a section heading
+//   ## Subheading      "## " is a smaller heading within a section
 //   - Bullet point     lines starting with "- " (or "* ") make a bulleted list
 //   Plain text         everything else is a paragraph; a blank line starts a new one
 // All text is escaped, so nothing typed here can add its own HTML or scripts.
@@ -147,9 +166,10 @@ function render_posting_body(string $body): string {
         $line = trim($line);
         if ($line === '') {
             $flush();
-        } elseif (preg_match('/^#\s+(.+)$/u', $line, $m)) {
+        } elseif (preg_match('/^(#{1,2})\s+(.+)$/u', $line, $m)) {
             $flush();
-            $html .= '<h3>' . htmlspecialchars($m[1]) . "</h3>\n";
+            $tag = $m[1] === '#' ? 'h3' : 'h4';
+            $html .= "<$tag>" . htmlspecialchars($m[2]) . "</$tag>\n";
         } elseif (preg_match('/^[-*]\s+(.+)$/u', $line, $m)) {
             if ($paragraph) {
                 $flush();

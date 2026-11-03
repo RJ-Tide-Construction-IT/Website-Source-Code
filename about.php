@@ -8,9 +8,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
 <section>
     <div class="container container--narrow">
-        <div style="margin-bottom:2rem;">
-            <img src="<?= BASE_URL ?>/assets/img/logo.png" alt="<?= htmlspecialchars(SITE_NAME) ?>" style="max-width:320px;width:100%;height:auto;margin:0 auto;">
-        </div>
+        <img src="<?= BASE_URL ?>/assets/img/logo.png" alt="<?= htmlspecialchars(SITE_NAME) ?>" class="about-logo">
 
         <p>RJ Tide Construction was founded in 2010 as a full-service concrete contractor. The founding
            partners all came from general contracting and design-build backgrounds and had grown tired
@@ -30,7 +28,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
         <p>Contact RJ Tide today to see how we can help you!</p>
 
-        <div style="text-align:center;margin-top:2.5rem;">
+        <div class="text-center spaced-top">
             <a href="<?= BASE_URL ?>/contact.php" class="btn">Get In Touch</a>
         </div>
     </div>

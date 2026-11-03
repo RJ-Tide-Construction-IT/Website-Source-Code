@@ -1,11 +1,10 @@
 <?php
-// Shows a job posting that was added on the Employee Dashboard's Job Postings
-// page (careers/posting.php?id=...). The built-in postings are their own
-// pages in this folder; this one page handles every dashboard-added posting.
+// Shows any job posting (careers/posting.php?id=...), the originals and ones
+// added later, all edited on the Employee Dashboard's Job Postings page.
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/config.php';
 
 $id = is_string($_GET['id'] ?? null) ? $_GET['id'] : '';
-$posting = custom_job_postings()[$id] ?? null;
+$posting = job_postings()[$id] ?? null;
 
 if (!$posting) {
     http_response_code(404);

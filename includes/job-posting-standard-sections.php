@@ -1,8 +1,7 @@
         <?php
-        // Standard closing sections shared word-for-word by the full-format
-        // career postings (careers/*.php). Edit the wording here once and every
-        // posting that includes this file picks it up. A posting opts in by
-        // requiring this file just before job-posting-footer.php.
+        // Standard closing sections shown at the end of any job posting with
+        // "Add the standard ... sections" checked on the dashboard. Edit the
+        // wording here once and every such posting picks it up.
         ?>
         <h3>Work Authorization / Security Clearance (if applicable)</h3>
         <p>As a condition of employment and in compliance with the law, each new employee must complete an

@@ -1,8 +1,7 @@
 <?php
 // Job Openings: check the positions currently being hired for. Checked jobs
 // are listed on the public Careers page and in the job application's Position
-// dropdown. The jobs are the built-in postings ($GLOBALS['JOBS'] in
-// includes/config.php) plus any added on the Job Postings page.
+// dropdown. The jobs are everything on the Job Postings page.
 require_once dirname(__DIR__) . '/includes/dashboard/bootstrap.php';
 $user = require_capability('manage_jobs');
 

@@ -129,27 +129,6 @@ $GLOBALS['APPLICATION_PHYSICAL_REQUIREMENTS'] = [
     'Ability to work at 100 ft or higher',
 ];
 
-// Every job posting. Shared by careers.php (which lists the open ones) and
-// employment.php's Position dropdown, so the two can't drift out of sync.
-// Which jobs are open is normally switched on the Employee Dashboard's
-// "Job Openings" page (dashboard/jobs.php). The 'open' values below are only
-// the starting point, used until someone saves that page for the first time.
-// A closed job's posting page still works at the same address in case anyone
-// has the link saved, it just isn't listed on careers.php.
-$GLOBALS['JOBS'] = [
-    ['title' => 'Craftsman 1',                 'href' => '/careers/craftsman-1.php',               'open' => true],
-    ['title' => 'Craftsman 2',                 'href' => '/careers/craftsman-2.php',               'open' => true],
-    ['title' => 'Craftsman 3',                 'href' => '/careers/craftsman-3.php',               'open' => true],
-    ['title' => 'Concrete Foreman',            'href' => '/careers/foreman.php',                   'open' => false],
-    ['title' => 'Concrete Superintendent',     'href' => '/careers/concrete-superintendent.php',    'open' => false],
-    ['title' => 'Millwright Superintendent',   'href' => '/careers/millwright-superintendent.php',  'open' => false],
-    ['title' => 'Millwright Foreman',          'href' => '/careers/millwright-foreman.php',         'open' => false],
-    ['title' => 'Project Manager / Estimator', 'href' => '/careers/project-manager-estimator.php',  'open' => false],
-    ['title' => 'Project Engineer',            'href' => '/careers/project-engineer.php',           'open' => false],
-    ['title' => 'Millwright 1',                'href' => '/careers/millwright-1.php',               'open' => true],
-    ['title' => 'Millwright 2',                'href' => '/careers/millwright-2.php',               'open' => true],
-];
-
 // ---------- Employee Dashboard ----------
 
 // Server-written dashboard files (database, sign-in sessions, job openings and

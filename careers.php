@@ -3,9 +3,9 @@ $pageTitle = 'Careers';
 $pageDescription = 'Join the RJ Tide family. Actively accepting applications for craftsman, millwright, and leadership positions.';
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
-// The job list lives in includes/config.php ($GLOBALS['JOBS']), shared with
-// employment.php's Position dropdown. Which jobs are open is switched on the
-// Employee Dashboard's Job Openings page.
+// The job list (includes/job-postings.php) is shared with employment.php's
+// Position dropdown. Postings are edited on the Employee Dashboard's Job
+// Postings page, and which are open is switched on its Job Openings page.
 $jobs = jobs_with_status();
 ?>
 
@@ -32,7 +32,7 @@ $jobs = jobs_with_status();
 <section class="section--muted">
     <div class="container">
         <h2 class="section-title">RJ Tide Employees Enjoy the Following Benefits:</h2>
-        <ul style="max-width:700px;margin:0 auto;">
+        <ul class="list-narrow">
             <li>Competitive Pay &amp; Benefits &ndash; Fair compensation to attract and keep top talent.</li>
             <li>ESOP (Employee Stock Ownership Plan) &ndash; Every employee is an owner; success is shared.</li>
             <li>Health Insurance &amp; Life Insurance &ndash; Coverage and peace of mind for employees and families.</li>
@@ -42,7 +42,7 @@ $jobs = jobs_with_status();
             <li>Safety First &ndash; Incentives and programs to ensure everyone makes it home safe.</li>
             <li>Employee Referral Bonuses &ndash; Rewarding team members for bringing in top talent.</li>
         </ul>
-        <p style="text-align:center;margin-top:2.5rem;"><strong>RJ Tide is an Equal Opportunity Employer. Women and Minorities are encouraged to apply.</strong></p>
+        <p class="text-center spaced-top"><strong>RJ Tide is an Equal Opportunity Employer. Women and Minorities are encouraged to apply.</strong></p>
         <div class="text-center">
             <a href="<?= BASE_URL ?>/employment.php" class="btn">Apply Here</a>
         </div>

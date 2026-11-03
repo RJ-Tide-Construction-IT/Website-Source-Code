@@ -9,6 +9,7 @@
 if (is_file(__DIR__ . '/secrets.php')) {
     require_once __DIR__ . '/secrets.php';
 }
+require_once __DIR__ . '/http.php';
 
 function turnstile_enabled(): bool {
     return defined('TURNSTILE_SITE_KEY') && TURNSTILE_SITE_KEY !== ''
@@ -38,23 +39,14 @@ function turnstile_passed(): bool {
     if ($token === '') {
         return false;
     }
-    $ch = curl_init('https://challenges.cloudflare.com/turnstile/v0/siteverify');
-    curl_setopt_array($ch, [
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_POST           => true,
-        CURLOPT_POSTFIELDS     => http_build_query([
-            'secret'   => TURNSTILE_SECRET_KEY,
-            'response' => $token,
-            'remoteip' => $_SERVER['REMOTE_ADDR'] ?? '',
-        ]),
-        CURLOPT_TIMEOUT        => 10,
+    $result = http_post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
+        'secret'   => TURNSTILE_SECRET_KEY,
+        'response' => $token,
+        'remoteip' => $_SERVER['REMOTE_ADDR'] ?? '',
     ]);
-    $response = curl_exec($ch);
-    curl_close($ch);
-    if ($response === false) {
-        error_log('turnstile_passed: could not reach Cloudflare');
+    if ($result['error']) {
+        error_log('turnstile_passed: could not reach Cloudflare, ' . $result['error']);
         return false;
     }
-    $result = json_decode($response, true);
-    return is_array($result) && !empty($result['success']);
+    return !empty(json_decode($result['body'], true)['success']);
 }
