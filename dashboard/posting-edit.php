@@ -2,6 +2,7 @@
 // Add or edit a job posting (posting-edit.php for a new one,
 // posting-edit.php?id=... to edit). Postings are stored by
 // includes/job-postings.php and shown publicly by careers/posting.php.
+// Hiring changes are logged like on the Job Postings list.
 require_once dirname(__DIR__) . '/includes/dashboard/bootstrap.php';
 $user = require_capability('edit_postings');
 
@@ -50,6 +51,9 @@ if (form_submitted()) {
         unset($postings[$id]);
         save_job_postings($postings);
         save_job_openings(array_diff($openTitles, [$existing['title']]), $user['name']);
+        if (in_array($existing['title'], $openTitles, true)) {
+            audit((int) $user['id'], 'job_openings', $user['name'] . ' closed ' . $existing['title']);
+        }
         audit((int) $user['id'], 'posting_deleted', $user['name'] . ' deleted the job posting ' . $existing['title']);
         flash('success', 'Deleted the ' . $existing['title'] . ' posting.');
         redirect(BASE_URL . '/dashboard/postings.php');
@@ -106,6 +110,12 @@ if (form_submitted()) {
             $open[] = $form['title'];
         }
         save_job_openings($open, $user['name']);
+
+        // Log hiring changes the same way the Job Postings list does.
+        $wasOpen = $existing && in_array($existing['title'], $openTitles, true);
+        if ($wasOpen !== $form['open']) {
+            audit((int) $user['id'], 'job_openings', $user['name'] . ($form['open'] ? ' opened ' . $form['title'] : ' closed ' . $existing['title']));
+        }
 
         if ($existing) {
             $renamed = $existing['title'] !== $form['title'] ? ' (renamed from ' . $existing['title'] . ')' : '';

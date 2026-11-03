@@ -4,8 +4,8 @@ $pageDescription = 'Join the RJ Tide family. Actively accepting applications for
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
 // The job list (includes/job-postings.php) is shared with employment.php's
-// Position dropdown. Postings are edited on the Employee Dashboard's Job
-// Postings page, and which are open is switched on its Job Openings page.
+// Position dropdown. Postings are edited, and switched between hiring and not
+// hiring, on the Employee Dashboard's Job Postings page.
 $jobs = jobs_with_status();
 ?>
 

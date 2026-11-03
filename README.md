@@ -19,7 +19,7 @@ exactly which file to open for common edits.
 | Change a service page (Concrete, Agricultural, Industrial Maintenance) | the matching file in [services/](services/) |
 | Add a new job posting | Employee Dashboard > **Job Postings** > **Add a job posting** (Admins), no code changes needed |
 | Edit or delete any job posting | Employee Dashboard > **Job Postings** > **Edit** (Admins), no code changes needed |
-| Stop listing a position you're not hiring for right now | Sign in to the Employee Dashboard (`/dashboard/`) and use **Job Openings**, no code changes needed |
+| Stop listing a position you're not hiring for right now | Sign in to the Employee Dashboard (`/dashboard/`) open **Job Postings**, and click **Stop hiring** on that position (Office and Admins), no code changes needed |
 | Give an employee more dashboard access, or turn off someone's access | Employee Dashboard > **Users** (Admins only) |
 | Change what each dashboard role can do, or who is always an Admin | `DASHBOARD_ROLES` / `DASHBOARD_ADMIN_EMAILS` in [includes/config.php](includes/config.php) |
 | Change the EEO / Work Authorization / Other Duties wording on job postings | [includes/job-posting-standard-sections.php](includes/job-posting-standard-sections.php) (shared by every posting that shows them) |
@@ -202,9 +202,9 @@ Login" in the footer) in one of two ways:
 Either button only appears once its settings are filled in on the server.
 
 **Built so far:** sign-in, roles, **My Requests** and **Review Requests** (see
-below), the **Job Openings** page (check the positions you're hiring for, the
-Careers page updates immediately), the **Job Postings** page (Admins add and
-edit postings, see below), **Safety Forms**, **My Documents** and **Employee
+below), the **Job Postings** page (Office and Admins switch each position between
+hiring and not hiring with one click, the Careers page updates immediately;
+Admins also add, edit, and delete postings, see below), **Safety Forms**, **My Documents** and **Employee
 Documents** (see below), and the **Users** page (Admins change roles or turn off access).
 Timecards aren't part of the dashboard, they're handled by a separate service.
 
@@ -228,7 +228,7 @@ three is in [includes/dashboard/requests.php](includes/dashboard/requests.php).
 
 **Job postings**, including the 11 originals, are all added, edited, and
 deleted on the **Job Postings** page. Each has its own page
-(`careers/posting.php?id=...`) and appears on Job Openings, the Careers page,
+(`careers/posting.php?id=...`) and, while marked **Hiring**, appears on the Careers page
 and the application's position list. The description box uses a simple format:
 a line starting with `# ` is a heading, `## ` a smaller heading inside a
 section, `- ` a bullet point, and a blank line starts a new paragraph.
@@ -277,15 +277,16 @@ what's in it. The rules are in
 | Role | Can do |
 |---|---|
 | Employee | My Requests (time off, address, direct deposit), My Documents |
-| Office | + manage Job Openings |
+| Office | + Job Postings: switch positions between hiring and not hiring |
 | Safety | + safety forms and certifications on Employee Documents |
 | HR | + Review Requests, including viewing direct deposit bank details, and payroll forms on Employee Documents |
-| Admin | everything: Job Openings, Job Postings, Review Requests, all Employee Documents, and the Users page |
+| Admin | everything: Job Postings (including adding, editing, and deleting postings), Review Requests, all Employee Documents, and the Users page |
 
 Only give the HR role to people who handle payroll, since it can see bank
 details and W-4s.
 
-To let Office add postings too, add `'edit_postings'` to the Office line in
+Office sees the Job Postings list and the hiring buttons only. To let Office
+add, edit, and delete postings too, add `'edit_postings'` to the Office line in
 `DASHBOARD_ROLES`.
 
 Everyone starts as an Employee the first time they sign in. The Microsoft 365
