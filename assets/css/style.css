@@ -707,7 +707,7 @@ a.dash-tile:hover { border-color: var(--color-red); text-decoration: none; }
 .dash-signin__option .dash-meta { margin: 10px 0 0; }
 .dash-notice { background: #fff6e0; color: #6b4a00; }
 .dash-subheading--first { margin-top: 0; }
-.dash-actions form { display: flex; flex-wrap: wrap; gap: 8px; }
+.dash-actions form { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .dash-meta { color: var(--color-text-muted); font-size: 0.9rem; }
 .dash-subheading { margin-top: 2.5rem; font-size: 1.3rem; }
 .dash-role-list, .dash-activity { padding-left: 1.25em; }

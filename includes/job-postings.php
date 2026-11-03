@@ -3,7 +3,7 @@
 //   - every job posting: the 11 originals (includes/default-job-postings.php)
 //     plus any added on the Employee Dashboard's Job Postings page, all edited
 //     there and shown publicly by careers/posting.php
-//   - which jobs are open (the dashboard's Job Openings page)
+//   - which jobs are open (switched on the same Job Postings page)
 // Both are saved as small files in uploads/dashboard/, not the database, so the
 // public Careers page keeps working even if the dashboard's database doesn't.
 
@@ -30,7 +30,7 @@ function read_json_file(string $file): ?array {
 // ---------- Job postings ----------
 
 // The original postings, before any dashboard edits. Each also has 'open',
-// whether it's listed as hiring until someone changes that on Job Openings.
+// whether it's listed as hiring until someone changes that on Job Postings.
 function default_job_postings(): array {
     static $defaults = null;
     return $defaults ?? ($defaults = require __DIR__ . '/default-job-postings.php');
@@ -75,7 +75,7 @@ function new_posting_id(string $title): string {
 
 // Every job as ['title', 'href', 'open'], where 'open' is its default (the
 // original postings' 'open' setting; added postings start out not open).
-// jobs_with_status() applies what's been saved on Job Openings.
+// jobs_with_status() applies what's been saved on Job Postings.
 function all_jobs(): array {
     $defaults = default_job_postings();
     $jobs = [];
@@ -106,6 +106,18 @@ function save_job_openings(array $openTitles, string $updatedBy): void {
         'updated_by' => $updatedBy,
         'updated_at' => gmdate('Y-m-d H:i:s'),
     ]);
+}
+
+// Lists or unlists one job. Re-reads the saved list first, so two people
+// changing different jobs at the same time don't undo each other. Returns
+// false, and saves nothing, if the job was already that way.
+function set_job_open(string $title, bool $open, string $updatedBy): bool {
+    $titles = open_job_titles();
+    if (in_array($title, $titles, true) === $open) {
+        return false;
+    }
+    save_job_openings($open ? array_merge($titles, [$title]) : array_diff($titles, [$title]), $updatedBy);
+    return true;
 }
 
 // all_jobs() with each job's 'open' value as last saved on the dashboard.

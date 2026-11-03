@@ -7,7 +7,7 @@
 //
 // Each id is the posting's web address, careers/posting.php?id=..., and matches
 // the old careers/<id>.php page, which now just redirects there.
-// 'open' is whether it's listed as hiring before anyone changes it on Job Openings.
+// 'open' is whether it's listed as hiring before anyone changes it on Job Postings.
 // The description uses the same format as the dashboard's text box, see
 // render_posting_body() in includes/job-postings.php.
 return [
