@@ -7,8 +7,7 @@
 // tiles, so the two always agree on who can see what.
 //   'can'  permission needed (from DASHBOARD_ROLES in config.php), or a list of
 //          them (any one is enough), null = everyone signed in
-//   'href' leave null for a page that isn't built yet: it shows as a
-//          "Coming soon" tile on the home page and gets no tab
+//   'href' the page's address
 //   'text' the home page tile's description (no 'text' = no tile, e.g. Home itself)
 //   'also' (optional) other pages that belong to this tab, so it stays highlighted there
 function dashboard_pages(): array {
@@ -58,9 +57,6 @@ function dashboard_page_start(string $title, ?array $user): void {
         $current = strtok($_SERVER['REQUEST_URI'] ?? '', '?');
         echo '<div class="dash-bar"><nav class="dash-tabs" aria-label="Dashboard">';
         foreach (dashboard_pages_for($user) as $page) {
-            if ($page['href'] === null) {
-                continue; // not built yet
-            }
             $url = BASE_URL . $page['href'];
             $active = $current === $url
                 || ($page['href'] === '/dashboard/' && $current === BASE_URL . '/dashboard/index.php')
@@ -83,6 +79,15 @@ function dashboard_page_start(string $title, ?array $user): void {
 function dashboard_page_end(): void {
     echo '</div></section>';
     require $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php';
+}
+
+// The list of problems above a form that didn't save. Prints nothing when there are none.
+function form_errors(array $errors): void {
+    if ($errors) {
+        echo '<div class="form-note form-note--error">'
+           . implode('', array_map(fn($error) => '<div>' . htmlspecialchars($error) . '</div>', $errors))
+           . '</div>';
+    }
 }
 
 // Stored timestamps are UTC, shown in the office's time zone.

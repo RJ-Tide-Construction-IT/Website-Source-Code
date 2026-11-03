@@ -26,6 +26,6 @@ switch (sign_in_user($who['method'], $who['account_id'], $who['email'], $who['na
         notify_admins_of_new_sign_in($who['name'], $who['email']);
         // fall through
     case 'awaiting_approval':
-        flash('success', 'Thanks, ' . (strtok($who['name'], ' ') ?: $who['name']) . '. An Admin needs to approve your account before you can use the dashboard. Try signing in again once they have.');
+        flash('success', 'Thanks, ' . first_name($who['name']) . '. An Admin needs to approve your account before you can use the dashboard. Try signing in again once they have.');
         redirect($login);
 }

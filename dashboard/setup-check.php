@@ -33,7 +33,7 @@ setup_check($checks, 'The site can save files in uploads/dashboard/', $writable,
     'Give the website permission to write to the uploads folder (the same permission resume uploads need).');
 
 // Database
-$useMysql = defined('DASHBOARD_DB_DSN') && DASHBOARD_DB_DSN !== '';
+$useMysql = setting('DASHBOARD_DB_DSN') !== '';
 if ($useMysql) {
     if (setup_check($checks, 'MySQL support (pdo_mysql)', extension_loaded('pdo_mysql'), 'Ask the host to enable the pdo_mysql PHP extension.')) {
         $connected = false;
@@ -55,12 +55,9 @@ if ($useMysql) {
 // Each is optional, but at least one must be set up.
 setup_check($checks, 'Can make secure web requests (curl)', function_exists('curl_init'), 'Ask the host to enable the curl PHP extension.');
 
-// setup_setting() and the ID-format checks below repeat small pieces of
-// includes/dashboard/sign-in.php on purpose: that file needs PHP 8.1, and this
-// page must still run on older PHP so it can report that the version is too old.
-function setup_setting(string $name): string {
-    return defined($name) ? (string) constant($name) : '';
-}
+// The ID checks below reuse setting() and GUID_PATTERN from config.php. The rest
+// of this page deliberately avoids the dashboard files (they need PHP 8.1), so it
+// still runs on older PHP and can report that the version is too old.
 
 // Fetches a page from a sign-in service (following redirects), to prove the
 // server can reach it. Returns [reached?, HTTP status, decoded JSON, raw page].
@@ -86,20 +83,19 @@ function setup_fetch(string $url): array {
     return [$curlErr === '', $status, json_decode($response, true), $response];
 }
 
-$guid      = '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i';
-$msAny     = setup_setting('MS_TENANT_ID') . setup_setting('MS_CLIENT_ID') . setup_setting('MS_CLIENT_SECRET') !== '';
-$googleAny = setup_setting('GOOGLE_CLIENT_ID') . setup_setting('GOOGLE_CLIENT_SECRET') !== '';
+$msAny     = setting('MS_TENANT_ID') . setting('MS_CLIENT_ID') . setting('MS_CLIENT_SECRET') !== '';
+$googleAny = setting('GOOGLE_CLIENT_ID') . setting('GOOGLE_CLIENT_SECRET') !== '';
 
 setup_check($checks, 'At least one sign-in method (Microsoft or Google) is set up', $msAny || $googleAny,
     'Add the Microsoft settings (MS_...) and/or the Google settings (GOOGLE_...) to includes/secrets.php on the server. See includes/secrets.example.php.');
 
 if ($msAny) {
-    $tenant = setup_setting('MS_TENANT_ID');
-    if (setup_check($checks, 'Microsoft: all three settings are filled in', $tenant !== '' && setup_setting('MS_CLIENT_ID') !== '' && setup_setting('MS_CLIENT_SECRET') !== '',
+    $tenant = setting('MS_TENANT_ID');
+    if (setup_check($checks, 'Microsoft: all three settings are filled in', $tenant !== '' && setting('MS_CLIENT_ID') !== '' && setting('MS_CLIENT_SECRET') !== '',
             'MS_TENANT_ID, MS_CLIENT_ID and MS_CLIENT_SECRET are all needed.')) {
-        $idsOk = setup_check($checks, 'Microsoft: Tenant ID and Client ID look right', preg_match($guid, $tenant) && preg_match($guid, setup_setting('MS_CLIENT_ID')),
+        $idsOk = setup_check($checks, 'Microsoft: Tenant ID and Client ID look right', preg_match(GUID_PATTERN, $tenant) && preg_match(GUID_PATTERN, setting('MS_CLIENT_ID')),
             'Both should look like 1a2b3c4d-1234-5678-9abc-1234567890ab. Copy them from the app registration\'s Overview page in Microsoft Entra.');
-        setup_check($checks, 'Microsoft: client secret is the secret Value (not its ID)', !preg_match($guid, setup_setting('MS_CLIENT_SECRET')),
+        setup_check($checks, 'Microsoft: client secret is the secret Value (not its ID)', !preg_match(GUID_PATTERN, setting('MS_CLIENT_SECRET')),
             'MS_CLIENT_SECRET looks like an ID. Copy the secret\'s Value column instead (create a new secret if it\'s no longer shown).');
         if ($idsOk) {
             [$reached, $status, $doc] = setup_fetch('https://login.microsoftonline.com/' . rawurlencode($tenant) . '/v2.0/.well-known/openid-configuration');
@@ -113,12 +109,12 @@ if ($msAny) {
 }
 
 if ($googleAny) {
-    $googleId = setup_setting('GOOGLE_CLIENT_ID');
-    if (setup_check($checks, 'Google: both settings are filled in', $googleId !== '' && setup_setting('GOOGLE_CLIENT_SECRET') !== '',
+    $googleId = setting('GOOGLE_CLIENT_ID');
+    if (setup_check($checks, 'Google: both settings are filled in', $googleId !== '' && setting('GOOGLE_CLIENT_SECRET') !== '',
             'GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET are both needed.')) {
         setup_check($checks, 'Google: Client ID looks right', (bool) preg_match('/^[0-9]+-[a-z0-9]+\.apps\.googleusercontent\.com$/', $googleId),
             'GOOGLE_CLIENT_ID should end in .apps.googleusercontent.com. Copy it from the OAuth client in Google Cloud Console.');
-        setup_check($checks, 'Google: client secret isn\'t the Client ID', setup_setting('GOOGLE_CLIENT_SECRET') !== $googleId,
+        setup_check($checks, 'Google: client secret isn\'t the Client ID', setting('GOOGLE_CLIENT_SECRET') !== $googleId,
             'GOOGLE_CLIENT_SECRET is the same as the Client ID. Copy the Client secret from the OAuth client instead.');
         [$reached] = setup_fetch('https://accounts.google.com/.well-known/openid-configuration');
         if (setup_check($checks, 'Google: the server can reach Google sign-in', $reached,
@@ -141,7 +137,7 @@ if ($googleAny) {
 
 // Direct deposit requests: the bank numbers are encrypted with this key, and
 // the form stays switched off without it.
-$encryptionKey = base64_decode(setup_setting('DASHBOARD_ENCRYPTION_KEY'), true);
+$encryptionKey = base64_decode(setting('DASHBOARD_ENCRYPTION_KEY'), true);
 if (setup_check($checks, 'Direct deposit: encryption is available (openssl, AES-256-GCM)',
         function_exists('openssl_encrypt') && in_array('aes-256-gcm', openssl_get_cipher_methods(), true),
         'Ask the host to enable the openssl PHP extension.')) {
@@ -151,11 +147,7 @@ if (setup_check($checks, 'Direct deposit: encryption is available (openssl, AES-
 
 // Documents and resumes: the server's PHP upload limits cap how big a file
 // can be. The dashboard allows up to 10MB.
-$uploadLimit = min(array_map(function ($v) {
-    $n = (int) $v;
-    $unit = strtolower(substr(trim((string) $v), -1));
-    return $unit === 'g' ? $n * 1073741824 : ($unit === 'm' ? $n * 1048576 : ($unit === 'k' ? $n * 1024 : $n));
-}, [ini_get('upload_max_filesize'), ini_get('post_max_size')]));
+$uploadLimit = min(ini_bytes('upload_max_filesize'), ini_bytes('post_max_size'));
 setup_check($checks, 'Uploads up to 10MB are allowed (currently ' . round($uploadLimit / 1048576, 1) . 'MB)', $uploadLimit >= 10 * 1048576,
     'Ask the host to set upload_max_filesize and post_max_size to at least 12M. Until then, documents and resumes larger than the current limit can\'t be uploaded.');
 

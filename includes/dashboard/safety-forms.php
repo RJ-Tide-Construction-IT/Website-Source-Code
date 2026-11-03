@@ -119,7 +119,7 @@ function safety_form_title(array $form, array $answers): string {
 
 // The filled-out form as a printable PDF (same dompdf library as the job application PDF).
 function render_safety_form_pdf(array $form, array $answers, array $user, DateTime $submitted): string {
-    require_once dirname(__DIR__) . '/vendor/autoload.php';
+    require_once dirname(__DIR__) . '/pdf.php';
     $e = fn(string $v) => htmlspecialchars($v, ENT_QUOTES, 'UTF-8');
 
     $rows = '';
@@ -149,16 +149,7 @@ function render_safety_form_pdf(array $form, array $answers, array $user, DateTi
             . $submitted->format('M j, Y \a\t g:i A T') . ', who confirmed the information is accurate to the best of their knowledge.</p>
     </body></html>';
 
-    $options = new Dompdf\Options();
-    $options->set('isRemoteEnabled', false);        // never fetch URLs, only the local logo
-    $options->set('isPhpEnabled', false);
-    $options->setChroot([dirname(__DIR__)]);        // may only read files inside includes/
-    $options->set('defaultFont', 'DejaVu Sans');
-    $dompdf = new Dompdf\Dompdf($options);
-    $dompdf->loadHtml($html, 'UTF-8');
-    $dompdf->setPaper('letter', 'portrait');
-    $dompdf->render();
-    return $dompdf->output();
+    return render_pdf($html)->output();
 }
 
 /**
@@ -182,7 +173,7 @@ function submit_safety_form(array $user, string $formKey, array $answers): bool 
         $body .= $field[0] . ': ' . (safety_answer($field, $answers[$key]) ?: '-') . "\n";
     }
     $body .= "\nThe completed form is attached as a PDF, and saved under Employee Documents:\n"
-           . SITE_URL . BASE_URL . "/dashboard/documents-review.php\n";
+           . dashboard_url('documents-review.php') . "\n";
     $sent = dashboard_send_email(SAFETY_FORMS_EMAIL, 'Safety form: ' . header_safe($title) . ' (from ' . header_safe($user['name']) . ')',
                                  $body, [['name' => $title . '.pdf', 'content' => $pdf]], $user['email']);
     if (!$sent) {

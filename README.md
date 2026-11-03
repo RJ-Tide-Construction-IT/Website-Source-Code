@@ -23,7 +23,7 @@ exactly which file to open for common edits.
 | Give an employee more dashboard access, or turn off someone's access | Employee Dashboard > **Users** (Admins only) |
 | Change what each dashboard role can do, or who is always an Admin | `DASHBOARD_ROLES` / `DASHBOARD_ADMIN_EMAILS` in [includes/config.php](includes/config.php) |
 | Change the EEO / Work Authorization / Other Duties wording on job postings | [includes/job-posting-standard-sections.php](includes/job-posting-standard-sections.php) (shared by every posting that shows them) |
-| Add/remove a checkbox on the job application (licenses, physical requirements, experience) | the `APPLICATION_...` lists in [includes/config.php](includes/config.php) |
+| Add/remove a checkbox on the job application (licenses, physical requirements, experience), or change its answer levels, languages, education rows, or number of employers | the `APPLICATION_...` lists in [includes/config.php](includes/config.php) |
 | Change the layout of the printable PDF attached to each job application email | [includes/application-pdf.php](includes/application-pdf.php), see "Printable application PDF" below |
 | Add, remove, or edit a photo on the Projects page | the `$sections` array at the top of the matching file in [projects/](projects/), see below |
 | Change colors, fonts, or overall look | [assets/css/style.css](assets/css/style.css) |
@@ -116,6 +116,8 @@ includes/              shared pieces every page uses
   http.php                 sends requests to outside services (Brevo email,
                             Cloudflare, Microsoft/Google sign-in)
   application-pdf.php      builds the printable PDF of each job application
+  pdf.php                   the shared PDF maker (dompdf setup) used by that
+                            PDF and the dashboard's safety form PDFs
   pdf-logo.jpg              the logo used on that PDF
   vendor/, composer.json    the dompdf library that makes the PDF, see
                             "Printable application PDF" below, don't edit
@@ -173,12 +175,13 @@ then hand off to the shared [includes/photo-sections.php](includes/photo-section
 remove, or re-caption a photo, edit that page's `$sections` array, nothing
 else needs to change:
 
-- A category with 2+ photos and `'layout' => 'carousel'` renders as an
-  auto-advancing slideshow with arrows and dots.
+- A category with 2+ photos renders as an auto-advancing slideshow with
+  arrows and dots.
 - A category with exactly 1 photo renders as a single enlarged photo, no
   controls (there'd be nothing to navigate to).
 - A category with 0 photos (`'photos' => []`) renders just its `'note'` text,
   e.g. "Photos for this section are coming soon."
+- `'note'` is optional on any category (a short line shown under its title).
 
 ## Employee Dashboard
 

@@ -72,7 +72,6 @@ if ($d['note'] !== '') {
     $rows['Employee\'s note'] = $d['note'];
 }
 
-header('Cache-Control: no-store');
 dashboard_page_start(request_type_label($request['type']) . ' Request', $user);
 ?>
 <p><a class="back-link" href="<?= BASE_URL ?>/dashboard/review.php">&larr; All requests</a></p>

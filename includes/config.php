@@ -69,6 +69,27 @@ function posted_text(array $source, string $key): string {
     return is_string($source[$key] ?? null) ? trim($source[$key]) : '';
 }
 
+// A setting from includes/secrets.php, or '' when it's missing or blank (which
+// means that feature is switched off).
+function setting(string $name): string {
+    return defined($name) ? (string) constant($name) : '';
+}
+
+// A PHP size setting (e.g. upload_max_filesize = "8M") in bytes. 0 means no limit.
+function ini_bytes(string $name): int {
+    $value = trim((string) ini_get($name));
+    $n = (int) $value;
+    switch (strtolower(substr($value, -1))) {
+        case 'g': return $n * 1073741824;
+        case 'm': return $n * 1048576;
+        case 'k': return $n * 1024;
+    }
+    return $n;
+}
+
+// What Microsoft tenant and client IDs look like (used by sign-in and the setup check).
+define('GUID_PATTERN', '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i');
+
 // Association logos linked from the homepage/about page.
 $GLOBALS['ASSOCIATIONS'] = [
     ['name' => 'American Concrete Institute',            'img' => 'aci-logo.webp',  'url' => 'https://www.concrete.org'],
@@ -129,6 +150,17 @@ $GLOBALS['APPLICATION_PHYSICAL_REQUIREMENTS'] = [
     'Lift 20 lbs overhead, 50 times',
     'Ability to work at 100 ft or higher',
 ];
+// The other fixed lists on the application: the form (employment.php), its
+// handler (apply-handler.php) and the printable PDF (includes/application-pdf.php)
+// all read these, so a change here shows up in all three.
+$GLOBALS['APPLICATION_PROFICIENCY_LEVELS'] = ['Fair', 'Good', 'Excellent'];   // speak / read / write
+$GLOBALS['APPLICATION_EXPERIENCE_LEVELS']  = ['None', 'Average', 'Above'];
+// Languages: 'field_name' => 'Label' (the form says "Primary Language", the email and PDF say "Primary").
+$GLOBALS['APPLICATION_LANGUAGES'] = ['primary_language' => 'Primary', 'other_language' => 'Other'];
+// Schools: 'field_name_start' => 'Label' (fields are <start>_city_state and <start>_degree).
+$GLOBALS['APPLICATION_EDUCATION'] = ['high_school' => 'High School', 'college' => 'College', 'other_education' => 'Other'];
+// How many past employers the form asks for.
+define('APPLICATION_EMPLOYERS', 3);
 
 // ---------- Employee Dashboard ----------
 

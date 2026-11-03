@@ -8,7 +8,7 @@ $tiles = array_filter(dashboard_pages_for($user), fn($page) => isset($page['text
 
 dashboard_page_start('Employee Dashboard', $user);
 ?>
-<p class="dash-welcome">Welcome, <?= htmlspecialchars(strtok($user['name'], ' ') ?: $user['name']) ?>.</p>
+<p class="dash-welcome">Welcome, <?= htmlspecialchars(first_name($user['name'])) ?>.</p>
 
 <?php if (user_can($user, 'manage_users')):
     $waitingCount = (int) db()->query('SELECT COUNT(*) FROM users WHERE awaiting_approval = 1')->fetchColumn();
@@ -42,17 +42,10 @@ dashboard_page_start('Employee Dashboard', $user);
 
 <div class="dash-tiles">
     <?php foreach ($tiles as $tile): ?>
-    <?php if ($tile['href'] !== null): ?>
     <a class="dash-tile" href="<?= BASE_URL . $tile['href'] ?>">
         <h3><?= htmlspecialchars($tile['label']) ?></h3>
         <p><?= htmlspecialchars($tile['text']) ?></p>
     </a>
-    <?php else: ?>
-    <div class="dash-tile dash-tile--soon">
-        <h3><?= htmlspecialchars($tile['label']) ?> <span class="badge">Coming soon</span></h3>
-        <p><?= htmlspecialchars($tile['text']) ?></p>
-    </div>
-    <?php endif; ?>
     <?php endforeach; ?>
 </div>
 <?php dashboard_page_end(); ?>

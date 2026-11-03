@@ -127,7 +127,7 @@ $physical = array_values(array_intersect((array) ($_POST['physical'] ?? []), $GL
 // --- Build the employment history blocks ---
 $employmentHistory = [];
 $postedEmployers = is_array($_POST['employer'] ?? null) ? $_POST['employer'] : [];
-for ($i = 1; $i <= 3; $i++) {
+for ($i = 1; $i <= APPLICATION_EMPLOYERS; $i++) {
     $entry = is_array($postedEmployers[$i] ?? null) ? $postedEmployers[$i] : [];
     $job = fn(string $key) => or_dash(posted_text($entry, $key));
     $company = posted_text($entry, 'company');
@@ -140,10 +140,18 @@ for ($i = 1; $i <= 3; $i++) {
         . '    Supervisor: ' . $job('supervisor');
 }
 
-$languageLines = array_filter([
-    $languageLine('primary_language', 'Primary'),
-    $languageLine('other_language', 'Other'),
-]);
+$languageLines = [];
+foreach ($GLOBALS['APPLICATION_LANGUAGES'] as $prefix => $label) {
+    if ($line = $languageLine($prefix, $label)) {
+        $languageLines[] = $line;
+    }
+}
+
+// --- Build the education lines ---
+$educationLines = '';
+foreach ($GLOBALS['APPLICATION_EDUCATION'] as $key => $label) {
+    $educationLines .= "$label: " . field($key . '_city_state') . ', ' . field($key . '_degree') . "\n";
+}
 
 // --- Email HR ---
 $subject = 'New job application: ' . header_safe($position) . ', ' . header_safe($name);
@@ -171,10 +179,7 @@ $body = "PERSONAL INFORMATION\n"
       . 'Special Skills: ' . field('special_skills') . "\n"
       . ($languageLines ? implode("\n", $languageLines) . "\n" : "Languages: -\n") . "\n"
 
-      . "EDUCATION\n"
-      . 'High School: ' . field('high_school_city_state') . ', ' . field('high_school_degree') . "\n"
-      . 'College: ' . field('college_city_state') . ', ' . field('college_degree') . "\n"
-      . 'Other: ' . field('other_education_city_state') . ', ' . field('other_education_degree') . "\n\n"
+      . "EDUCATION\n" . $educationLines . "\n"
 
       . "EXPERIENCE\n" . implode("\n", $experienceLines) . "\n\n"
 
@@ -203,11 +208,6 @@ if ($safeName) {
 // If it can't be generated for any reason, the email still goes out with the
 // plain-text version above, so an application is never lost over the PDF.
 try {
-    // A missing file is a fatal error require can't recover from, so check first
-    // (e.g. if includes/vendor/ didn't make it onto the server).
-    if (!is_file(__DIR__ . '/includes/vendor/autoload.php')) {
-        throw new RuntimeException('includes/vendor/ is missing, the PDF library is not installed');
-    }
     require_once __DIR__ . '/includes/application-pdf.php';
     $resumeNote = $safeName ? 'Attached to the application email' : 'No resume attached.';
     $attachments[] = ['name' => $attachmentName('Application') . '.pdf', 'content' => render_application_pdf($_POST, $resumeNote)];

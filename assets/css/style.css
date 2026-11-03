@@ -182,23 +182,6 @@ ul { padding-left: 1.25em; }
   text-align: center;
 }
 .hero h1 { color: var(--color-white); }
-.hero p { color: var(--color-peach); font-size: 1.15rem; max-width: 700px; margin: 0 auto 1.5em; }
-
-/* Photo variant: background image with a translucent brand-gradient overlay
-   so the title stays readable while the photo shows through behind it. */
-.hero--photo {
-  position: relative;
-  background-size: cover;
-  background-position: center;
-  overflow: hidden;
-}
-.hero--photo::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(15,23,42,0.6), rgba(20,6,9,0.6));
-}
-.hero--photo .container { position: relative; z-index: 1; }
 
 .page-hero {
   background: linear-gradient(135deg, var(--color-navy), var(--color-charcoal));
@@ -210,28 +193,11 @@ ul { padding-left: 1.25em; }
 .page-hero__subtitle { color: var(--color-peach); margin-top: 0.75rem; }
 .page-hero__action { margin-top: 1rem; }
 
-/* Photo variant: a background image with a translucent brand-gradient overlay
-   so the title stays readable while the photo shows through behind it. */
-.page-hero--photo {
-  position: relative;
-  padding: 120px 0;
-  background-size: cover;
-  background-position: center;
-  overflow: hidden;
-}
-.page-hero--photo::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(15,23,42,0.82), rgba(58,58,58,0.82));
-}
-.page-hero--photo .container { position: relative; z-index: 1; }
-
 /* ---------- Sections ---------- */
 section { padding: 64px 0; }
 .section--muted { background: var(--color-grey-light); }
 .section--dark { background: var(--color-navy); color: var(--color-white); }
-.section--dark h2, .section--dark h3 { color: var(--color-white); }
+.section--dark h2 { color: var(--color-white); }
 .section-title { text-align: center; margin-bottom: 2rem; }
 
 /* Category headings and notes on the project gallery pages (includes/photo-sections.php). */
@@ -239,35 +205,40 @@ section { padding: 64px 0; }
 .section-title--gallery:first-of-type { margin-top: 2rem; }
 .section-note { text-align: center; color: var(--color-text-muted); margin-top: -1.25rem; }
 
-/* Photo variant: layers a background image behind .section--dark with a
-   translucent overlay in the same navy tone, so text stays readable. */
+/* Photo variants (home page hero, page banners, dark sections): a background
+   image with a translucent overlay so the text stays readable while the photo
+   shows through behind it. Kept below .page-hero and .section--dark so the
+   photo settings win over their background and padding. */
+.hero--photo,
+.page-hero--photo,
 .section--photo {
   position: relative;
   background-size: cover;
   background-position: center;
   overflow: hidden;
 }
+.page-hero--photo { padding: 120px 0; }
+.hero--photo::before,
+.page-hero--photo::before,
 .section--photo::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(15,23,42,0.6), rgba(15,23,42,0.6));
 }
+.hero--photo::before      { background: linear-gradient(135deg, rgba(15,23,42,0.6), rgba(20,6,9,0.6)); }
+.page-hero--photo::before { background: linear-gradient(135deg, rgba(15,23,42,0.82), rgba(58,58,58,0.82)); }
+.section--photo::before   { background: linear-gradient(135deg, rgba(15,23,42,0.6), rgba(15,23,42,0.6)); }
+.hero--photo .container,
+.page-hero--photo .container,
 .section--photo .container { position: relative; z-index: 1; }
 
 /* ---------- Cards / grids ---------- */
-.grid {
-  display: grid;
-  gap: 28px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-}
 .card {
   background: var(--color-white);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: 28px;
 }
-.card h3 { margin-top: 0; }
 
 /* ---------- Markets We Serve photo grid (Projects page) ---------- */
 .market-grid {
@@ -369,17 +340,14 @@ section { padding: 64px 0; }
   cursor: pointer;
 }
 .slideshow__dot.is-active { background: var(--color-white); }
-.slideshow__arrow {
+.slideshow__arrow,
+.lightbox-overlay__arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
   border-radius: 50%;
   border: none;
-  background: rgba(15,23,42,0.55);
   color: var(--color-white);
-  font-size: 1.4rem;
   line-height: 1;
   cursor: pointer;
   display: flex;
@@ -387,6 +355,12 @@ section { padding: 64px 0; }
   justify-content: center;
   z-index: 2;
   transition: background 0.15s ease;
+}
+.slideshow__arrow {
+  width: 40px;
+  height: 40px;
+  background: rgba(15,23,42,0.55);
+  font-size: 1.4rem;
 }
 .slideshow__arrow:hover { background: rgba(15,23,42,0.8); }
 .slideshow__arrow--prev { left: 14px; }
@@ -425,23 +399,10 @@ section { padding: 64px 0; }
   padding: 8px;
 }
 .lightbox-overlay__arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
   width: 52px;
   height: 52px;
-  border-radius: 50%;
-  border: none;
   background: rgba(255,255,255,0.12);
-  color: var(--color-white);
   font-size: 2rem;
-  line-height: 1;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-  transition: background 0.15s ease;
 }
 .lightbox-overlay__arrow:hover { background: rgba(255,255,255,0.25); }
 .lightbox-overlay__arrow--prev { left: 20px; }
@@ -724,10 +685,8 @@ section { padding: 64px 0; }
 a.dash-tile:hover { border-color: var(--color-red); text-decoration: none; }
 .dash-tile h3 { margin: 0 0 6px; color: var(--color-navy); }
 .dash-tile p { margin: 0; color: var(--color-text-muted); font-size: 0.95rem; }
-.dash-tile--soon { box-shadow: none; opacity: 0.75; }
 .badge {
   display: inline-block;
-  margin-left: 6px;
   padding: 2px 8px;
   border-radius: 999px;
   background: var(--color-grey-light);
@@ -753,22 +712,21 @@ a.dash-tile:hover { border-color: var(--color-red); text-decoration: none; }
 .dash-subheading { margin-top: 2.5rem; font-size: 1.3rem; }
 .dash-role-list, .dash-activity { padding-left: 1.25em; }
 .dash-activity li { margin-bottom: 6px; }
-.badge--open { background: #e6f6ec; color: #1a7a3d; margin-left: 0; }
 .dash-actions a + a { margin-left: 14px; }
 
 /* Employee requests (dashboard/requests.php, request-new.php, review*.php) */
 .request-actions { margin-bottom: 1.75rem; }
 .badge.status--pending,
 .badge.status--received,
-.badge.status--expiring  { background: #fff6e0; color: #6b4a00; margin-left: 0; }
+.badge.status--expiring  { background: #fff6e0; color: #6b4a00; }
 .badge.status--approved,
-.badge.status--done      { background: #e6f6ec; color: #1a7a3d; margin-left: 0; }
+.badge.status--done,
+.badge--open             { background: #e6f6ec; color: #1a7a3d; }
 .badge.status--denied,
 .badge.status--rejected,
-.badge.status--expired   { background: #fde8ea; color: var(--color-red-dark); margin-left: 0; }
-.badge.status--cancelled,
-.badge.status--removed   { margin-left: 0; }
-.dash-link-button {
+.badge.status--expired   { background: #fde8ea; color: var(--color-red-dark); }
+.dash-link-button,
+.dash-delete__button {
   padding: 0;
   border: none;
   background: none;
@@ -776,7 +734,8 @@ a.dash-tile:hover { border-color: var(--color-red); text-decoration: none; }
   font: inherit;
   cursor: pointer;
 }
-.dash-link-button:hover { text-decoration: underline; }
+.dash-link-button:hover,
+.dash-delete__button:hover { text-decoration: underline; }
 .dash-details { max-width: 760px; margin-bottom: 1.5rem; }
 .dash-details th { width: 180px; color: var(--color-text-muted); font-weight: 600; text-transform: none; font-size: 0.95rem; letter-spacing: 0; }
 .dash-details--revealed { outline: 2px solid #f2c94c; }
@@ -827,16 +786,7 @@ a.dash-tile:hover { border-color: var(--color-red); text-decoration: none; }
   letter-spacing: 0.04em;
 }
 .dash-delete { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--color-grey); }
-.dash-delete__button {
-  padding: 0;
-  border: none;
-  background: none;
-  color: var(--color-red-dark);
-  font: inherit;
-  font-weight: 600;
-  cursor: pointer;
-}
-.dash-delete__button:hover { text-decoration: underline; }
+.dash-delete__button { color: var(--color-red-dark); font-weight: 600; }
 
 /* ---------- Footer ---------- */
 .site-footer { background: var(--color-near-black); color: #cfd3dc; padding-top: 56px; }

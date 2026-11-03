@@ -10,7 +10,7 @@ require_once __DIR__ . '/http.php';
  * @return bool true if Brevo accepted the message, false otherwise.
  */
 function send_email(string $toEmail, string $subject, string $textBody, ?string $replyToEmail = null, ?string $replyToName = null, array $attachments = []): bool {
-    if (!defined('BREVO_API_KEY') || BREVO_API_KEY === '') {
+    if (setting('BREVO_API_KEY') === '') {
         error_log('send_email: BREVO_API_KEY is not configured in includes/secrets.php');
         return false;
     }

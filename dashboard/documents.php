@@ -39,11 +39,7 @@ dashboard_page_start('My Documents', $user);
    deleted from the dashboard once HR has processed them; everything else goes to the safety team.
    A clear phone photo of a paper form is fine.</p>
 
-<?php if ($errors): ?>
-<div class="form-note form-note--error">
-    <?php foreach ($errors as $error): ?><div><?= htmlspecialchars($error) ?></div><?php endforeach; ?>
-</div>
-<?php endif; ?>
+<?php form_errors($errors); ?>
 
 <form method="post" enctype="multipart/form-data" class="dash-form">
     <?= csrf_field() ?>

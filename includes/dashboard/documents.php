@@ -62,17 +62,7 @@ function can_open_document(array $user, array $doc): bool {
 
 // The largest upload allowed: 10MB, or less if the server's PHP settings are lower.
 function document_max_bytes(): int {
-    $toBytes = function (string $value): int {
-        $n = (int) $value;
-        switch (strtolower(substr(trim($value), -1))) {
-            case 'g': return $n * 1073741824;
-            case 'm': return $n * 1048576;
-            case 'k': return $n * 1024;
-        }
-        return $n;
-    };
-    $limits = array_filter([$toBytes((string) ini_get('upload_max_filesize')), $toBytes((string) ini_get('post_max_size'))]);
-    return min(array_merge([10 * 1048576], $limits));
+    return min(array_merge([10 * 1048576], array_filter([ini_bytes('upload_max_filesize'), ini_bytes('post_max_size')])));
 }
 
 // ---------- Reading ----------
@@ -133,21 +123,21 @@ function upload_document(array $user, array $post, array $file): array {
         $errors[] = 'Enter the date the certification expires.';
     }
 
+    $max   = document_max_bytes();
     $error = $file['error'] ?? UPLOAD_ERR_NO_FILE;
     if ($error === UPLOAD_ERR_NO_FILE) {
         $errors[] = 'Choose a file to upload.';
-    } elseif ($error === UPLOAD_ERR_INI_SIZE || $error === UPLOAD_ERR_FORM_SIZE || ($file['size'] ?? 0) > document_max_bytes()) {
-        $errors[] = 'That file is too large. The limit is ' . round(document_max_bytes() / 1048576) . 'MB.';
+    } elseif ($error === UPLOAD_ERR_INI_SIZE || $error === UPLOAD_ERR_FORM_SIZE || ($file['size'] ?? 0) > $max) {
+        $errors[] = 'That file is too large. The limit is ' . round($max / 1048576) . 'MB.';
     } elseif ($error !== UPLOAD_ERR_OK || !is_uploaded_file($file['tmp_name'])) {
         $errors[] = 'The upload didn\'t finish. Please try again.';
-    } elseif (!isset(DOCUMENT_FILE_TYPES[(new finfo(FILEINFO_MIME_TYPE))->file($file['tmp_name'])])) {
+    } elseif (!isset(DOCUMENT_FILE_TYPES[$mime = (string) (new finfo(FILEINFO_MIME_TYPE))->file($file['tmp_name'])])) { // also remembers the type for saving below
         $errors[] = 'Upload a PDF or a photo (JPG, PNG, or iPhone HEIC).';
     }
     if ($errors) {
         return $errors;
     }
 
-    $mime = (new finfo(FILEINFO_MIME_TYPE))->file($file['tmp_name']);
     $doc  = store_document($user, $type, $title, $note, (string) file_get_contents($file['tmp_name']), $mime,
                            (string) $file['name'], $type === 'certification' ? $expires : null);
     audit((int) $user['id'], 'document_uploaded', $user['name'] . ' uploaded a ' . document_type_label($type) . ': ' . $title);
@@ -195,26 +185,20 @@ function close_document(array $by, array $doc, string $status): void {
         . document_type_label($doc['type']) . ': ' . $doc['title'] . ' (file erased)');
     if ($status === 'done') {
         dashboard_send_email($doc['employee_email'], 'Your ' . document_type_label($doc['type']) . ' has been processed',
-            'Hi ' . (strtok($doc['employee_name'], ' ') ?: $doc['employee_name']) . ",\n\n"
+            'Hi ' . first_name($doc['employee_name']) . ",\n\n"
             . 'HR has processed the ' . $doc['title'] . " you uploaded, and the copy on the dashboard has been deleted.\n\n"
-            . "See your documents here:\n" . SITE_URL . BASE_URL . "/dashboard/documents.php\n");
+            . "See your documents here:\n" . dashboard_url('documents.php') . "\n");
     }
 }
 
 // ---------- Emails (never include what's in the document) ----------
 
 function notify_reviewers_of_document(array $doc): void {
-    $can   = DOCUMENT_TYPES[$doc['type']]['can'];
-    $roles = array_keys(array_filter($GLOBALS['DASHBOARD_ROLES'], fn($r) => in_array($can, $r['can'], true)));
-    $marks = implode(',', array_fill(0, count($roles), '?'));
-    $stmt  = db()->prepare("SELECT DISTINCT email FROM users WHERE active = 1 AND awaiting_approval = 0 AND role IN ($marks) AND id <> ?");
-    $stmt->execute(array_merge($roles, [$doc['user_id']]));
-
     $body = $doc['employee_name'] . ' uploaded a ' . document_type_label($doc['type']) . ': ' . $doc['title'] . "\n"
           . ($doc['expires_on'] ? 'Expires: ' . format_date($doc['expires_on']) . "\n" : '')
           . "\nThe document itself is only on the dashboard, not in email:\n"
-          . SITE_URL . BASE_URL . '/dashboard/documents-review.php' . "\n";
-    foreach ($stmt->fetchAll(PDO::FETCH_COLUMN) as $email) {
+          . dashboard_url('documents-review.php') . "\n";
+    foreach (capability_emails(DOCUMENT_TYPES[$doc['type']]['can'], (int) $doc['user_id']) as $email) {
         dashboard_send_email($email, 'Employee Dashboard: ' . header_safe($doc['employee_name']) . ' - ' . document_type_label($doc['type']), $body);
     }
 }

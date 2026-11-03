@@ -27,11 +27,7 @@ dashboard_page_start($titles[$type], $user);
 ?>
 <p><a class="back-link" href="<?= BASE_URL ?>/dashboard/requests.php">&larr; My requests</a></p>
 
-<?php if ($errors): ?>
-<div class="form-note form-note--error">
-    <?php foreach ($errors as $error): ?><div><?= htmlspecialchars($error) ?></div><?php endforeach; ?>
-</div>
-<?php endif; ?>
+<?php form_errors($errors); ?>
 
 <?php if ($type === 'direct_deposit' && !encryption_ready()): ?>
 <div class="form-note dash-notice">Direct deposit changes aren&rsquo;t available on the dashboard yet. Please contact the office.</div>

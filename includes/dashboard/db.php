@@ -23,7 +23,7 @@ function db(): PDO {
         PDO::ATTR_EMULATE_PREPARES   => false,
     ];
 
-    if (defined('DASHBOARD_DB_DSN') && DASHBOARD_DB_DSN !== '') {
+    if (setting('DASHBOARD_DB_DSN') !== '') {
         $pdo = new PDO(DASHBOARD_DB_DSN, DASHBOARD_DB_USER, DASHBOARD_DB_PASS, $options);
     } else {
         dashboard_ensure_dir(DASHBOARD_DATA_DIR);

@@ -8,8 +8,6 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 $sections = [
     [
         'label'  => 'Flatwork',
-        'note'   => '',
-        'layout' => 'carousel',
         'photos' => [
             ['img' => 'concrete/web/flatwork.webp', 'caption' => 'Finishing an interior concrete flatwork pour'],
             ['img' => 'concrete/web/interior-slab-pour.webp', 'caption' => 'Finishing an interior slab pour beside reinforced sections'],
@@ -17,16 +15,12 @@ $sections = [
     ],
     [
         'label'  => 'Foundations',
-        'note'   => '',
-        'layout' => 'carousel',
         'photos' => [
             ['img' => 'concrete/web/foundation.webp', 'caption' => 'Forming a concrete foundation on-site'],
         ],
     ],
     [
         'label'  => 'Site Concrete',
-        'note'   => '',
-        'layout' => 'carousel',
         'photos' => [
             ['img' => 'concrete/web/site-concrete.webp', 'caption' => 'Pouring site concrete paving'],
             ['img' => 'concrete/web/exterior-slab-placement.webp', 'caption' => 'Crew placing a large exterior slab at a commercial building'],
@@ -35,8 +29,6 @@ $sections = [
     ],
     [
         'label'  => 'Structural',
-        'note'   => '',
-        'layout' => 'carousel',
         'photos' => [
             ['img' => 'concrete/web/industrial.webp', 'caption' => 'Finishing an industrial concrete slab'],
         ],
@@ -44,7 +36,6 @@ $sections = [
     [
         'label'  => 'Cast In Place',
         'note'   => 'Photos for this section are coming soon.',
-        'layout' => 'carousel',
         'photos' => [],
     ],
 ];

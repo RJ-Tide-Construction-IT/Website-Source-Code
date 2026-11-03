@@ -11,8 +11,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/turnstile.php';
 $openJobs = array_filter(jobs_with_status(), fn($job) => $job['open']);
 $jobs = array_merge(array_column($openJobs, 'title'), ['Other']);
 
-$proficiencyLevels = ['Fair', 'Good', 'Excellent'];
-$experienceLevels  = ['None', 'Average', 'Above'];
+$proficiencyLevels = $GLOBALS['APPLICATION_PROFICIENCY_LEVELS'];
+$experienceLevels  = $GLOBALS['APPLICATION_EXPERIENCE_LEVELS'];
 // Shared with apply-handler.php, edit these lists in includes/config.php.
 $experienceSkills     = $GLOBALS['APPLICATION_EXPERIENCE_SKILLS'];
 $licenses             = $GLOBALS['APPLICATION_LICENSES'];
@@ -139,15 +139,16 @@ $errorMessages = [
                 <label for="special_skills">Special Skills</label>
                 <input type="text" id="special_skills" name="special_skills">
             </div>
+            <?php foreach ($GLOBALS['APPLICATION_LANGUAGES'] as $langKey => $langLabel): ?>
             <div class="form-field">
-                <label for="primary_language">Primary Language</label>
-                <input type="text" id="primary_language" name="primary_language">
+                <label for="<?= $langKey ?>"><?= $langLabel ?> Language</label>
+                <input type="text" id="<?= $langKey ?>" name="<?= $langKey ?>">
             </div>
             <div class="form-row">
                 <?php foreach (['speak' => 'Speak', 'read' => 'Read', 'write' => 'Write'] as $skillKey => $skillLabel): ?>
                 <div class="form-field">
-                    <label for="primary_language_<?= $skillKey ?>"><?= $skillLabel ?></label>
-                    <select id="primary_language_<?= $skillKey ?>" name="primary_language_<?= $skillKey ?>">
+                    <label for="<?= $langKey ?>_<?= $skillKey ?>"><?= $skillLabel ?></label>
+                    <select id="<?= $langKey ?>_<?= $skillKey ?>" name="<?= $langKey ?>_<?= $skillKey ?>">
                         <option value="">-</option>
                         <?php foreach ($proficiencyLevels as $level): ?>
                         <option value="<?= $level ?>"><?= $level ?></option>
@@ -156,26 +157,10 @@ $errorMessages = [
                 </div>
                 <?php endforeach; ?>
             </div>
-            <div class="form-field">
-                <label for="other_language">Other Language</label>
-                <input type="text" id="other_language" name="other_language">
-            </div>
-            <div class="form-row">
-                <?php foreach (['speak' => 'Speak', 'read' => 'Read', 'write' => 'Write'] as $skillKey => $skillLabel): ?>
-                <div class="form-field">
-                    <label for="other_language_<?= $skillKey ?>"><?= $skillLabel ?></label>
-                    <select id="other_language_<?= $skillKey ?>" name="other_language_<?= $skillKey ?>">
-                        <option value="">-</option>
-                        <?php foreach ($proficiencyLevels as $level): ?>
-                        <option value="<?= $level ?>"><?= $level ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <?php endforeach; ?>
-            </div>
+            <?php endforeach; ?>
 
             <h2 class="form-section-title">Education</h2>
-            <?php foreach (['high_school' => 'High School', 'college' => 'College', 'other_education' => 'Other'] as $eduKey => $eduLabel): ?>
+            <?php foreach ($GLOBALS['APPLICATION_EDUCATION'] as $eduKey => $eduLabel): ?>
             <div class="form-row">
                 <div class="form-field">
                     <label for="<?= $eduKey ?>_city_state"><?= $eduLabel ?>, City/State</label>
@@ -228,7 +213,7 @@ $errorMessages = [
 
             <h2 class="form-section-title">Employment History</h2>
             <p class="form-field-hint">Begin with the most recent. Optional if you're attaching a resume below.</p>
-            <?php for ($i = 1; $i <= 3; $i++): ?>
+            <?php for ($i = 1; $i <= APPLICATION_EMPLOYERS; $i++): ?>
             <div class="employer-entry">
                 <div class="form-field">
                     <label for="employer<?= $i ?>_company">Employer #<?= $i ?>, Name &amp; Address of Company</label>

@@ -14,12 +14,7 @@ if (form_submitted()) {
     redirect(BASE_URL . '/dashboard/requests.php');
 }
 
-$stmt = db()->prepare('SELECT * FROM requests WHERE user_id = ? ORDER BY id DESC LIMIT 100');
-$stmt->execute([$user['id']]);
-$requests = array_map(function ($r) {
-    $r['details'] = json_decode($r['details'], true) ?: [];
-    return $r;
-}, $stmt->fetchAll());
+$requests = load_requests('SELECT * FROM requests WHERE user_id = ? ORDER BY id DESC LIMIT 100', [$user['id']]);
 
 dashboard_page_start('My Requests', $user);
 ?>
