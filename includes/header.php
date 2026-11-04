@@ -23,16 +23,28 @@ $canonicalUrl = SITE_URL . '/' . ltrim($canonicalPath, '/');
 $privatePage = !empty($privatePage);
 $loadAnalytics = !$privatePage;
 
+// The photo behind a banner, as a real image so browsers find it right away and
+// load it first (a CSS background is found late, which is what made the
+// homepage slow). Phones get a tall crop, everything else a wide one, so each
+// photo needs <name>-phone.webp and <name>-wide.webp next to <name>.webp
+// (README, "Adding a new photo"). $lazy is for photos further down the page.
+function banner_photo(string $image, bool $lazy = false): string {
+    $base = htmlspecialchars(BASE_URL . '/assets/img/' . preg_replace('/\.webp$/', '', $image));
+    $loading = $lazy ? 'loading="lazy" decoding="async"' : 'fetchpriority="high"';
+    return '<picture><source media="(max-width: 640px)" srcset="' . $base . '-phone.webp" width="850" height="878">'
+         . '<img class="banner-photo" src="' . $base . '-wide.webp" width="1600" height="740" alt="" ' . $loading . '></picture>';
+}
+
 // The title banner at the top of every inner page. Pages call it right after
 // including this file, e.g.:
 //   page_hero('Contact Us');                                        dark banner
 //   page_hero('Agricultural', 'agriculture/web/jobsite-2.webp');    photo banner
-// $image is relative to assets/img/. $extraHtml (optional) is extra markup shown
+// $image is relative to assets/img/ and needs its -phone and -wide variants (see
+// banner_photo above). $extraHtml (optional) is extra markup shown
 // under the title, written by the page itself, never visitor input.
 function page_hero(string $title, ?string $image = null, string $extraHtml = ''): void {
     $class = $image ? 'page-hero page-hero--photo' : 'page-hero';
-    $style = $image ? ' style="background-image:url(\'' . htmlspecialchars(BASE_URL . '/assets/img/' . $image) . '\');"' : '';
-    echo '<section class="' . $class . '"' . $style . ">\n"
+    echo '<section class="' . $class . '">' . ($image ? banner_photo($image) : '') . "\n"
        . '    <div class="container"><h1>' . htmlspecialchars($title) . '</h1>' . $extraHtml . "</div>\n"
        . "</section>\n";
 }
@@ -95,7 +107,7 @@ function page_hero(string $title, ?string $image = null, string $extraHtml = '')
     <div class="container site-header__inner">
         <div class="site-header__brand">
             <a href="<?= BASE_URL ?>/index.php" class="site-header__logo">
-                <img src="<?= BASE_URL ?>/assets/img/logo.png" alt="<?= htmlspecialchars(SITE_NAME) ?>">
+                <img src="<?= BASE_URL ?>/assets/img/logo-192.webp" width="470" height="192" alt="<?= htmlspecialchars(SITE_NAME) ?>">
             </a>
 
             <div class="site-header__contact">

@@ -33,7 +33,8 @@ $business = [
 ?>
 <script type="application/ld+json"><?= json_encode($business, JSON_UNESCAPED_SLASHES | JSON_HEX_TAG) ?></script>
 
-<section class="hero hero--photo" style="background-image:url('<?= BASE_URL ?>/assets/img/agriculture/web/sunrise-headhouse.webp');">
+<section class="hero hero--photo">
+    <?= banner_photo('agriculture/web/sunrise-headhouse.webp') ?>
     <div class="container">
         <h1>Your Contractor Of Choice For<br>Full-Service Concrete,<br>Agricultural, &amp;<br>Industrial Construction</h1>
     </div>
@@ -50,7 +51,8 @@ $business = [
     </div>
 </section>
 
-<section class="section--dark section--photo" style="background-image:url('<?= BASE_URL ?>/assets/img/index/web/safety-section.webp');">
+<section class="section--dark section--photo">
+    <?= banner_photo('index/web/safety-section.webp', true) ?>
     <div class="container">
         <h2 class="section-title">Building With Safety, Quality, and Care</h2>
         <p class="lead lead--tight">

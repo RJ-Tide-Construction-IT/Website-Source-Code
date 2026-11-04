@@ -33,7 +33,7 @@ exactly which file to open for common edits.
 | Change who receives safety forms | `SAFETY_FORMS_EMAIL` in [includes/config.php](includes/config.php) |
 | Add a safety form, or change a form's questions | the `SAFETY_FORMS` list in [includes/dashboard/safety-forms.php](includes/dashboard/safety-forms.php) |
 | Change the very top or bottom of every page (logo bar, menu, footer links) | [includes/header.php](includes/header.php) / [includes/footer.php](includes/footer.php) |
-| Swap out a photo or logo | replace the file in [assets/img/](assets/img/) (keep the same filename so nothing breaks) |
+| Swap out a photo or logo | replace the file in [assets/img/](assets/img/) (keep the same filename so nothing breaks). A photo used as a banner (top of a page) also needs its two banner copies remade, see "Banner photos" below. The logo in the header also needs `logo-192.webp` remade from `logo.png`: `ffmpeg -i assets\img\logo.png -vf "scale=470:192:flags=lanczos" -c:v libwebp -quality 50 -compression_level 6 assets\img\logo-192.webp` |
 
 For any page's body text, just open the file and edit the words between the
 HTML tags (the bits like `<p>...</p>`), you don't need to touch anything
@@ -147,7 +147,9 @@ assets/img/             all photos and logos, organized into subfolders by
                         special-projects, vendors, favicon, index). Photos
                         live in each folder's `web/` subfolder as resized,
                         compressed copies, so the site doesn't ship
-                        multi-megabyte camera photos to visitors. See
+                        multi-megabyte camera photos to visitors. Photos
+                        used as banners also have `<name>-phone.webp` and
+                        `<name>-wide.webp` copies beside them. See
                         "Adding a new photo" below.
 
 originals/              full-size camera originals of the photos/video in
@@ -497,6 +499,26 @@ reduction with no visible quality loss at the sizes photos display on the
 site. If a phone photo comes out sideways, add `transpose=1,` (90° clockwise)
 or `transpose=2,` (90° counter-clockwise) at the start of the part in quotes
 after `-vf`.
+
+### Banner photos
+
+A photo behind a page banner (the home page hero, the title bar on inner
+pages, the dark "safety" section) is loaded as a real image by
+`banner_photo()` in [includes/header.php](includes/header.php), which is what
+makes the page load fast. It needs two extra copies next to the normal one:
+a tall crop for phones and a wide crop for everything else. Run both from the
+project folder:
+
+```
+ffmpeg -i originals\<folder>\<name>.jpg -map_metadata -1 -vf "scale=850:878:force_original_aspect_ratio=increase,crop=850:878" -c:v libwebp -quality 60 -compression_level 6 assets\img\<folder>\web\<name>-phone.webp
+ffmpeg -i originals\<folder>\<name>.jpg -map_metadata -1 -vf "scale=1600:740:force_original_aspect_ratio=increase,crop=1600:740" -c:v libwebp -quality 60 -compression_level 6 assets\img\<folder>\web\<name>-wide.webp
+```
+
+Then use `page_hero('Title', '<folder>/web/<name>.webp')` as usual, it finds
+the two copies by name. If either copy is missing, the banner shows as a
+plain dark bar with no photo, so check the page after adding one. Keep the
+phone copy under about 90 KB and the wide one under about 130 KB (lower
+`-quality` if it's bigger).
 
 [assets/img/share.jpg](assets/img/share.jpg) is the exception: it's the
 1200×630 picture shown in link previews when the site is shared, and stays a
