@@ -19,6 +19,7 @@ $pages = [
     '/employment.php',
     '/contact.php',
     '/privacy.php',
+    '/safety-data-sheets.php',
 ];
 foreach (jobs_with_status() as $job) {
     if ($job['open']) {
