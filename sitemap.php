@@ -4,6 +4,7 @@
 // Employee Dashboard, show up as soon as they're switched on.
 // When you add a new public page, add it to $pages below.
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/config.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/safety-data-sheets.php';
 
 $pages = [
     '/',
@@ -24,6 +25,13 @@ $pages = [
 foreach (jobs_with_status() as $job) {
     if ($job['open']) {
         $pages[] = $job['href'];
+    }
+}
+
+// Each Safety Data Sheet group that has PDFs gets its own entry.
+foreach (SDS_CATEGORIES as $slug => $category) {
+    if (sds_sheet_count($slug)) {
+        $pages[] = "/safety-data-sheets/$slug.php";
     }
 }
 
