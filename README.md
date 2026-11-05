@@ -32,6 +32,7 @@ exactly which file to open for common edits.
 | Change who receives contact form emails (by department) | the `CONTACT_EMAIL_...` settings in [includes/config.php](includes/config.php) |
 | Change who receives safety forms | `SAFETY_FORMS_EMAIL` in [includes/config.php](includes/config.php) |
 | Add a safety form, or change a form's questions | the `SAFETY_FORMS` list in [includes/dashboard/safety-forms.php](includes/dashboard/safety-forms.php) |
+| Add, replace, or remove a Safety Data Sheet (SDS) | To add one, name the PDF after the product, for example `MasterSeal-NP-1-Black.pdf` (no two sheets can share a filename, even in different folders), and put it in the right numbered category folder inside [assets/img/safety-data-sheets/](assets/img/safety-data-sheets/). It appears on that category's page automatically after you commit and push to `master`, no code changes needed. Its title comes from the filename until you add a line for it to the `SDS_TITLES` list in [includes/safety-data-sheets.php](includes/safety-data-sheets.php), which shows the product and maker. Folder and file names may use only letters, numbers, dashes, and underscores, no spaces, `&`, `+`, or `%`, because the live server can block them. To replace a sheet, save the new PDF over the old one with the same filename. To rename a PDF, rename the file and update its `SDS_TITLES` line if it has one. To remove a sheet, delete its PDF (and its `SDS_TITLES` line). The main [Safety Data Sheets page](safety-data-sheets.php) has one button for each category, and a button shows only once its category has a PDF. A brand-new category folder needs two more things: one line in the `SDS_CATEGORIES` list in the same file, kept in number order, and one tiny page file. To make the page file, copy any file in [safety-data-sheets/](safety-data-sheets/), name the copy after the new line's short name, and change the short name inside it to match. A folder with no line in the list will not appear on the site. If you rename a folder, update its line in `SDS_CATEGORIES`. Don't delete the `.keep` files: they keep empty folders in git and on the server. |
 | Change the very top or bottom of every page (logo bar, menu, footer links) | [includes/header.php](includes/header.php) / [includes/footer.php](includes/footer.php) |
 | Swap out a photo or logo | replace the file in [assets/img/](assets/img/) (keep the same filename so nothing breaks). A photo used as a banner (top of a page) also needs its two banner copies remade, see "Banner photos" below. The logo in the header also needs `logo-192.webp` remade from `logo.png`: `ffmpeg -i assets\img\logo.png -vf "scale=470:192:flags=lanczos" -c:v libwebp -quality 50 -compression_level 6 assets\img\logo-192.webp` |
 
@@ -80,13 +81,21 @@ once:
 
 ```
 index.php, about.php, contact.php, projects.php, careers.php, employment.php,
-privacy.php            the main pages of the site
+privacy.php, safety-data-sheets.php
+                       the main pages of the site (safety-data-sheets.php has
+                       one button for each Safety Data Sheet group)
+
+safety-data-sheets/    one tiny page for each Safety Data Sheet group, e.g.
+                       acids.php. Each one only names its group, and a shared
+                       layout in includes/ does the rest. PDFs don't go here,
+                       they go in assets/img/safety-data-sheets/
 
 404.php                the "Page Not Found" page (switched on in web.config)
 robots.txt, sitemap.php
                        tell Google what to index. When you add a new public
                        page, add it to the $pages list in sitemap.php (open
-                       job postings are added automatically)
+                       job postings and Safety Data Sheet groups with PDFs
+                       are added automatically)
 
 includes/              shared pieces every page uses
   header.php             top of the page (logo, address + phone, menu)
@@ -110,6 +119,9 @@ includes/              shared pieces every page uses
   build-right-way.php      "We Build the Right Way" section, shared by the
                             homepage and About page
   associations.php         "Associations" logo strip, shared by the same two
+  safety-data-sheets.php   the Safety Data Sheet group list and sheet titles
+  sds-category-page.php    the shared layout for every Safety Data Sheet group
+                            page
   job-posting-standard-sections.php
                             the Work Authorization / EEO / Other Duties text
                             added to postings that have it switched on
@@ -151,6 +163,15 @@ assets/img/             all photos and logos, organized into subfolders by
                         used as banners also have `<name>-phone.webp` and
                         `<name>-wide.webp` copies beside them. See
                         "Adding a new photo" below.
+                        safety-data-sheets/ is the exception: it holds the
+                        PDFs listed on the Safety Data Sheet pages, not
+                        photos, so it has no web/ copies. Each numbered folder
+                        is a group with its own page, and PDFs in it are
+                        listed automatically. A new folder also needs a line
+                        in the group list and a page file, see "Add, replace,
+                        or remove a Safety Data Sheet" at the top of this
+                        file. The empty .keep files hold empty folders in
+                        place, leave them.
 
 originals/              full-size camera originals of the photos/video in
                         assets/img/, same subfolder layout. Kept here so a

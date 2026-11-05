@@ -24,6 +24,7 @@
                 <li><a href="<?= BASE_URL ?>/projects.php">Projects</a></li>
                 <li><a href="<?= BASE_URL ?>/careers.php">Careers</a></li>
                 <li><a href="<?= BASE_URL ?>/contact.php">Contact Us</a></li>
+                <li><a href="<?= BASE_URL ?>/safety-data-sheets.php">Safety Data Sheets</a></li>
                 <li><a href="<?= BASE_URL ?>/dashboard/">Employee Login</a></li>
             </ul>
         </div>
