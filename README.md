@@ -32,7 +32,7 @@ exactly which file to open for common edits.
 | Change who receives contact form emails (by department) | the `CONTACT_EMAIL_...` settings in [includes/config.php](includes/config.php) |
 | Change who receives safety forms | `SAFETY_FORMS_EMAIL` in [includes/config.php](includes/config.php) |
 | Add a safety form, or change a form's questions | the `SAFETY_FORMS` list in [includes/dashboard/safety-forms.php](includes/dashboard/safety-forms.php) |
-| Add, replace, or remove a Safety Data Sheet (SDS) | To replace a sheet, save the new PDF over the old one in [assets/img/safety-data-sheets/](assets/img/safety-data-sheets/) with the same filename. To add one, put the PDF in that folder (letters, numbers, and dashes only in the filename, no spaces or `&`, because the live server can block them), then add a line to the `$sheets` list at the top of [safety-data-sheets.php](safety-data-sheets.php), in alphabetical order. To remove one, delete its line and its PDF. A PDF that isn't in the list won't appear on the page. |
+| Add, replace, or remove a Safety Data Sheet (SDS) | To add one, put the PDF in the right numbered category folder inside [assets/img/safety-data-sheets/](assets/img/safety-data-sheets/). It appears on the [Safety Data Sheets page](safety-data-sheets.php) automatically after you commit and push to `master`, no code changes needed. Its title comes from the filename unless you add it to the `$titles` list at the top of [safety-data-sheets.php](safety-data-sheets.php). Folder and file names may use only letters, numbers, dashes, and underscores, no spaces, `&`, `+`, or `%`, because the live server can block them. To replace a sheet, save the new PDF over the old one with the same filename. To rename a PDF, rename the file and update its `$titles` line if it has one. To remove a sheet, delete its PDF (and its `$titles` line). A category shows on the page only once it has a PDF. A new category folder works automatically too; give it a number and, for exact wording, add it to the `$headings` list in the same file. If you rename a folder, update its `$headings` line. Don't delete the `.keep` files: they keep empty folders in git and on the server. |
 | Change the very top or bottom of every page (logo bar, menu, footer links) | [includes/header.php](includes/header.php) / [includes/footer.php](includes/footer.php) |
 | Swap out a photo or logo | replace the file in [assets/img/](assets/img/) (keep the same filename so nothing breaks). A photo used as a banner (top of a page) also needs its two banner copies remade, see "Banner photos" below. The logo in the header also needs `logo-192.webp` remade from `logo.png`: `ffmpeg -i assets\img\logo.png -vf "scale=470:192:flags=lanczos" -c:v libwebp -quality 50 -compression_level 6 assets\img\logo-192.webp` |
 
@@ -155,7 +155,10 @@ assets/img/             all photos and logos, organized into subfolders by
                         "Adding a new photo" below.
                         safety-data-sheets/ is the exception: it holds the
                         PDFs listed on safety-data-sheets.php, not photos,
-                        so it has no web/ copies.
+                        so it has no web/ copies. Each numbered folder is a
+                        category; PDFs in it are listed automatically. The
+                        empty .keep files hold empty folders in place, leave
+                        them.
 
 originals/              full-size camera originals of the photos/video in
                         assets/img/, same subfolder layout. Kept here so a
