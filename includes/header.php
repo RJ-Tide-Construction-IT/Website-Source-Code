@@ -9,18 +9,23 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/config.php';
 //                    so employee information is never sent to tracking tools.
 //   $documentTitle   (optional) the whole browser-tab / Google title, used as-is
 //                    instead of "$pageTitle | site name" (the homepage uses it).
+//   $noindexPage     (optional) true to keep a page out of search results while
+//                    still counting visits (closed job postings, empty Safety
+//                    Data Sheet groups). Unlike $privatePage, analytics stay on.
 //   $canonicalPath   (optional) this page's address for search engines, e.g.
-//                    '/careers/posting.php?id=foreman'. Defaults to the current
-//                    address without its ?query, so /contact.php?sent=1 and
-//                    www.rjtide.com/contact.php all count as one page.
+//                    '/careers/posting.php?id=foreman'. Defaults to this page's
+//                    file address in lower case, so /contact.php?sent=1,
+//                    /Contact.php and /contact.php/extra all count as one page
+//                    (www.rjtide.com is redirected in config.php).
 if (!isset($pageTitle)) { $pageTitle = SITE_NAME; }
 if (!isset($pageDescription)) { $pageDescription = 'Full-service concrete, millwright, and agricultural/industrial maintenance contractor based in Lawton, Iowa.'; }
 if (!isset($documentTitle)) { $documentTitle = $pageTitle . ' | ' . SITE_NAME; }
 if (!isset($canonicalPath)) {
-    $canonicalPath = preg_replace('#/index\.php$#', '/', strtok($_SERVER['REQUEST_URI'] ?? '/', '?'));
+    $canonicalPath = preg_replace(['#(\.php)/.*$#', '#/index\.php$#'], ['$1', '/'], strtolower($_SERVER['SCRIPT_NAME'] ?? '/'));
 }
 $canonicalUrl = SITE_URL . '/' . ltrim($canonicalPath, '/');
 $privatePage = !empty($privatePage);
+$noindexPage = !empty($noindexPage);
 $loadAnalytics = !$privatePage;
 
 // The photo behind a banner, as a real image so browsers find it right away and
@@ -59,7 +64,9 @@ function page_hero(string $title, ?string $image = null, string $extraHtml = '')
 <?php if ($privatePage): ?>
 <meta name="robots" content="noindex, nofollow">
 <?php else: ?>
-<?php if (http_response_code() === 200): // not on "not found" pages ?>
+<?php if ($noindexPage): // kept out of search results, so no canonical either ?>
+<meta name="robots" content="noindex">
+<?php elseif (http_response_code() === 200): // not on "not found" pages ?>
 <link rel="canonical" href="<?= htmlspecialchars($canonicalUrl) ?>">
 <?php endif; ?>
 <!-- Link preview card when a page is shared by text, Facebook, LinkedIn, etc. -->
@@ -106,7 +113,7 @@ function page_hero(string $title, ?string $image = null, string $extraHtml = '')
 <header class="site-header">
     <div class="container site-header__inner">
         <div class="site-header__brand">
-            <a href="<?= BASE_URL ?>/index.php" class="site-header__logo">
+            <a href="<?= BASE_URL ?>/" class="site-header__logo">
                 <img src="<?= BASE_URL ?>/assets/img/logo-192.webp" width="470" height="192" alt="<?= htmlspecialchars(SITE_NAME) ?>">
             </a>
 

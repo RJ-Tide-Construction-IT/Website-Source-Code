@@ -26,6 +26,17 @@ define('SAFETY_FORMS_EMAIL', 'tanderson@rjtide.com');       // safety forms fill
 // registered with them.
 define('SITE_URL', 'https://rjtide.com');
 
+// Visitors (and Google) who arrive at www.rjtide.com are sent to the same page at
+// SITE_URL with a permanent redirect, so search engines list just one address.
+// Only page visits (GET/HEAD) are redirected, so a form sent to the www address
+// still goes through. Uses header() directly because redirect() below always
+// sends a temporary redirect. (Older-PHP syntax, like the rest of this file.)
+if (stripos(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '', 'www.') === 0
+    && in_array(isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : '', array('GET', 'HEAD'), true)) {
+    header('Location: ' . SITE_URL . (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/'), true, 301);
+    exit;
+}
+
 // Root-relative base path. Leave as '' when the site is hosted at the domain root
 // (e.g. https://rjtide.com/). Set to '/subfolder' if it's hosted in a subfolder.
 define('BASE_URL', '');

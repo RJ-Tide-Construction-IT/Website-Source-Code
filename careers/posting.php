@@ -25,6 +25,9 @@ if (!$posting) {
 
 $pageTitle = $posting['title'];
 $canonicalPath = '/careers/posting.php?id=' . rawurlencode($id);
+// A closed posting stays viewable for anyone with the link, but is kept out of
+// search results until it's switched back on.
+$noindexPage = !in_array($posting['title'], open_job_titles(), true);
 $jobMeta = posting_job_meta($posting);
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/job-posting-header.php';
 

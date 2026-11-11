@@ -62,7 +62,7 @@ $subServices = [
            operations running smoothly.</p>
         <p>Reach out to our experts today at <a href="mailto:<?= AG_EMAIL ?>"><?= AG_EMAIL ?></a>.</p>
 
-        <a href="<?= BASE_URL ?>/index.php" class="back-link">&larr; Go back to main menu</a>
+        <a href="<?= BASE_URL ?>/" class="back-link">&larr; Go back to main menu</a>
         <a href="<?= BASE_URL ?>/projects.php" class="back-link">View our Projects &rarr;</a>
     </div>
 </section>

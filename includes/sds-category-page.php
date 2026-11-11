@@ -1,6 +1,7 @@
 <?php
 // The shared layout for every Safety Data Sheet group page. Each small file in
 // safety-data-sheets/ sets $sdsSlug to its group's short name, then loads this.
+require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/safety-data-sheets.php';
 
 // A page file whose short name isn't in the group list shows "Page Not Found".
@@ -10,11 +11,13 @@ if (!$category) {
     exit;
 }
 
+$sheets = sds_sheets($sdsSlug);
+// A group with no sheets yet stays out of search results until it has some.
+$noindexPage = !$sheets;
+
 $pageTitle = $category['label'] . ' Safety Data Sheets';
 $pageDescription = $category['label'] . ' Safety Data Sheets (SDS) for products used on RJ Tide Construction projects, available to view or download as PDFs.';
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
-
-$sheets = sds_sheets($sdsSlug);
 ?>
 
 <?php page_hero($pageTitle, null, '<a href="' . BASE_URL . '/safety-data-sheets.php" class="btn btn--outline page-hero__action">&larr; All Safety Data Sheets</a>'); ?>

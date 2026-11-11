@@ -32,7 +32,7 @@ exactly which file to open for common edits.
 | Change who receives contact form emails (by department) | the `CONTACT_EMAIL_...` settings in [includes/config.php](includes/config.php) |
 | Change who receives safety forms | `SAFETY_FORMS_EMAIL` in [includes/config.php](includes/config.php) |
 | Add a safety form, or change a form's questions | the `SAFETY_FORMS` list in [includes/dashboard/safety-forms.php](includes/dashboard/safety-forms.php) |
-| Add, replace, or remove a Safety Data Sheet (SDS) | To add one, name the PDF after the product, for example `MasterSeal-NP-1-Black.pdf` (no two sheets can share a filename, even in different folders), and put it in the right numbered category folder inside [assets/img/safety-data-sheets/](assets/img/safety-data-sheets/). It appears on that category's page automatically after you commit and push to `master`, no code changes needed. Its title comes from the filename until you add a line for it to the `SDS_TITLES` list in [includes/safety-data-sheets.php](includes/safety-data-sheets.php), which shows the product and maker. Folder and file names may use only letters, numbers, dashes, and underscores, no spaces, `&`, `+`, or `%`, because the live server can block them. To replace a sheet, save the new PDF over the old one with the same filename. To rename a PDF, rename the file and update its `SDS_TITLES` line if it has one. To remove a sheet, delete its PDF (and its `SDS_TITLES` line). The main [Safety Data Sheets page](safety-data-sheets.php) has one button for each category, and a button shows only once its category has a PDF. A brand-new category folder needs two more things: one line in the `SDS_CATEGORIES` list in the same file, kept in number order, and one tiny page file. To make the page file, copy any file in [safety-data-sheets/](safety-data-sheets/), name the copy after the new line's short name, and change the short name inside it to match. A folder with no line in the list will not appear on the site. If you rename a folder, update its line in `SDS_CATEGORIES`. Don't delete the `.keep` files: they keep empty folders in git and on the server. |
+| Add, replace, or remove a Safety Data Sheet (SDS) | To add one, name the PDF after the product, for example `MasterSeal-NP-1-Black.pdf` (no two sheets can share a filename, even in different folders), and put it in the right numbered category folder inside [assets/img/safety-data-sheets/](assets/img/safety-data-sheets/). It appears on that category's page automatically after you commit and push to `master`, no code changes needed. Its title comes from the filename until you add a line for it to the `SDS_TITLES` list in [includes/safety-data-sheets.php](includes/safety-data-sheets.php), which shows the product and maker. Folder and file names may use only letters, numbers, dashes, and underscores, no spaces, `&`, `+`, or `%`, because the live server can block them. To replace a sheet, save the new PDF over the old one with the same filename. To rename a PDF, rename the file and update its `SDS_TITLES` line if it has one. To remove a sheet, delete its PDF (and its `SDS_TITLES` line). The main [Safety Data Sheets page](safety-data-sheets.php) has one button for each category, and a button shows only once its category has a PDF. A brand-new category folder needs two more things: one line in the `SDS_CATEGORIES` list in the same file, kept in number order, and one tiny page file. To make the page file, copy any file in [safety-data-sheets/](safety-data-sheets/) except index.php, name the copy after the new line's short name, and change the short name inside it to match. A folder with no line in the list will not appear on the site. If you rename a folder, update its line in `SDS_CATEGORIES`. Don't delete the `.keep` files: they keep empty folders in git and on the server. |
 | Change the very top or bottom of every page (logo bar, menu, footer links) | [includes/header.php](includes/header.php) / [includes/footer.php](includes/footer.php) |
 | Swap out a photo or logo | replace the file in [assets/img/](assets/img/) (keep the same filename so nothing breaks). A photo used as a banner (top of a page) also needs its two banner copies remade, see "Banner photos" below. The logo in the header also needs `logo-192.webp` remade from `logo.png`: `ffmpeg -i assets\img\logo.png -vf "scale=470:192:flags=lanczos" -c:v libwebp -quality 50 -compression_level 6 assets\img\logo-192.webp` |
 
@@ -88,7 +88,9 @@ privacy.php, safety-data-sheets.php
 safety-data-sheets/    one tiny page for each Safety Data Sheet group, e.g.
                        acids.php. Each one only names its group, and a shared
                        layout in includes/ does the rest. PDFs don't go here,
-                       they go in assets/img/safety-data-sheets/
+                       they go in assets/img/safety-data-sheets/. index.php
+                       only sends anyone who opens the folder itself to the
+                       main Safety Data Sheets page
 
 404.php                the "Page Not Found" page (switched on in web.config)
 robots.txt, sitemap.php
@@ -136,15 +138,21 @@ includes/              shared pieces every page uses
                             these by hand
 
 services/              one file per service page (Concrete, Agricultural,
-                        Ag/Industrial Maintenance)
+                        Ag/Industrial Maintenance). millwright-services.php
+                        is an old address that redirects to the Industrial
+                        Maintenance page, and index.php sends anyone who opens
+                        the folder itself to the homepage
 
 careers/                posting.php shows every job posting. The other files
                         are the original postings' old addresses, kept so
                         links already shared still work; each just redirects
-                        to posting.php
+                        to posting.php. index.php sends anyone who opens the
+                        folder itself to the Careers page
 
 projects/               supporting pages for the Projects section
-                        (agricultural.php, concrete.php, special-projects.php)
+                        (agricultural.php, concrete.php, special-projects.php).
+                        index.php sends anyone who opens the folder itself to
+                        the Projects page
 
 assets/css/style.css   all colors and fonts, the color/font values are near
                         the top of the file if you want to tweak the palette
