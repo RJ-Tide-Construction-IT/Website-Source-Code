@@ -84,9 +84,9 @@ function page_hero(string $title, ?string $image = null, string $extraHtml = '')
 <link rel="icon" type="image/png" sizes="16x16" href="<?= BASE_URL ?>/assets/img/favicon/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="192x192" href="<?= BASE_URL ?>/assets/img/favicon/favicon-192x192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="<?= BASE_URL ?>/assets/img/favicon/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- The two main font files load first, so text appears in the right font sooner (see the @font-face rules in style.css). -->
+<link rel="preload" href="<?= BASE_URL ?>/assets/fonts/roboto-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="<?= BASE_URL ?>/assets/fonts/roboto-slab-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="<?= asset_url('/assets/css/style.css') ?>">
 <?php if ($loadAnalytics && GA4_MEASUREMENT_ID !== ''): ?>
 <script async src="https://www.googletagmanager.com/gtag/js?id=<?= htmlspecialchars(GA4_MEASUREMENT_ID) ?>"></script>

@@ -157,6 +157,10 @@ projects/               supporting pages for the Projects section
 assets/css/style.css   all colors and fonts, the color/font values are near
                         the top of the file if you want to tweak the palette
 
+assets/fonts/          the site's two fonts (Roboto and Roboto Slab), served
+                        from this site instead of Google, plus their licence
+                        files (both free to use). Leave them as they are
+
 assets/js/main.js      small interactive bits: mobile menu, project
                         gallery slideshows, image lightbox, vendor logo
                         carousel, cookie notice, contact/application form

@@ -1,10 +1,11 @@
 <?php
 $pageTitle = 'Concrete Projects';
-$pageDescription = 'Photos of RJ Tide Construction concrete work, flatwork, foundations, site concrete, structural, and cast-in-place concrete.';
+$pageDescription = 'Photos of RJ Tide Construction concrete work, flatwork, foundations, site concrete, and industrial and structural concrete.';
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
-// Section labels match the sub-service categories on
-// services/concrete-services.php so the two pages stay in sync.
+// Section labels match the first four sub-service categories on
+// services/concrete-services.php. Its other two, Specialty and Decorative
+// Concrete, have their photos on projects/special-projects.php.
 $sections = [
     [
         'label'  => 'Flatwork',
@@ -28,15 +29,10 @@ $sections = [
         ],
     ],
     [
-        'label'  => 'Structural',
+        'label'  => 'Industrial / Structural',
         'photos' => [
             ['img' => 'concrete/web/industrial.webp', 'caption' => 'Finishing an industrial concrete slab'],
         ],
-    ],
-    [
-        'label'  => 'Cast In Place',
-        'note'   => 'Photos for this section are coming soon.',
-        'photos' => [],
     ],
 ];
 ?>

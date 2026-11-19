@@ -2,9 +2,46 @@
    RJ Tide Construction, base stylesheet
    ============================================================ */
 
+/* The site's two fonts, served from assets/fonts/ instead of Google. Each file
+   holds every weight (variable fonts), split into basic Latin and extended
+   Latin; browsers download a file only when the page uses its characters.
+   Licences are in assets/fonts/. */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("../fonts/roboto-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("../fonts/roboto-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Roboto Slab";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("../fonts/roboto-slab-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Roboto Slab";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("../fonts/roboto-slab-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 :root {
   --color-red:        #DD183B;
-  --color-red-dark:    #CC1939;
+  --color-red-dark:    #B01430; /* hover color and error text: 7:1 on white */
   --color-navy:        #0F172A;
   --color-charcoal:    #3A3A3A;
   --color-cream:       #FFEDE6;
@@ -306,19 +343,22 @@ section { padding: 64px 0; }
   justify-content: center;
   gap: 28px;
 }
+/* Icon, title, then one line of text. Cards in a row stretch to the same height. */
 .feature-grid .card {
   flex: 0 1 240px;
   text-align: center;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .feature-grid .card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 20px rgba(20, 6, 9, 0.14);
 }
-.feature-grid .card h3 { font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.feature-grid .card__icon { width: 40px; height: 40px; flex-shrink: 0; margin-bottom: 14px; color: var(--color-red); }
+.feature-grid .card h3 { font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; }
+.feature-grid .card p { margin: 0; color: var(--color-text-muted); font-size: 0.95rem; }
 
 /* One photo per subsection, all cropped to the same box so they read as a
    uniform set even when the source photos have different aspect ratios. */

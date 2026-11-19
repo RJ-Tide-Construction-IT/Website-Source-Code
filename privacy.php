@@ -4,7 +4,7 @@ $pageDescription = 'How RJ Tide Construction Company, Inc. collects and uses inf
 require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
 // Update this whenever the wording below changes.
-$lastUpdated = 'October 30, 2026';
+$lastUpdated = 'November 19, 2026';
 ?>
 
 <?php page_hero('Privacy Policy'); ?>
@@ -48,7 +48,6 @@ $lastUpdated = 'October 30, 2026';
                 submissions come from a person, not an automated program.</li>
             <li><strong>Brevo</strong> delivers the emails sent from our forms.</li>
             <li><strong>Google Maps</strong> shows our location on the Contact page.</li>
-            <li><strong>Google Fonts</strong> provides the fonts the site is displayed in.</li>
         </ul>
         <p>These services receive basic technical information, such as your IP address and browser type,
            when they load or are used.</p>
