@@ -28,15 +28,16 @@ $submitError = isset($_GET['error']);
         </div>
 
         <?php if ($submitted): ?>
-            <div class="form-note form-note--success">Thanks, your message has been sent. We'll be in touch soon.</div>
+            <div class="form-note form-note--success" role="status">Thanks, your message has been sent. We'll be in touch soon.</div>
         <?php elseif ($submitError): ?>
-            <div class="form-note form-note--error">Something went wrong sending your message. Please try again or call us directly.</div>
+            <div class="form-note form-note--error" role="alert">Something went wrong sending your message. Please try again or call us directly.</div>
         <?php endif; ?>
 
         <div class="contact-layout">
             <form id="contact-form" action="<?= BASE_URL ?>/contact-handler.php" method="post">
+                <p class="form-field-hint"><span class="required-mark">*</span> Required</p>
                 <div class="form-field">
-                    <label for="name">Name</label>
+                    <label for="name">Name <span class="required-mark" aria-hidden="true">*</span></label>
                     <input type="text" id="name" name="name" autocomplete="name" required>
                 </div>
                 <p class="form-field-hint">Please provide an email address or phone number so we can reach you.</p>
@@ -60,7 +61,7 @@ $submitError = isset($_GET['error']);
                     </div>
                 </div>
                 <div class="form-field">
-                    <label for="message">Message</label>
+                    <label for="message">Message <span class="required-mark" aria-hidden="true">*</span></label>
                     <textarea id="message" name="message" required></textarea>
                 </div>
                 <!-- honeypot field: real users never fill this in -->

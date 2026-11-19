@@ -86,6 +86,15 @@ function setting(string $name): string {
     return defined($name) ? (string) constant($name) : '';
 }
 
+// The visitor's light/dark choice from the sun/moon button in the header
+// (assets/js/main.js saves it in a "theme" cookie), or '' when they haven't
+// chosen and the site follows their device's setting. Anything else in the
+// cookie is ignored, so it can never end up in the page as-is.
+function site_theme(): string {
+    $theme = $_COOKIE['theme'] ?? '';
+    return ($theme === 'light' || $theme === 'dark') ? $theme : '';
+}
+
 // A PHP size setting (e.g. upload_max_filesize = "8M") in bytes. 0 means no limit.
 function ini_bytes(string $name): int {
     $value = trim((string) ini_get($name));

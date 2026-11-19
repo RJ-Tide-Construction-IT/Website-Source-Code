@@ -22,7 +22,7 @@ $physicalRequirements = $GLOBALS['APPLICATION_PHYSICAL_REQUIREMENTS'];
 // read (e.g. 'weekends'); $required makes the browser insist on an answer.
 function yes_no_field(string $name, string $label, bool $required = false): void { ?>
 <div class="form-field">
-    <label><?= htmlspecialchars($label) ?><?= $required ? ' *' : '' ?></label>
+    <label><?= htmlspecialchars($label) ?><?= $required ? ' <span class="required-mark" aria-hidden="true">*</span>' : '' ?></label>
     <div class="checkbox-group">
         <label class="checkbox-option"><input type="radio" name="<?= $name ?>" value="Yes"<?= $required ? ' required' : '' ?>> Yes</label>
         <label class="checkbox-option"><input type="radio" name="<?= $name ?>" value="No"> No</label>
@@ -46,25 +46,26 @@ $errorMessages = [
 <section>
     <div class="container">
         <?php if ($submitted): ?>
-            <div class="form-note form-note--success form-width">Thanks for applying, we've received your application and will be in touch.</div>
+            <div class="form-note form-note--success form-width" role="status">Thanks for applying, we've received your application and will be in touch.</div>
         <?php elseif ($submitError): ?>
-            <div class="form-note form-note--error form-width"><?= htmlspecialchars($errorMessages[$submitError] ?? 'Something went wrong. Please try again.') ?></div>
+            <div class="form-note form-note--error form-width" role="alert"><?= htmlspecialchars($errorMessages[$submitError] ?? 'Something went wrong. Please try again.') ?></div>
         <?php endif; ?>
 
         <form action="<?= BASE_URL ?>/apply-handler.php" method="post" enctype="multipart/form-data" class="form-width">
+            <p class="form-field-hint"><span class="required-mark">*</span> Required</p>
 
             <h2 class="form-section-title">Personal Information</h2>
             <div class="form-field">
-                <label for="name">Full Name *</label>
+                <label for="name">Full Name <span class="required-mark" aria-hidden="true">*</span></label>
                 <input type="text" id="name" name="name" autocomplete="name" required>
             </div>
             <div class="form-row">
                 <div class="form-field">
-                    <label for="email">Email *</label>
+                    <label for="email">Email <span class="required-mark" aria-hidden="true">*</span></label>
                     <input type="email" id="email" name="email" autocomplete="email" required>
                 </div>
                 <div class="form-field">
-                    <label for="phone">Phone *</label>
+                    <label for="phone">Phone <span class="required-mark" aria-hidden="true">*</span></label>
                     <input type="tel" id="phone" name="phone" autocomplete="tel" required>
                 </div>
             </div>
@@ -95,7 +96,7 @@ $errorMessages = [
             <h2 class="form-section-title">Employment Desired</h2>
             <div class="form-row">
                 <div class="form-field">
-                    <label for="position">Position Applying For *</label>
+                    <label for="position">Position Applying For <span class="required-mark" aria-hidden="true">*</span></label>
                     <select id="position" name="position" required>
                         <?php foreach ($jobs as $job): ?>
                         <option value="<?= htmlspecialchars($job) ?>"><?= htmlspecialchars($job) ?></option>
@@ -270,7 +271,7 @@ $errorMessages = [
                     <input type="checkbox" name="certify" value="1" required>
                     I certify that the information provided in this application is complete and true
                     to the best of my knowledge, and I authorize RJ Tide Construction to verify it with
-                    the references, schools, and employers listed above. *
+                    the references, schools, and employers listed above. <span class="required-mark" aria-hidden="true">*</span>
                 </label>
             </div>
 

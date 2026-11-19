@@ -37,6 +37,10 @@ $business = [
     <?= banner_photo('agriculture/web/sunrise-headhouse.webp') ?>
     <div class="container">
         <h1>Your Contractor Of Choice For<br>Full-Service Concrete,<br>Agricultural, &amp;<br>Industrial Construction</h1>
+        <div class="button-row">
+            <a href="<?= BASE_URL ?>/contact.php" class="btn">Get In Touch</a>
+            <a href="tel:<?= SITE_PHONE_TEL ?>" class="btn btn--outline">Call <?= SITE_PHONE ?></a>
+        </div>
     </div>
 </section>
 

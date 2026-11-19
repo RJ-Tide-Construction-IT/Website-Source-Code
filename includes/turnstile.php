@@ -21,8 +21,10 @@ function turnstile_widget(): void {
     if (!turnstile_enabled()) {
         return;
     }
+    // Matches the visitor's light/dark choice; with none, Cloudflare follows the device like the site does.
     echo '<div class="form-field">'
-       . '<div class="cf-turnstile" data-sitekey="' . htmlspecialchars(TURNSTILE_SITE_KEY) . '"></div>'
+       . '<div class="cf-turnstile" data-sitekey="' . htmlspecialchars(TURNSTILE_SITE_KEY) . '"'
+       . (site_theme() ? ' data-theme="' . site_theme() . '"' : '') . '></div>'
        . "</div>\n"
        . '<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>' . "\n";
 }
