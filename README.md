@@ -473,6 +473,9 @@ submissions by email through [Brevo](https://www.brevo.com/), handled by
   Word, 5MB max; the browser warns as soon as a wrong file is picked, so the
   applicant doesn't lose the form. If you change the limit, change both
   `$maxBytes` in `apply-handler.php` and `data-max-bytes` in `employment.php`.
+- **Send buttons:** once pressed, the button greys out and says "Sending…" so a
+  visitor can't send twice. Any form button with `data-sending` does this
+  (handled in `assets/js/main.js`).
 - **Spam protection, two layers on both forms:**
   - a hidden "honeypot" field that bots fill in and people never see;
   - a [Cloudflare Turnstile](https://www.cloudflare.com/products/turnstile/)

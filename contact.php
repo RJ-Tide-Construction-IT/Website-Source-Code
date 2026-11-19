@@ -69,7 +69,7 @@ $submitError = isset($_GET['error']);
                     <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
                 </div>
                 <?php turnstile_widget(); ?>
-                <button type="submit" class="btn">Send Message</button>
+                <button type="submit" class="btn" data-sending>Send Message</button>
             </form>
 
             <div class="map-embed">

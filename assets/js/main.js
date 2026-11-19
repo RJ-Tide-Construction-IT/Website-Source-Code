@@ -1,11 +1,34 @@
+// Phone menu (the three-bar button in the header).
 document.addEventListener('DOMContentLoaded', function () {
   var toggle = document.getElementById('navToggle');
   var nav = document.getElementById('mainNav');
-  if (!toggle || !nav) return;
+  var header = toggle && toggle.closest('.site-header');
+  if (!header || !nav) return;
+
+  // One place opens and closes the menu, so the class that shows it and
+  // aria-expanded (read out by screen readers, and what turns the bars into
+  // an X in style.css) always agree.
+  function setOpen(open) {
+    nav.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
 
   toggle.addEventListener('click', function () {
-    var isOpen = nav.classList.toggle('is-open');
-    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    setOpen(!nav.classList.contains('is-open'));
+  });
+
+  // Escape closes it and puts keyboard focus back on the menu button, so
+  // keyboard users aren't left on a link that just disappeared.
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && nav.classList.contains('is-open')) {
+      setOpen(false);
+      toggle.focus();
+    }
+  });
+
+  // Tapping anywhere on the page outside the header closes it too.
+  document.addEventListener('click', function (e) {
+    if (nav.classList.contains('is-open') && !header.contains(e.target)) setOpen(false);
   });
 });
 
@@ -340,6 +363,33 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
         alert('Please complete the "Verify you are human" check before submitting.');
       }
+    });
+  });
+});
+
+// Contact form and job application: once a submission is really on its way,
+// grey out the button and show "Sending..." so nobody taps twice and sends a
+// duplicate. Only buttons marked data-sending do this, because some dashboard
+// forms keep you on the same page (previews, downloads) and would be left
+// with a dead button. Kept below the Turnstile block above so it can skip any
+// submission that block stopped.
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('button[data-sending]').forEach(function (button) {
+    var label = button.textContent;
+    if (!button.form) return;
+
+    button.form.addEventListener('submit', function (e) {
+      if (e.defaultPrevented) return;
+      button.disabled = true;
+      button.textContent = 'Sending\u2026';
+    });
+
+    // Pressing Back to the form can bring the page back exactly as it was
+    // left, greyed-out button included, so switch it back on whenever the
+    // page is shown.
+    window.addEventListener('pageshow', function () {
+      button.disabled = false;
+      button.textContent = label;
     });
   });
 });

@@ -176,6 +176,8 @@ ul { padding-left: 1.25em; }
 .btn--outline:hover { background: var(--color-red); border-color: var(--color-red); color: var(--color-white); }
 .btn--nav-cta { padding: 0.5em 1.25em; font-size: 0.95rem; white-space: nowrap; flex-shrink: 0; }
 .main-nav .btn--nav-cta:hover { color: var(--color-white); }
+/* A form button that's been pressed and is waiting on the server (see "Sending2026" in main.js). */
+.btn:disabled { opacity: 0.7; cursor: wait; }
 
 /* ---------- Header ---------- */
 .site-header {
@@ -239,8 +241,18 @@ ul { padding-left: 1.25em; }
   border: none;
   cursor: pointer;
   padding: 8px;
+  /* At least 44px square so it's easy to tap; the bars stay centred inside. */
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
 }
-.nav-toggle span { width: 26px; height: 3px; background: var(--color-navy); border-radius: 2px; }
+.nav-toggle span { width: 26px; height: 3px; background: var(--color-navy); border-radius: 2px; transition: transform 0.2s ease, opacity 0.2s ease; }
+/* While the menu is open the three bars turn into an X ("close"). Bars are
+   3px tall with 5px gaps, so the outer two move 8px to meet the middle one. */
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
 /* ---------- Hero ---------- */
 .hero {
@@ -682,7 +694,8 @@ section { padding: 64px 0; }
   color: var(--color-text);
   cursor: pointer;
 }
-.checkbox-option input { width: auto; }
+/* Bigger boxes and dots so they're easy to tap on a phone; red when ticked to match the site. */
+.checkbox-option input { width: 20px; height: 20px; flex-shrink: 0; margin: 0; accent-color: var(--color-red); }
 .form-row { display: flex; flex-wrap: wrap; gap: 0 20px; }
 .form-row .form-field { flex: 1; min-width: 160px; }
 /* The three Employer blocks on the job application, with a divider between. */
@@ -911,20 +924,35 @@ a.dash-tile:hover, a.dash-tile:focus-visible { border-color: var(--color-red); t
     padding: 20px 24px;
     box-shadow: var(--shadow);
     display: none;
+    /* Never taller than the screen below the header (100% here means the
+       header's own height), and scrolls if the links don't fit, e.g. a phone
+       turned sideways. dvh follows the phone's address bar showing/hiding;
+       the vh line is for older browsers that don't know dvh. */
+    max-height: calc(100vh - 100%);
+    max-height: calc(100dvh - 100%);
+    overflow-y: auto;
   }
   .main-nav.is-open { display: flex; }
-  .main-nav ul { flex-direction: column; flex-wrap: wrap; gap: 14px; width: 100%; }
-  .main-nav ul a { white-space: normal; }
-  .btn--nav-cta { margin-top: 14px; }
+  .main-nav ul { flex-direction: column; flex-wrap: wrap; gap: 0; width: 100%; }
+  /* Each menu link is a full-width row about 44px tall, easy to tap. */
+  .main-nav ul a { white-space: normal; display: block; padding: 11px 0; }
+  .btn--nav-cta { margin-top: 14px; padding-top: 10px; padding-bottom: 10px; }
 }
 
 @media (max-width: 880px) {
   .site-footer__inner { grid-template-columns: 1fr; }
+  /* Taller footer links on phones and tablets: about 44px each, the size a
+     fingertip can hit without catching the link next to it. */
+  .site-footer ul { gap: 0; }
+  .site-footer ul a { display: inline-block; padding: 10px 0; }
 }
 
 /* Small phones: no room for the number beside the logo and hamburger, so the
-   phone pill shrinks to a round call button. */
+   phone pill shrinks to a round call button. The logo shrinks too. */
 @media (max-width: 480px) {
+  /* Smaller logo so the logo, call button and menu button fit on one row
+     (the width follows automatically, keeping the logo's shape). */
+  .site-header__logo img { height: 48px; }
   .site-header__phone { padding: 10px; }
   .site-header__phone svg { width: 18px; height: 18px; }
   .site-header__phone-number { display: none; }
@@ -935,6 +963,15 @@ a.dash-tile:hover, a.dash-tile:focus-visible { border-color: var(--color-red); t
    sliver that overflowed into its neighbor. Below this width, wrap into a
    2-up grid instead so every button keeps a readable size. */
 @media (max-width: 640px) {
+  /* Phones: the roomy desktop spacing above and below each band wastes most
+     of a small screen, so trim it. */
+  section { padding: 40px 0; }
+  .hero { padding: 56px 0; }
+  .page-hero--photo { padding: 64px 0; }
+  /* A fixed 360px-tall photo box is nearly square on a phone and crops away
+     most of the picture; a 16:9 box keeps the same wide look as desktop. */
+  .subsection-photo img,
+  .subsection-photo video { height: auto; aspect-ratio: 16 / 9; }
   .service-links--compact { flex-wrap: wrap; }
   .service-links--compact li { flex: 1 1 calc(50% - 8px); }
   /* Safety Data Sheets main page: two buttons per row on phones. */
@@ -953,7 +990,8 @@ a.dash-tile:hover, a.dash-tile:focus-visible { border-color: var(--color-red); t
   .site-header__pill,
   .slideshow__slide,
   .btn,
-  .service-links a {
+  .service-links a,
+  .nav-toggle span {
     transition: none;
   }
   .feature-grid .card:hover,

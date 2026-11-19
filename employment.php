@@ -279,7 +279,7 @@ $errorMessages = [
                 <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
             </div>
             <?php turnstile_widget(); ?>
-            <button type="submit" class="btn">Submit Application</button>
+            <button type="submit" class="btn" data-sending>Submit Application</button>
         </form>
     </div>
 </section>
