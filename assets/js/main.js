@@ -1,12 +1,90 @@
+// Phone menu (the three-bar button in the header).
 document.addEventListener('DOMContentLoaded', function () {
   var toggle = document.getElementById('navToggle');
   var nav = document.getElementById('mainNav');
-  if (!toggle || !nav) return;
+  var header = toggle && toggle.closest('.site-header');
+  if (!header || !nav) return;
+
+  // One place opens and closes the menu, so the class that shows it and
+  // aria-expanded (read out by screen readers, and what turns the bars into
+  // an X in style.css) always agree.
+  function setOpen(open) {
+    nav.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
 
   toggle.addEventListener('click', function () {
-    var isOpen = nav.classList.toggle('is-open');
-    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    setOpen(!nav.classList.contains('is-open'));
   });
+
+  // Escape closes it and puts keyboard focus back on the menu button, so
+  // keyboard users aren't left on a link that just disappeared.
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && nav.classList.contains('is-open')) {
+      setOpen(false);
+      toggle.focus();
+    }
+  });
+
+  // Tapping anywhere on the page outside the header closes it too.
+  document.addEventListener('click', function (e) {
+    if (nav.classList.contains('is-open') && !header.contains(e.target)) setOpen(false);
+  });
+});
+
+// Light/dark switch (the sun/moon button in the header). The site follows the
+// device's light/dark setting until the visitor presses the button. Their
+// choice is then kept for a year in a "theme" cookie, which PHP also reads
+// (site_theme() in includes/config.php) so every page arrives in the right
+// colours. Picking the same as the device deletes the cookie instead, so the
+// site goes back to following the device.
+document.addEventListener('DOMContentLoaded', function () {
+  var button = document.getElementById('themeToggle');
+  if (!button) return;
+  var root = document.documentElement;
+  var deviceDark = window.matchMedia('(prefers-color-scheme: dark)');
+  // When the white-lettered logo shows: always (picked dark), never (picked
+  // light), or when the device is dark (no choice). Same as theme_logo() in header.php.
+  var darkLogoMedia = { dark: 'all', light: 'not all', '': '(prefers-color-scheme: dark)' };
+
+  // The saved choice: 'light', 'dark', or '' for "follow the device".
+  function savedChoice() {
+    var match = document.cookie.match(/(?:^|;\s*)theme=(light|dark)(?:;|$)/);
+    return match ? match[1] : '';
+  }
+
+  // What the page actually shows for a choice.
+  function shown(choice) {
+    return choice || (deviceDark.matches ? 'dark' : 'light');
+  }
+
+  // Puts the colours, logo(s) and the button's spoken label in line with a choice.
+  function apply(choice) {
+    if (choice) root.setAttribute('data-theme', choice);
+    else root.removeAttribute('data-theme');
+    document.querySelectorAll('source[data-dark-logo]').forEach(function (source) {
+      source.media = darkLogoMedia[choice];
+    });
+    button.setAttribute('aria-label', shown(choice) === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+
+  button.addEventListener('click', function () {
+    var next = shown(root.getAttribute('data-theme') || '') === 'dark' ? 'light' : 'dark';
+    var choice = next === shown('') ? '' : next;
+    document.cookie = 'theme=' + choice + '; max-age=' + (choice ? 31536000 : 0) + '; path=/; samesite=lax' +
+      (location.protocol === 'https:' ? '; secure' : '');
+    apply(choice);
+  });
+
+  // If the device switches light/dark while there's no choice, what's showing
+  // changes, so the button's label follows.
+  deviceDark.addEventListener('change', function () { apply(root.getAttribute('data-theme') || ''); });
+
+  // Going Back can show a saved copy of this page from before the button was
+  // pressed on another page, so check the cookie again.
+  window.addEventListener('pageshow', function (e) { if (e.persisted) apply(savedChoice()); });
+
+  apply(savedChoice());
 });
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -329,17 +407,53 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Cloudflare Turnstile (includes/turnstile.php): don't submit a form until its
 // "Verify you are human" check is done, so a visitor isn't sent back to an
-// empty form, painful on the long job application.
+// empty form, painful on the long job application. Pressing Send too early
+// shows a message just under the check (read out by screen readers); it's
+// removed the next time they press Send.
 document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('.cf-turnstile').forEach(function (widget) {
     var form = widget.closest('form');
     if (!form) return;
+    var message = null;
     form.addEventListener('submit', function (e) {
       var token = form.querySelector('[name="cf-turnstile-response"]');
-      if (!token || token.value === '') {
-        e.preventDefault();
-        alert('Please complete the "Verify you are human" check before submitting.');
-      }
+      if (message) { message.remove(); message = null; }
+      if (token && token.value !== '') return;
+      e.preventDefault();
+      // A fresh message each time, so screen readers announce it again.
+      message = document.createElement('p');
+      message.className = 'form-note form-note--error';
+      message.setAttribute('role', 'alert');
+      message.textContent = 'Please complete the "Verify you are human" check before submitting.';
+      // turnstile.php wraps the check in a .form-field; the message goes right after it, above the Send button.
+      widget.parentNode.after(message);
+    });
+  });
+});
+
+// Contact form and job application: once a submission is really on its way,
+// grey out the button and show "Sending..." so nobody taps twice and sends a
+// duplicate. Only buttons marked data-sending do this, because some dashboard
+// forms keep you on the same page (previews, downloads) and would be left
+// with a dead button. Kept below the Turnstile block above so it can skip any
+// submission that block stopped.
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('button[data-sending]').forEach(function (button) {
+    var label = button.textContent;
+    if (!button.form) return;
+
+    button.form.addEventListener('submit', function (e) {
+      if (e.defaultPrevented) return;
+      button.disabled = true;
+      button.textContent = 'Sending\u2026';
+    });
+
+    // Pressing Back to the form can bring the page back exactly as it was
+    // left, greyed-out button included, so switch it back on whenever the
+    // page is shown.
+    window.addEventListener('pageshow', function () {
+      button.disabled = false;
+      button.textContent = label;
     });
   });
 });

@@ -41,6 +41,9 @@ $lastUpdated = 'November 19, 2026';
         <p>You can block or delete cookies in your browser settings, and Google offers a
            <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">browser add-on to opt out of Google Analytics</a>.
            The site works the same either way.</p>
+        <p>If you use the light/dark button at the top of the page, a small cookie named
+           &ldquo;theme&rdquo; remembers your choice for a year so every page shows it. It is only set
+           when you press that button and is never used for tracking.</p>
 
         <h2>Other services this site uses</h2>
         <ul>

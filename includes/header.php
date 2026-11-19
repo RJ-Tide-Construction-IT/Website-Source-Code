@@ -27,6 +27,7 @@ $canonicalUrl = SITE_URL . '/' . ltrim($canonicalPath, '/');
 $privatePage = !empty($privatePage);
 $noindexPage = !empty($noindexPage);
 $loadAnalytics = !$privatePage;
+$siteTheme = site_theme(); // 'light', 'dark', or '' to follow the device
 
 // The photo behind a banner, as a real image so browsers find it right away and
 // load it first (a CSS background is found late, which is what made the
@@ -53,12 +54,27 @@ function page_hero(string $title, ?string $image = null, string $extraHtml = '')
        . '    <div class="container"><h1>' . htmlspecialchars($title) . '</h1>' . $extraHtml . "</div>\n"
        . "</section>\n";
 }
+
+// The logo, with the white-lettered copy shown when the site is dark (README,
+// "Dark mode"). With no choice made the browser picks by the device setting;
+// after the light/dark button has been used, PHP picks from the cookie so the
+// right logo shows straight away. main.js switches every data-dark-logo source
+// when the button is pressed. $class is an optional CSS class for the <img>.
+function theme_logo(string $class = ''): string {
+    $media = ['dark' => 'all', 'light' => 'not all'][site_theme()] ?? '(prefers-color-scheme: dark)';
+    $logo = BASE_URL . '/assets/img/logo-192';
+    return '<picture><source data-dark-logo media="' . $media . '" srcset="' . $logo . '-dark.webp" width="470" height="192">'
+         . '<img src="' . $logo . '.webp" width="470" height="192" alt="' . htmlspecialchars(SITE_NAME) . '"'
+         . ($class !== '' ? ' class="' . $class . '"' : '') . '></picture>';
+}
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"<?= $siteTheme ? ' data-theme="' . $siteTheme . '"' : '' ?>>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- The site follows the device's light/dark setting unless the visitor has used the light/dark button (colours in style.css). -->
+<meta name="color-scheme" content="<?= $siteTheme ?: 'light dark' ?>">
 <title><?= htmlspecialchars($documentTitle) ?></title>
 <meta name="description" content="<?= htmlspecialchars($pageDescription) ?>">
 <?php if ($privatePage): ?>
@@ -114,7 +130,7 @@ function page_hero(string $title, ?string $image = null, string $extraHtml = '')
     <div class="container site-header__inner">
         <div class="site-header__brand">
             <a href="<?= BASE_URL ?>/" class="site-header__logo">
-                <img src="<?= BASE_URL ?>/assets/img/logo-192.webp" width="470" height="192" alt="<?= htmlspecialchars(SITE_NAME) ?>">
+                <?= theme_logo() ?>
             </a>
 
             <div class="site-header__contact">
@@ -128,6 +144,13 @@ function page_hero(string $title, ?string $image = null, string $extraHtml = '')
                 </a>
             </div>
         </div>
+
+        <!-- Light/dark switch (main.js). Moon in light mode ("switch to dark"), sun in dark mode (style.css).
+             Without a saved choice PHP can't know the device setting, so main.js sets the exact label on load. -->
+        <button type="button" class="theme-toggle" id="themeToggle" aria-label="<?= ['dark' => 'Switch to light mode', 'light' => 'Switch to dark mode'][$siteTheme] ?? 'Switch between light and dark mode' ?>">
+            <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+            <svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a.996.996 0 0 0 0-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 0 0 0-1.41.996.996 0 0 0-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 0 0 0-1.41.996.996 0 0 0-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
+        </button>
 
         <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mainNav">
             <span></span><span></span><span></span>

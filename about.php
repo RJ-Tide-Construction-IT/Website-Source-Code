@@ -8,7 +8,8 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 
 <section>
     <div class="container container--narrow">
-        <img src="<?= BASE_URL ?>/assets/img/logo-192.webp" alt="<?= htmlspecialchars(SITE_NAME) ?>" width="470" height="192" class="about-logo">
+        <!-- Dark mode shows the copy with white lettering (README, "Dark mode"). -->
+        <?= theme_logo('about-logo') ?>
 
         <p>RJ Tide Construction was founded in 2010 as a full-service concrete contractor. The founding
            partners all came from general contracting and design-build backgrounds and had grown tired

@@ -26,15 +26,15 @@ exactly which file to open for common edits.
 | Add/remove a checkbox on the job application (licenses, physical requirements, experience), or change its answer levels, languages, education rows, or number of employers | the `APPLICATION_...` lists in [includes/config.php](includes/config.php) |
 | Change the layout of the printable PDF attached to each job application email | [includes/application-pdf.php](includes/application-pdf.php), see "Printable application PDF" below |
 | Add, remove, or edit a photo on the Projects page | the `$sections` array at the top of the matching file in [projects/](projects/), see below |
-| Change colors, fonts, or overall look | [assets/css/style.css](assets/css/style.css) |
-| Change the mobile menu, slideshow, or image lightbox behavior | [assets/js/main.js](assets/js/main.js) |
+| Change colors, fonts, or overall look | [assets/css/style.css](assets/css/style.css) (light colours in the list at the top, dark-mode colours in the two matching lists right below it, see "Dark mode") |
+| Change the mobile menu, light/dark button, slideshow, or image lightbox behavior | [assets/js/main.js](assets/js/main.js) |
 | Change what's in the top menu bar on every page | `$GLOBALS['MAIN_NAV']` inside [includes/config.php](includes/config.php) |
 | Change who receives contact form emails (by department) | the `CONTACT_EMAIL_...` settings in [includes/config.php](includes/config.php) |
 | Change who receives safety forms | `SAFETY_FORMS_EMAIL` in [includes/config.php](includes/config.php) |
 | Add a safety form, or change a form's questions | the `SAFETY_FORMS` list in [includes/dashboard/safety-forms.php](includes/dashboard/safety-forms.php) |
 | Add, replace, or remove a Safety Data Sheet (SDS) | To add one, name the PDF after the product, for example `MasterSeal-NP-1-Black.pdf` (no two sheets can share a filename, even in different folders), and put it in the right numbered category folder inside [assets/img/safety-data-sheets/](assets/img/safety-data-sheets/). It appears on that category's page automatically after you commit and push to `master`, no code changes needed. Its title comes from the filename until you add a line for it to the `SDS_TITLES` list in [includes/safety-data-sheets.php](includes/safety-data-sheets.php), which shows the product and maker. Folder and file names may use only letters, numbers, dashes, and underscores, no spaces, `&`, `+`, or `%`, because the live server can block them. To replace a sheet, save the new PDF over the old one with the same filename. To rename a PDF, rename the file and update its `SDS_TITLES` line if it has one. To remove a sheet, delete its PDF (and its `SDS_TITLES` line). The main [Safety Data Sheets page](safety-data-sheets.php) has one button for each category, and a button shows only once its category has a PDF. A brand-new category folder needs two more things: one line in the `SDS_CATEGORIES` list in the same file, kept in number order, and one tiny page file. To make the page file, copy any file in [safety-data-sheets/](safety-data-sheets/) except index.php, name the copy after the new line's short name, and change the short name inside it to match. A folder with no line in the list will not appear on the site. If you rename a folder, update its line in `SDS_CATEGORIES`. Don't delete the `.keep` files: they keep empty folders in git and on the server. |
 | Change the very top or bottom of every page (logo bar, menu, footer links) | [includes/header.php](includes/header.php) / [includes/footer.php](includes/footer.php) |
-| Swap out a photo or logo | replace the file in [assets/img/](assets/img/) (keep the same filename so nothing breaks). A photo used as a banner (top of a page) also needs its two banner copies remade, see "Banner photos" below. The logo in the header also needs `logo-192.webp` remade from `logo.png`: `ffmpeg -i assets\img\logo.png -vf "scale=470:192:flags=lanczos" -c:v libwebp -quality 50 -compression_level 6 assets\img\logo-192.webp` Browsers keep site images for up to 7 days, so a photo or logo replaced under the same filename can take up to a week to show for recent visitors. To show it at once, save it under a new filename and point the page at that. If the photo has a `-thumb.webp` copy, remake that too (see "Thumbnail copies" below). Safety Data Sheet PDFs are re-checked every time, so a replaced sheet shows right away. |
+| Swap out a photo or logo | replace the file in [assets/img/](assets/img/) (keep the same filename so nothing breaks). A photo used as a banner (top of a page) also needs its two banner copies remade, see "Banner photos" below. The logo in the header also needs `logo-192.webp` remade from `logo.png`: `ffmpeg -i assets\img\logo.png -vf "scale=470:192:flags=lanczos" -c:v libwebp -quality 50 -compression_level 6 assets\img\logo-192.webp`, and the dark-mode copy `logo-192-dark.webp` remade too (command under "Dark mode" below). Browsers keep site images for up to 7 days, so a photo or logo replaced under the same filename can take up to a week to show for recent visitors. To show it at once, save it under a new filename and point the page at that. If the photo has a `-thumb.webp` copy, remake that too (see "Thumbnail copies" below). Safety Data Sheet PDFs are re-checked every time, so a replaced sheet shows right away. |
 
 For any page's body text, just open the file and edit the words between the
 HTML tags (the bits like `<p>...</p>`), you don't need to touch anything
@@ -155,7 +155,8 @@ projects/               supporting pages for the Projects section
                         the Projects page
 
 assets/css/style.css   all colors and fonts, the color/font values are near
-                        the top of the file if you want to tweak the palette
+                        the top of the file if you want to tweak the palette;
+                        the dark-mode colours sit just below the colour list
 
 assets/fonts/          the site's two fonts (Roboto and Roboto Slab), served
                         from this site instead of Google, plus their licence
@@ -457,6 +458,50 @@ computer, so it can never be switched on for the live site, and the deploy never
 uploads the Local Testing page. Your test data lives in `uploads/dashboard/` on
 your computer; delete that folder to start fresh.
 
+## Dark mode
+
+The site follows each visitor's own device setting: if their phone or computer
+is set to dark mode, every page (and the Employee Dashboard) shows dark colours
+automatically. A sun/moon button at the top of every page (right of the Contact
+button, or next to the menu button on phones) lets visitors pick light or dark
+themselves.
+
+- **The button:** pressing it switches the page at once and saves the choice in
+  a small cookie called `theme` for a year, so every page opens that way.
+  Picking the same mode as the device deletes the cookie, so the site goes back
+  to following the device. The code is the "Light/dark switch" part of
+  [assets/js/main.js](assets/js/main.js); PHP reads the cookie with
+  `site_theme()` in [includes/config.php](includes/config.php), so pages arrive
+  in the right colours with no flash. The Privacy Policy mentions this cookie.
+  The "are you human?" check on the forms follows the choice too.
+- **Colours:** the dark-mode colours are right below the main colour list at the
+  top of [assets/css/style.css](assets/css/style.css), and that list appears
+  **twice**: once for "the device is dark" and once for "the visitor pressed
+  dark". Keep both copies identical: when you change a dark colour, change it
+  in both places. Only backgrounds, text, borders and the green/yellow/red
+  message colours change; the red buttons, navy banners, footer and photo
+  overlays look the same in both modes.
+- **Logo:** dark mode shows `assets/img/logo-192-dark.webp`, a copy of the logo
+  with the black lettering turned white (the red stays red). Both places the
+  logo appears (the header and the About page) print it with `theme_logo()` in
+  [includes/header.php](includes/header.php), which picks the right copy and
+  lets the button swap it. If the logo ever changes, remake both copies from
+  `logo.png`: the normal one with the command in "Swap out a photo or logo"
+  above, and the dark one with:
+
+      ffmpeg -i assets\img\logo.png -vf "format=rgba,geq=r='if(lt(max(max(r(X,Y),g(X,Y)),b(X,Y))-min(min(r(X,Y),g(X,Y)),b(X,Y)),60),255,r(X,Y))':g='if(lt(max(max(r(X,Y),g(X,Y)),b(X,Y))-min(min(r(X,Y),g(X,Y)),b(X,Y)),60),255,g(X,Y))':b='if(lt(max(max(r(X,Y),g(X,Y)),b(X,Y))-min(min(r(X,Y),g(X,Y)),b(X,Y)),60),255,b(X,Y))':a='alpha(X,Y)',scale=470:192:flags=lanczos" -c:v libwebp -quality 50 -compression_level 6 assets\img\logo-192-dark.webp
+
+  It turns every grey or black pixel white and leaves coloured ones alone, so it
+  suits a logo whose dark parts are black or grey. If a new logo doesn't come out
+  right, the fallback is to show the normal logo on a small white rounded panel
+  in dark mode (a few lines of CSS) instead.
+- **Logos with dark lettering** (the Associations strip) sit on a small white
+  panel in dark mode so they stay readable; the vendor logo boxes stay white.
+- **To preview:** press the sun/moon button. To check the "follow the device"
+  behaviour, press it until it matches your computer's setting (that clears the
+  saved choice), then switch your computer between light and dark (Windows:
+  Settings > Personalization > Colors > Choose your mode) and reload the page.
+
 ## Contact and job application forms
 
 [contact.php](contact.php) and [employment.php](employment.php) send their
@@ -473,12 +518,21 @@ submissions by email through [Brevo](https://www.brevo.com/), handled by
   Word, 5MB max; the browser warns as soon as a wrong file is picked, so the
   applicant doesn't lose the form. If you change the limit, change both
   `$maxBytes` in `apply-handler.php` and `data-max-bytes` in `employment.php`.
+- **Send buttons:** once pressed, the button greys out and says "Sending…" so a
+  visitor can't send twice. Any form button with `data-sending` does this
+  (handled in `assets/js/main.js`).
+- **Required fields:** marked with a red `*` after the field name
+  (`<span class="required-mark" aria-hidden="true">*</span>`), with a "* Required"
+  note at the top of each form. To make another field required, add `required`
+  to its input and the star to its label. A field turns red only after the
+  visitor has tried it and left it wrong (or pressed Send with it empty).
 - **Spam protection, two layers on both forms:**
   - a hidden "honeypot" field that bots fill in and people never see;
   - a [Cloudflare Turnstile](https://www.cloudflare.com/products/turnstile/)
     "Verify you are human" box above the submit button
     ([includes/turnstile.php](includes/turnstile.php)). Most visitors just see a
-    checkmark, no picture puzzles. The browser won't submit until it's done, and
+    checkmark, no picture puzzles. The browser won't submit until it's done (pressing Send too early shows a
+    message under the check), and
     the server double-checks with Cloudflare before anything is emailed or saved.
 
 ### Email and human-check setup
