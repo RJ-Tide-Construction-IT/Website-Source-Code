@@ -1,0 +1,4 @@
+# Same rule as the web.config in this folder: browsers re-check sheets every time.
+<IfModule mod_headers.c>
+    Header set Cache-Control "no-cache"
+</IfModule>

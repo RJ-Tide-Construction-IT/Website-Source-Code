@@ -34,7 +34,7 @@ exactly which file to open for common edits.
 | Add a safety form, or change a form's questions | the `SAFETY_FORMS` list in [includes/dashboard/safety-forms.php](includes/dashboard/safety-forms.php) |
 | Add, replace, or remove a Safety Data Sheet (SDS) | To add one, name the PDF after the product, for example `MasterSeal-NP-1-Black.pdf` (no two sheets can share a filename, even in different folders), and put it in the right numbered category folder inside [assets/img/safety-data-sheets/](assets/img/safety-data-sheets/). It appears on that category's page automatically after you commit and push to `master`, no code changes needed. Its title comes from the filename until you add a line for it to the `SDS_TITLES` list in [includes/safety-data-sheets.php](includes/safety-data-sheets.php), which shows the product and maker. Folder and file names may use only letters, numbers, dashes, and underscores, no spaces, `&`, `+`, or `%`, because the live server can block them. To replace a sheet, save the new PDF over the old one with the same filename. To rename a PDF, rename the file and update its `SDS_TITLES` line if it has one. To remove a sheet, delete its PDF (and its `SDS_TITLES` line). The main [Safety Data Sheets page](safety-data-sheets.php) has one button for each category, and a button shows only once its category has a PDF. A brand-new category folder needs two more things: one line in the `SDS_CATEGORIES` list in the same file, kept in number order, and one tiny page file. To make the page file, copy any file in [safety-data-sheets/](safety-data-sheets/) except index.php, name the copy after the new line's short name, and change the short name inside it to match. A folder with no line in the list will not appear on the site. If you rename a folder, update its line in `SDS_CATEGORIES`. Don't delete the `.keep` files: they keep empty folders in git and on the server. |
 | Change the very top or bottom of every page (logo bar, menu, footer links) | [includes/header.php](includes/header.php) / [includes/footer.php](includes/footer.php) |
-| Swap out a photo or logo | replace the file in [assets/img/](assets/img/) (keep the same filename so nothing breaks). A photo used as a banner (top of a page) also needs its two banner copies remade, see "Banner photos" below. The logo in the header also needs `logo-192.webp` remade from `logo.png`: `ffmpeg -i assets\img\logo.png -vf "scale=470:192:flags=lanczos" -c:v libwebp -quality 50 -compression_level 6 assets\img\logo-192.webp` |
+| Swap out a photo or logo | replace the file in [assets/img/](assets/img/) (keep the same filename so nothing breaks). A photo used as a banner (top of a page) also needs its two banner copies remade, see "Banner photos" below. The logo in the header also needs `logo-192.webp` remade from `logo.png`: `ffmpeg -i assets\img\logo.png -vf "scale=470:192:flags=lanczos" -c:v libwebp -quality 50 -compression_level 6 assets\img\logo-192.webp` Browsers keep site images for up to 7 days, so a photo or logo replaced under the same filename can take up to a week to show for recent visitors. To show it at once, save it under a new filename and point the page at that. If the photo has a `-thumb.webp` copy, remake that too (see "Thumbnail copies" below). Safety Data Sheet PDFs are re-checked every time, so a replaced sheet shows right away. |
 
 For any page's body text, just open the file and edit the words between the
 HTML tags (the bits like `<p>...</p>`), you don't need to touch anything
@@ -162,6 +162,11 @@ assets/js/main.js      small interactive bits: mobile menu, project
                         carousel, cookie notice, contact/application form
                         checks
 
+assets/web.config,     tell browsers to keep images, CSS, JavaScript and
+assets/.htaccess       videos for 7 days, so pages load faster for returning
+                        visitors (the live server reads web.config; .htaccess
+                        is the same rule for Apache). To undo, delete them.
+
 assets/img/             all photos and logos, organized into subfolders by
                         where they're used (agriculture, concrete, millwright,
                         special-projects, vendors, favicon, index). Photos
@@ -178,7 +183,10 @@ assets/img/             all photos and logos, organized into subfolders by
                         listed automatically. A new folder also needs a line
                         in the group list and a page file, see "Add, replace,
                         or remove a Safety Data Sheet" at the top of this
-                        file. The empty .keep files hold empty folders in
+                        file. The web.config and .htaccess in this folder make
+                        browsers re-check sheets every time, so a replaced
+                        sheet shows right away, leave them. The empty .keep
+                        files hold empty folders in
                         place, leave them.
 
 originals/              full-size camera originals of the photos/video in
@@ -528,6 +536,22 @@ reduction with no visible quality loss at the sizes photos display on the
 site. If a phone photo comes out sideways, add `transpose=1,` (90° clockwise)
 or `transpose=2,` (90° counter-clockwise) at the start of the part in quotes
 after `-vf`.
+
+### Thumbnail copies
+
+Photos shown in small boxes (the Projects page cards and the photo grids on
+the Agricultural and Industrial Maintenance pages) use a smaller copy named
+`<name>-thumb.webp`, 800px wide, saved next to the `web/` copy, so visitors
+don't download a full-size photo for a small box. Clicking a photo in a grid
+still opens the full-size copy (the page names it in `data-full`). Make the
+thumbnail from the `web/` copy, so it has exactly the same crop:
+
+```
+ffmpeg -i assets\img\<folder>\web\<name>.webp -map_metadata -1 -vf "scale=800:-1" -c:v libwebp -quality 80 -compression_level 6 assets\img\<folder>\web\<name>-thumb.webp
+```
+
+Then put its size on the picture's `<img>` as `width="800" height="..."`
+(`ffprobe -v error -show_entries stream=width,height -of csv=p=0 <file>` prints it).
 
 ### Banner photos
 

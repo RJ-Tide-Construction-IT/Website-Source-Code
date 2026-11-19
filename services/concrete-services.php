@@ -29,9 +29,9 @@ $compactServiceLinks = true; // six buttons, keep them on one row
 
 <?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/service-links.php'; ?>
 
-<section>
+<section class="service-detail">
     <div class="container container--narrow">
-        <h3 id="flatwork">Flatwork</h3>
+        <h2 id="flatwork">Flatwork</h2>
         <p>We do anything from smooth concrete finished slabs to concrete stairs. We know what it takes to
            get the job done right. Our experts will provide not only the best looking, but the best quality
            concrete finishing you will get in western Iowa.</p>
@@ -43,7 +43,7 @@ $compactServiceLinks = true; // six buttons, keep them on one row
             <img src="<?= BASE_URL ?>/assets/img/concrete/web/flatwork.webp" alt="RJ Tide crew finishing an interior concrete flatwork pour" loading="lazy">
         </div>
 
-        <h3 id="foundations">Foundations</h3>
+        <h2 id="foundations">Foundations</h2>
         <p>RJ Tide Construction understands that concrete drives construction schedules. You can&rsquo;t
            afford to lose critical path time because your concrete contractor can&rsquo;t keep up. We are
            concrete foundation specialists with expertise in commercial and industrial projects. From basic
@@ -54,7 +54,7 @@ $compactServiceLinks = true; // six buttons, keep them on one row
             <img src="<?= BASE_URL ?>/assets/img/concrete/web/foundation.webp" alt="RJ Tide crew forming a concrete foundation on-site" loading="lazy">
         </div>
 
-        <h3 id="site-concrete">Site Concrete</h3>
+        <h2 id="site-concrete">Site Concrete</h2>
         <p>Finding a concrete contractor that can perform all aspects of site concrete, including paving,
            sidewalks and CIP site walls, is challenging enough. Finding one that can perform each of these
            different scopes with the quality expectations each requires is even more difficult. RJ Tide can
@@ -71,7 +71,7 @@ $compactServiceLinks = true; // six buttons, keep them on one row
             <img src="<?= BASE_URL ?>/assets/img/concrete/web/site-concrete.webp" alt="RJ Tide crew pouring site concrete paving" loading="lazy">
         </div>
 
-        <h3 id="industrial-structural">Industrial / Structural</h3>
+        <h2 id="industrial-structural">Industrial / Structural</h2>
         <p>Industrial / heavy structural projects may seem like a daunting task, but RJ Tide Construction
            can help ease those concerns. Our Project Managers, with a combined 50 years of project
            management experience, can help ensure the project stays on track and on time.</p>
@@ -80,7 +80,7 @@ $compactServiceLinks = true; // six buttons, keep them on one row
             <img src="<?= BASE_URL ?>/assets/img/concrete/web/industrial.webp" alt="RJ Tide crew finishing an industrial concrete slab" loading="lazy">
         </div>
 
-        <h3 id="specialty-concrete">Specialty Concrete</h3>
+        <h2 id="specialty-concrete">Specialty Concrete</h2>
         <p>RJ Tide has a habit of taking on unique projects that, frankly, a lot of other concrete
            contractors don't want to touch. Do you have a special project? Doing something unique with
            concrete? Talk to our experts to help form your idea into a reality. No matter the size of the
@@ -90,7 +90,7 @@ $compactServiceLinks = true; // six buttons, keep them on one row
             <img src="<?= BASE_URL ?>/assets/img/special-projects/web/chapel-facade.webp" alt="Stone-veneer chapel facade with decorative concrete detailing" loading="lazy">
         </div>
 
-        <h3 id="decorative-concrete">Decorative Concrete</h3>
+        <h2 id="decorative-concrete">Decorative Concrete</h2>
         <p>Beyond structural work, our crews bring the same attention to detail to decorative and
            architectural concrete, finishes and details meant to be seen, not just walked or driven on.
            From custom relief work to finishing touches on a monument or memorial, we treat decorative

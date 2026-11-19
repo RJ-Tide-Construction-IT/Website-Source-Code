@@ -10,6 +10,12 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
+  // Slideshows advance on their own, but not for visitors who've asked their
+  // device for reduced motion, and they pause while the mouse is over one or
+  // keyboard focus is inside it (same as the vendor carousel). Only the slide
+  // that's showing can be reached with Tab.
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   document.querySelectorAll('.slideshow').forEach(function (el) {
     var slides = el.querySelectorAll('.slideshow__slide');
     var dots = el.querySelectorAll('.slideshow__dot');
@@ -19,17 +25,28 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var current = 0;
     var timer = null;
+    var hovering = false;
+    var focused = false;
+
+    // Photos that open in the photo viewer can be reached with Tab, but only the one showing.
+    function setTab(slide, on) {
+      if (slide.hasAttribute('role')) slide.tabIndex = on ? 0 : -1;
+    }
 
     function show(index) {
       slides[current].classList.remove('is-active');
+      setTab(slides[current], false);
       dots[current] && dots[current].classList.remove('is-active');
       current = (index + slides.length) % slides.length;
       slides[current].classList.add('is-active');
+      setTab(slides[current], true);
       dots[current] && dots[current].classList.add('is-active');
     }
 
     function restartTimer() {
       if (timer) clearInterval(timer);
+      timer = null;
+      if (reduceMotion || hovering || focused) return;
       timer = setInterval(function () { show(current + 1); }, 4500);
     }
 
@@ -42,6 +59,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (prevBtn) prevBtn.addEventListener('click', function () { show(current - 1); restartTimer(); });
     if (nextBtn) nextBtn.addEventListener('click', function () { show(current + 1); restartTimer(); });
+
+    el.addEventListener('mouseenter', function () { hovering = true; restartTimer(); });
+    el.addEventListener('mouseleave', function () { hovering = false; restartTimer(); });
+    el.addEventListener('focusin', function () { focused = true; restartTimer(); });
+    el.addEventListener('focusout', function () { focused = false; restartTimer(); });
 
     restartTimer();
   });
@@ -61,9 +83,12 @@ document.addEventListener('DOMContentLoaded', function () {
   var currentGroup = [];
   var currentIndex = 0;
 
+  var lastFocus = null;
+
   function render() {
     var img = currentGroup[currentIndex];
-    overlayImg.src = img.src;
+    // Small thumbnail copies carry the full-size photo's address in data-full.
+    overlayImg.src = img.dataset.full || img.src;
     overlayImg.alt = img.alt || '';
     var multi = currentGroup.length > 1;
     if (prevBtn) prevBtn.hidden = !multi;
@@ -71,15 +96,18 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function openLightbox(group, index) {
+    lastFocus = document.activeElement;
     currentGroup = group;
     currentIndex = index;
     render();
     overlay.classList.add('is-open');
+    closeBtn.focus();
   }
 
   function closeLightbox() {
     overlay.classList.remove('is-open');
     overlayImg.src = '';
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
 
   function showNext() {
@@ -98,9 +126,19 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('.slideshow__slide, .showcase-grid img, .subsection-photo img').forEach(function (img) {
     var container = img.closest(galleryContainers.join(', '));
     var group = container ? Array.prototype.slice.call(container.querySelectorAll('img')) : [img];
-    img.style.cursor = 'pointer';
+    // Keyboard users can Tab to each photo and open it with Enter or Space.
+    // Slideshow photos that aren't showing are skipped (the slideshow code
+    // above moves this along as slides change).
+    img.setAttribute('role', 'button');
+    img.tabIndex = img.classList.contains('slideshow__slide') && !img.classList.contains('is-active') ? -1 : 0;
     img.addEventListener('click', function () {
       openLightbox(group, group.indexOf(img));
+    });
+    img.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openLightbox(group, group.indexOf(img));
+      }
     });
   });
 
@@ -115,6 +153,13 @@ document.addEventListener('DOMContentLoaded', function () {
     if (e.key === 'Escape') closeLightbox();
     if (e.key === 'ArrowRight') showNext();
     if (e.key === 'ArrowLeft') showPrev();
+    // Keep Tab inside the open photo viewer.
+    if (e.key === 'Tab') {
+      var focusable = [closeBtn, prevBtn, nextBtn].filter(function (b) { return b && !b.hidden; });
+      var i = focusable.indexOf(document.activeElement);
+      e.preventDefault();
+      focusable[(i + (e.shiftKey ? focusable.length - 1 : 1)) % focusable.length].focus();
+    }
   });
 });
 

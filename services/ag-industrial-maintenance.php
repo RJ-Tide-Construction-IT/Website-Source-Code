@@ -13,19 +13,19 @@ $subServices = [
 
 <?php require $_SERVER['DOCUMENT_ROOT'] . '/includes/service-links.php'; ?>
 
-<section>
+<section class="service-detail">
     <div class="container container--narrow">
-        <h3 id="industrial-maintenance">Industrial Maintenance</h3>
+        <h2 id="industrial-maintenance">Industrial Maintenance</h2>
         <p>At RJ Tide, we know how costly unexpected downtime can be. That&rsquo;s why we provide reliable,
            full-scope maintenance for your agricultural and industrial operations, from routine upkeep to
            on-call repairs, so your equipment, facilities, and systems keep running at peak performance.</p>
 
         <div class="showcase-grid">
             <figure>
-                <img src="<?= BASE_URL ?>/assets/img/agriculture/web/distributor-golden-hour.webp" alt="Distributor and spouting atop grain storage bins" loading="lazy">
+                <img src="<?= BASE_URL ?>/assets/img/agriculture/web/distributor-golden-hour-thumb.webp" data-full="<?= BASE_URL ?>/assets/img/agriculture/web/distributor-golden-hour.webp" width="800" height="370" alt="Distributor and spouting atop grain storage bins" loading="lazy">
             </figure>
             <figure>
-                <img src="<?= BASE_URL ?>/assets/img/agriculture/web/bin-fill-deck.webp" alt="Bin fill deck and distributor equipment atop a grain facility" loading="lazy">
+                <img src="<?= BASE_URL ?>/assets/img/agriculture/web/bin-fill-deck-thumb.webp" data-full="<?= BASE_URL ?>/assets/img/agriculture/web/bin-fill-deck.webp" width="800" height="370" alt="Bin fill deck and distributor equipment atop a grain facility" loading="lazy">
             </figure>
         </div>
 
@@ -38,7 +38,7 @@ $subServices = [
         <p>Trust RJ Tide Construction to keep your agricultural and industrial operations running smoothly,
            season after season.</p>
 
-        <h3 id="millwright" class="heading--spaced">Millwright</h3>
+        <h2 id="millwright" class="heading--spaced">Millwright</h2>
         <p>RJ Tide knows that keeping your production running is most important. Our service crew of
            experts will do right by you and help keep you running smoothly.</p>
         <div class="subsection-photo">

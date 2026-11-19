@@ -7,19 +7,22 @@ $markets = [
     [
         'label' => 'Concrete',
         'blurb' => 'Flatwork, foundations, and site concrete for commercial and industrial sites.',
-        'img'   => 'concrete/web/concrete-hero.webp',
+        'img'   => 'concrete/web/concrete-hero-thumb.webp',
+        'width' => 800, 'height' => 450,
         'url'   => '/projects/concrete.php',
     ],
     [
         'label' => 'Agricultural',
         'blurb' => 'Grain handling and storage, plus the industrial maintenance and millwright work that keeps ag facilities running.',
-        'img'   => 'agriculture/web/design-build-reality.webp',
+        'img'   => 'agriculture/web/design-build-reality-thumb.webp',
+        'width' => 800, 'height' => 600,
         'url'   => '/projects/agricultural.php',
     ],
     [
         'label' => 'Specialty Concrete',
         'blurb' => 'Decorative and specialty concrete work, built to a different standard.',
-        'img'   => 'special-projects/web/chapel-facade.webp',
+        'img'   => 'special-projects/web/chapel-facade-thumb.webp',
+        'width' => 800, 'height' => 1067,
         'url'   => '/projects/special-projects.php',
     ],
 ];
@@ -35,7 +38,7 @@ $markets = [
         <div class="market-grid">
             <?php foreach ($markets as $m): ?>
             <a class="market-card" href="<?= BASE_URL . $m['url'] ?>">
-                <img src="<?= BASE_URL ?>/assets/img/<?= htmlspecialchars($m['img']) ?>" alt="<?= htmlspecialchars($m['label']) ?>" loading="lazy">
+                <img src="<?= BASE_URL ?>/assets/img/<?= htmlspecialchars($m['img']) ?>" alt="<?= htmlspecialchars($m['label']) ?>" width="<?= $m['width'] ?>" height="<?= $m['height'] ?>" loading="lazy">
                 <div class="market-card__body">
                     <h3><?= htmlspecialchars($m['label']) ?></h3>
                     <p><?= htmlspecialchars($m['blurb']) ?></p>

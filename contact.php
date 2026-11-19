@@ -14,15 +14,15 @@ $submitError = isset($_GET['error']);
     <div class="container">
         <div class="contact-details">
             <div>
-                <h4>Address</h4>
+                <h2>Address</h2>
                 <p><?= htmlspecialchars(SITE_ADDRESS) ?></p>
             </div>
             <div>
-                <h4>Phone</h4>
+                <h2>Phone</h2>
                 <p><a href="tel:<?= SITE_PHONE_TEL ?>"><?= SITE_PHONE ?></a></p>
             </div>
             <div>
-                <h4>Email</h4>
+                <h2>Email</h2>
                 <p><a href="mailto:<?= SITE_EMAIL ?>"><?= SITE_EMAIL ?></a></p>
             </div>
         </div>

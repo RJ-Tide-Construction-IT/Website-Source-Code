@@ -28,7 +28,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
         <p>Each sheet opens as a PDF in a new tab.</p>
         <ul class="job-list">
             <?php foreach ($sheets as $sheet): ?>
-            <li><a href="<?= $sheet['url'] ?>" target="_blank" rel="noopener"><?= htmlspecialchars($sheet['label']) ?> <span>&rarr;</span></a></li>
+            <li><a href="<?= $sheet['url'] ?>" target="_blank" rel="noopener"><?= htmlspecialchars($sheet['label']) ?><span class="visually-hidden"> (PDF, opens in new tab)</span> <span aria-hidden="true">&rarr;</span></a></li>
             <?php endforeach; ?>
         </ul>
         <?php else: ?>

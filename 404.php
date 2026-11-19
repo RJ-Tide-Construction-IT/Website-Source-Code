@@ -12,10 +12,10 @@ require $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
 <section>
     <div class="container container--narrow text-center">
         <p>Sorry, we couldn&rsquo;t find that page. It may have moved, or the address may be mistyped.</p>
-        <p>
+        <div class="button-row">
             <a href="<?= BASE_URL ?>/" class="btn">Go to the homepage</a>
             <a href="<?= BASE_URL ?>/contact.php" class="btn btn--outline-dark">Contact us</a>
-        </p>
+        </div>
         <p>Or call us at <a href="tel:<?= SITE_PHONE_TEL ?>"><?= SITE_PHONE ?></a>.</p>
     </div>
 </section>

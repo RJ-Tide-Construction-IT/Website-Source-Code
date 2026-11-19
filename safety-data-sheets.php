@@ -17,7 +17,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/safety-data-sheets.php';
            grouped by type. Pick a group to see its sheets. Each sheet opens as a PDF in
            a new tab.</p>
 
-        <ul class="service-links">
+        <ul class="service-links service-links--pairs">
             <?php foreach (SDS_CATEGORIES as $slug => $category): ?>
             <?php if (sds_sheet_count($slug)): ?>
             <li><a href="<?= BASE_URL ?>/safety-data-sheets/<?= $slug ?>.php"><?= htmlspecialchars($category['label']) ?></a></li>
