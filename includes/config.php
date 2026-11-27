@@ -7,6 +7,14 @@ define('SITE_PHONE_TEL', '+17122550175');
 define('SITE_EMAIL', 'info@rjtide.com');
 define('SITE_ADDRESS', '1821 US Highway 20, Lawton, IA 51030');
 
+// Seasonal message in a navy strip above the header on every public page (not the
+// Employee Dashboard). Shown from HOLIDAY_START to HOLIDAY_END, both days included,
+// written as two-digit month-day ('12-01'). A start later than the end runs over New
+// Year. Leave HOLIDAY_MESSAGE blank ('') to switch the strip off.
+define('HOLIDAY_MESSAGE', 'Happy Holidays from RJ Tide!');
+define('HOLIDAY_START', '12-01');
+define('HOLIDAY_END', '01-02');
+
 // Shown on the Agricultural/Industrial pages in place of the phone number.
 // This inbox needs to actually exist (an alias/mailbox forwarding to
 // shodgson@rjtide.com) in Microsoft 365, that setup happens over there, not here.
@@ -93,6 +101,17 @@ function setting(string $name): string {
 function site_theme(): string {
     $theme = $_COOKIE['theme'] ?? '';
     return ($theme === 'light' || $theme === 'dark') ? $theme : '';
+}
+
+// HOLIDAY_MESSAGE while today (Iowa time) is inside its date window, otherwise ''.
+// 'mm-dd' text sorts in date order, so plain comparisons work.
+function holiday_message(): string {
+    if (HOLIDAY_MESSAGE === '') return '';
+    $today = (new DateTime('now', new DateTimeZone('America/Chicago')))->format('m-d');
+    $inWindow = HOLIDAY_START <= HOLIDAY_END
+        ? ($today >= HOLIDAY_START && $today <= HOLIDAY_END)
+        : ($today >= HOLIDAY_START || $today <= HOLIDAY_END); // runs over New Year
+    return $inWindow ? HOLIDAY_MESSAGE : '';
 }
 
 // A PHP size setting (e.g. upload_max_filesize = "8M") in bytes. 0 means no limit.

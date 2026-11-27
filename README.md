@@ -13,6 +13,7 @@ exactly which file to open for common edits.
 | I want to... | Open this file |
 |---|---|
 | Change the phone number, email, or address shown site-wide | [includes/config.php](includes/config.php) |
+| Change, re-date, or switch off the holiday message strip at the top of public pages | `HOLIDAY_MESSAGE`, `HOLIDAY_START`, `HOLIDAY_END` in [includes/config.php](includes/config.php). Dates are two-digit month-day, e.g. `'12-01'`, both days included, Iowa time. A start later than the end runs over New Year. Set the message to `''` to switch it off. |
 | Change the text/wording on the homepage | [index.php](index.php) |
 | Change the About page text | [about.php](about.php) |
 | Change the Privacy Policy (e.g. after adding a new tracking or form service) | [privacy.php](privacy.php), and update its "Last updated" date at the top |

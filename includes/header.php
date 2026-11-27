@@ -28,6 +28,7 @@ $privatePage = !empty($privatePage);
 $noindexPage = !empty($noindexPage);
 $loadAnalytics = !$privatePage;
 $siteTheme = site_theme(); // 'light', 'dark', or '' to follow the device
+$holidayMessage = $privatePage ? '' : holiday_message(); // seasonal strip, public pages only
 
 // The photo behind a banner, as a real image so browsers find it right away and
 // load it first (a CSS background is found late, which is what made the
@@ -125,6 +126,9 @@ function theme_logo(string $class = ''): string {
 </head>
 <body>
 <a href="#main" class="skip-link">Skip to main content</a>
+<?php if ($holidayMessage !== ''): ?>
+<p class="holiday-strip"><?= htmlspecialchars($holidayMessage) ?></p>
+<?php endif; ?>
 
 <header class="site-header">
     <div class="container site-header__inner">
